@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "antd/dist/reset.css";
+import "./App.css";
+import Dashboard from "./Page/Dashboard";
+import { BrowserRouter, Link, Routes, Route, Outlet } from "react-router-dom";
+import TableDetail from "./component/Dasboard/TableUser";
+import TaskDetail from "./component/Dasboard/TableTasks";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Dashboard />}>
+        <Route path="/home" element={<TableDetail />} />
+        <Route path="/videos" />
+        <Route path="/uploads" element={<TaskDetail />} />
+        <Route path="/charts" />
+      </Route>
+    </Routes>
+  </BrowserRouter>
+);
 
 export default App;
