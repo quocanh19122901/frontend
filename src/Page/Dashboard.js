@@ -6,25 +6,44 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, theme, Typography } from "antd";
+import { Button } from "@mui/material";
+import { useDispatch} from "react-redux";
+import { logout } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Content, Sider } = Layout;
 
-const labels = ["Home", "Videos", "Uploads", "Charts"];
+const labels = ["Account", "Products", "Category", "Orders"];
 
 const items = [
-  { key: "1", icon: <UserOutlined />, label: labels[0], link: "/home" },
+  { key: "1", icon: <UserOutlined />, label: labels[0], link: "/dashboard/home" },
   {
     key: "2",
     icon: <VideoCameraOutlined />,
     label: labels[1],
-    link: "/videos",
+    link: "/dashboard/videos",
   },
-  { key: "3", icon: <UploadOutlined />, label: labels[2], link: "/uploads" },
-  { key: "4", icon: <BarChartOutlined />, label: labels[3], link: "/charts" },
+  { key: "3", icon: <UploadOutlined />, label: labels[2], link: "/dashboard/uploads" },
+  { key: "4", icon: <BarChartOutlined />, label: labels[3], link: "/dashboard/charts" },
 ];
 
 const Dashboard = () => {
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(";").shift();
+    }
+  }
+  const username = getCookie("username");
+  const dispatch = useDispatch();
+  const navigate= useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login")
+  };
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -41,13 +60,20 @@ const Dashboard = () => {
           bottom: 0,
         }}
       >
-        <div
+        <Typography
           style={{
-            height: 32,
-            margin: 16,
-            background: "rgba(255, 255, 255, 0.2)",
+            fontSize: 20,
+            color: "white",
+            fontWeight: "bold",
+            textAlign: "center",
+            fontFamily: "Helvetica",
+            padding: 4,
+            margin: 12,
+            letterSpacing: 4,
           }}
-        />
+        >
+          DASHBOARD
+        </Typography>
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
           {items.map((item) => (
             <Menu.Item key={item.key} icon={item.icon}>
@@ -55,6 +81,9 @@ const Dashboard = () => {
             </Menu.Item>
           ))}
         </Menu>
+        <Typography style={{color:"blue",fontSize: "large", textAlign: "center"}}>Hello, {username} </Typography>
+        <Button variant="contained" onClick={handleLogout} style={{position: "absolute",
+    left: "50px"}}>Log out</Button>
       </Sider>
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
         <Header style={{ padding: 0, background: colorBgContainer }} />

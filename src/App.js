@@ -1,22 +1,26 @@
 import React from "react";
-import "antd/dist/reset.css";
 import "./App.css";
 import Dashboard from "./Page/Dashboard";
-import { BrowserRouter, Link, Routes, Route, Outlet } from "react-router-dom";
-import TableDetail from "./component/Dasboard/TableUser";
-import TaskDetail from "./component/Dasboard/TableTasks";
-
+import { BrowserRouter as Router, Link, Routes, Route, Outlet } from "react-router-dom";
+import TableDetail from "./component/Dasboard/User/TableUser";
+import CategoryDetail from "./component/Dasboard/Category/TableCategory";
+import Login from "./Page/Login";  
+import Main from "./Page/Main";
 const App = () => (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Dashboard />}>
-        <Route path="/home" element={<TableDetail />} />
-        <Route path="/videos" />
-        <Route path="/uploads" element={<TaskDetail />} />
-        <Route path="/charts" />
+  <Router>
+    <Routes path="/">
+      <Route path="/dashboard/*" element={<Dashboard />}>
+        <Route exact path="home" element={<TableDetail />} />
+        <Route exact path="videos" />
+        <Route exact path="uploads" element={<CategoryDetail />} />
+        <Route exact path="charts" />
+        <Route path="*" element={<Dashboard />} />
       </Route>
+      <Route path="/login" element = {<Login/>}/>
+      <Route path="/homePage"></Route>
     </Routes>
-  </BrowserRouter>
+  </Router>
+  // <Main/>
 );
 
 export default App;
