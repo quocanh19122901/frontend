@@ -4,8 +4,9 @@ import Grid from "@mui/material/Grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LoginImg from "../component/Login/LoginImg";
 import LoginMain from "../component/Login/LoginMain";
+import { themeCustom } from "../themes/theme.main";
 
-const theme = createTheme();
+const theme = createTheme(themeCustom);
 
 export default function SignInSide() {
   return (

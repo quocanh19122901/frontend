@@ -1,0 +1,49 @@
+.searchDiv {
+    margin-top: 50px;
+    display: inline-block;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.inputRounded .MuiOutlinedInput-root {
+    border-radius: 20px;
+    width: 1000px;
+    height: 50px;
+    transition: all 0.3s ease-out;
+    /* add transition animation */
+}
+
+@media (min-width: 900px) {
+    .inputRounded .MuiOutlinedInput-root {
+        max-width: 600px;
+    }
+}
+
+@media (min-width: 500px) {
+    .inputRounded .MuiOutlinedInput-root {
+        max-width: 300px;
+    }
+}
+
+/* add styles for each breakpoint */
+@media (max-width: 500px) {
+    .inputRounded .MuiOutlinedInput-root {
+        max-width: 200px;
+        height: 40px;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 900px) {
+    .inputRounded .MuiOutlinedInput-root {
+        max-width: 400px;
+        height: 45px;
+    }
+}
+
+@media (min-width: 900px) {
+    .inputRounded .MuiOutlinedInput-root {
+        max-width: 600px;
+        height: 50px;
+    }
+}

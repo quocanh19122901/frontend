@@ -22,9 +22,9 @@ const items = [
     key: "2",
     icon: <VideoCameraOutlined />,
     label: labels[1],
-    link: "/dashboard/videos",
+    link: "/dashboard/products",
   },
-  { key: "3", icon: <UploadOutlined />, label: labels[2], link: "/dashboard/uploads" },
+  { key: "3", icon: <UploadOutlined />, label: labels[2], link: "/dashboard/category" },
   { key: "4", icon: <BarChartOutlined />, label: labels[3], link: "/dashboard/charts" },
 ];
 
