@@ -5,9 +5,7 @@ import ResponsiveAppBar from "components/Header/components/Appbar/ResponsiveAppB
 import FooterCM from "components/Footer/Footer/FooterCM";
 const App = () => (
   <Box>
-    <ResponsiveAppBar />
-    <RouteWrapper />
-    <FooterCM />
+    <RouteWrapper maxWidth="xl" />
   </Box>
 );
 

@@ -7,11 +7,9 @@ import FooterCM from "components/Footer/Footer/FooterCM";
 
 function ProductsScreen() {
   return (
-    <>
-      <Container maxWidth="xl">
-        <AllProducts />
-      </Container>
-    </>
+    <Container maxWidth="xl">
+      <AllProducts />
+    </Container>
   );
 }
 

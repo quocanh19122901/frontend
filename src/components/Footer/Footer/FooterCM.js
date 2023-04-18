@@ -28,7 +28,7 @@ function FooterCM() {
     >
       <Container maxWidth="xl">
         <Grid container spacing={2}>
-          <Grid item xs={12} md={4} lg={4}>
+          <Grid item xs={6} sm={6} md={3} lg={3}>
             <Item>
               <Typography variant="h6" gutterBottom>
                 Company
@@ -67,7 +67,7 @@ function FooterCM() {
               </List>
             </Item>
           </Grid>
-          <Grid item xs={12} md={4} lg={4}>
+          <Grid item xs={6} sm={6} md={3} lg={3}>
             <Item>
               <Typography variant="h6" gutterBottom>
                 Kiến thức mặc đẹp
@@ -98,7 +98,46 @@ function FooterCM() {
               </List>
             </Item>
           </Grid>
-          <Grid item xs={12} md={4} lg={4}>
+          <Grid item xs={6} sm={6} md={3} lg={3}>
+            <Item>
+              <Typography variant="h6" gutterBottom>
+                Company
+              </Typography>
+              <List style={{ display: "flex", flexDirection: "column" }}>
+                <ListItem disablePadding>
+                  <Link href="#" underline="none">
+                    {"Hỏi đáp - FAQs"}
+                  </Link>
+                </ListItem>
+                <ListItem disablePadding>
+                  <Link href="#" underline="none">
+                    {"Chính sách đổi trả 60 ngày"}
+                  </Link>
+                </ListItem>
+                <ListItem disablePadding>
+                  <Link href="#" underline="none">
+                    {"Liên hệ"}
+                  </Link>
+                </ListItem>
+                <ListItem disablePadding>
+                  <Link href="#" underline="none">
+                    {"Chính sách khuyến mãi"}
+                  </Link>
+                </ListItem>
+                <ListItem disablePadding>
+                  <Link href="#" underline="none">
+                    {"Chính sách giao hàng"}
+                  </Link>
+                </ListItem>
+                <ListItem disablePadding>
+                  <Link href="#" underline="none">
+                    {"Chính sách bảo mật"}
+                  </Link>
+                </ListItem>
+              </List>
+            </Item>
+          </Grid>
+          <Grid item xs={6} sm={6} md={3} lg={3}>
             <Item>
               <Typography variant="h6" gutterBottom>
                 Về COOLMATE

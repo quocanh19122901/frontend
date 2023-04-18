@@ -16,7 +16,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "components/slices/auth/authSlice";
+import { login } from "redux/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 function LoginMain() {
@@ -38,8 +38,10 @@ function LoginMain() {
       );
       const { accessToken } = response.data;
       const { username } = response.data;
+      const { isAdmin } = response.data;
       Cookies.set("access_Token", accessToken, { expires: 7 });
       Cookies.set("username", username, { expires: 7 });
+      Cookies.set("isAdmin", isAdmin, { expires: 7 });
       setMessage("");
       dispatch(
         login({
@@ -47,7 +49,11 @@ function LoginMain() {
           token: accessToken,
         })
       );
-      navigate("/dashboard");
+      if (isAdmin) {
+        navigate("/dashboard");
+      } else {
+        navigate("/home");
+      }
     } catch (error) {
       setMessage(error.response.data);
     }

@@ -7,11 +7,11 @@ import AboutUs from "./components/AboutUs/AboutUs";
 import PolicyCM from "./components/Policy/PolicyCM";
 import NewCategory from "./components/Category/NewCategory";
 import SlideImage from "./components/Carousel/SlideImage";
-import FooterCM from "../../components/Footer/Footer/FooterCM";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import { Box } from "@mui/material";
 function Home() {
   return (
-    <>
+    <Box>
       <SlideImage />
       <SearchBar />
       <NewCategory />
@@ -20,7 +20,7 @@ function Home() {
       <Hastag2 />
       <AboutUs />
       <PolicyCM />
-    </>
+    </Box>
   );
 }
 

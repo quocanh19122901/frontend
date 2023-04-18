@@ -4,7 +4,6 @@ import Grid from "@mui/material/Grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { themeCustom } from "../../themes/theme.main";
-import LoginImg from "./Login/LoginImg";
 import LoginMain from "./Login/LoginMain";
 
 const theme = createTheme(themeCustom);
@@ -14,8 +13,23 @@ export default function LogInScreen() {
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-        <LoginImg />
-        <LoginMain />s
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <LoginMain />
       </Grid>
     </ThemeProvider>
   );

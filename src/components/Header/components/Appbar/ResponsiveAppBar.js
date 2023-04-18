@@ -13,9 +13,21 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Cart from "../Cart/Cart";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { logout } from "redux/auth/authSlice";
+import { useDispatch } from "react-redux";
 
-const pages = ["Products", "Blog", "About"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+  { item: "Products", path: "/products" },
+  { item: "Blogs", path: "/blogs" },
+  { item: "About Us", path: "/aboutus" },
+  { item: "Contact", path: "/contact" },
+];
+const settings = [
+  { item: "Profile", path: "/profile" },
+  { item: "My Order", path: "/order" },
+  { item: "Log Out", path: "/" },
+];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -35,32 +47,31 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
   return (
     <AppBar
       position="static"
       sx={{
         backgroundColor: "white",
-        // position: "fixed",
-        // top: "0",
-        // left: "0",
-        // width: "100%",
-        // zIndex: "100",
       }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            sx={{ display: { xs: "none", md: "flex" } }}
             style={{ color: "7B68EE" }}
           />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/home"
             sx={{
-              mr: 2,
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
@@ -72,7 +83,12 @@ function ResponsiveAppBar() {
             Coolmate
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "none" },
+            }}
+          >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -101,9 +117,11 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pages.map((page, index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                  <Button component={Link} to={page.path}>
+                    {page.item}
+                  </Button>
                 </MenuItem>
               ))}
             </Menu>
@@ -113,7 +131,7 @@ function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
-            href=""
+            href="/home"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -127,15 +145,18 @@ function ResponsiveAppBar() {
           >
             COOLMATE
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "7B68EE", display: "block" }}
-              >
-                {page}
-              </Button>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+            }}
+          >
+            {pages.map((page, index) => (
+              <MenuItem key={index} onClick={handleCloseNavMenu}>
+                <Button component={Link} to={page.path}>
+                  {page.item}
+                </Button>
+              </MenuItem>
             ))}
           </Box>
 
@@ -162,9 +183,15 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map((setting, index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                  {setting.item === "logout" ? (
+                    <Button onClick={handleLogout}>{setting.item}</Button>
+                  ) : (
+                    <Button component={Link} to={setting.path}>
+                      {setting.item}
+                    </Button>
+                  )}
                 </MenuItem>
               ))}
             </Menu>

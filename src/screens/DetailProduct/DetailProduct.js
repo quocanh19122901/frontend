@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import InforProduct from "./components/InforProduct/InforProduct";
 import { Container } from "@mui/material";
-import ButtonAll from "./components/ButtonAdd/ButtonAll";
 import { Swiper, SwiperSlide } from "swiper/react";
 import axios from "axios";
 // Import Swiper styles
@@ -21,7 +20,7 @@ const Item = styled(Box)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(0),
   color: theme.palette.text.secondary,
-  margin: theme.spacing(2),
+  margin: theme.spacing(3),
 }));
 export default function DetailProduct() {
   let params = useParams();
@@ -64,7 +63,6 @@ export default function DetailProduct() {
           <Grid item xs={12} sm={12} md={5} lg={5}>
             <Item>
               <InforProduct />
-              <ButtonAll />
             </Item>
           </Grid>
         </Grid>

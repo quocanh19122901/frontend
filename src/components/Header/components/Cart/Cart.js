@@ -1,20 +1,25 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { useTheme } from "@mui/material/styles";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import CardCart from "./CardCart";
+import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
+
 export default function Cart() {
+  const theme = useTheme();
+  const [total, setTotal] = useState(200);
+  const [count, setCount] = useState(0);
+  const price = 200;
+  useEffect(() => {
+    axios.get("http://localhost:5000/api/cart/643ccbad31bfd9ed5f53e7da");
+    setTotal(count * price);
+  }, [count, price]);
   const [state, setState] = React.useState({
     right: false,
   });
@@ -33,7 +38,7 @@ export default function Cart() {
   const list = (anchor) => (
     <Box
       sx={{
-        width: 400,
+        width: 450,
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
@@ -44,7 +49,51 @@ export default function Cart() {
       onClick={toggleDrawer(anchor, true)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <CardCart />
+      <Card sx={{ display: "flex" }}>
+        <CardMedia
+          component="img"
+          sx={{ width: 160 }}
+          image="https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/3/30/1173675/Pinkvenom-Jisoo-6.jpg"
+          alt="Live from space album cover"
+        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <CardContent sx={{ flex: "1 0 auto" }}>
+            <Typography component="div" variant="h6">
+              Live From Space
+            </Typography>
+            <Box display="flex" alignItems="center">
+              <Button
+                onClick={() => {
+                  setCount(count - 1);
+                }}
+              >
+                -
+              </Button>
+              <Typography>{count}</Typography>
+              <Button onClick={() => setCount(count + 1)}>+</Button>
+              <Button color="error" startIcon={<DeleteIcon />}>
+                Remove
+              </Button>
+            </Box>
+            <Typography
+              variant="subtitle2"
+              sx={{ float: "left" }}
+              color="#33333"
+              component="div"
+            >
+              Thành tiền: {total}
+            </Typography>
+          </CardContent>
+          <Box
+            sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}
+          ></Box>
+        </Box>
+      </Card>
     </Box>
   );
 
