@@ -36,6 +36,7 @@ function LoginMain() {
           password: data.get("password"),
         }
       );
+      // console.log(response.data);
       const { accessToken } = response.data;
       const { username } = response.data;
       const { isAdmin } = response.data;

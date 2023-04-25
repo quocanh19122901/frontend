@@ -9,6 +9,7 @@ import {
   CardContent,
   CardMedia,
   Container,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import CustomSeparator from "./CustomSeparator";
@@ -35,7 +36,6 @@ export default function AllProducts() {
           key: item._id,
         }));
         setData(modifiedData);
-        console.log(modifiedData);
       })
       .catch((error) => {
         console.log(error);
@@ -61,45 +61,49 @@ export default function AllProducts() {
         spacing={{ xs: 1, md: 2 }}
         columns={{ xs: 12, sm: 12, md: 12, lg: 15, xl: 15 }}
       >
-        {data?.map((item, index) => (
-          <Grid key={index} xs={12} sm={6} md={4} lg={4} xl={3}>
-            <Link to={`/products/${item._id}`} key={index}>
-              <Item>
-                <Box>
-                  <Card sx={{ maxWidth: 450 }}>
-                    <CardActionArea>
-                      <CardMedia
-                        component="img"
-                        height="400"
-                        image={item.img[0]}
-                        alt="clothes"
-                        // onClick={() => {
-                        //   handleProductClick(item._id);
-                        // }}
-                      />
-                      <CardContent
-                        sx={{
-                          height: "200px",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-around",
-                        }}
-                      >
-                        <Typography gutterBottom variant="h6" component="div">
-                          {item.productName}
-                        </Typography>
-                        <Typography variant="body3" color="text.secondary">
-                          {item.subCategoryId.SubCategoryName}
-                        </Typography>
-                        <Typography>Giá: {item.price}đ</Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Box>
-              </Item>
-            </Link>
-          </Grid>
-        ))}
+        {data && data.length > 0 ? (
+          data?.map((item, index) => (
+            <Grid key={index} xs={12} sm={6} md={4} lg={4} xl={3}>
+              <Link to={`/products/${item._id}`} key={index}>
+                <Item>
+                  <Box>
+                    <Card sx={{ maxWidth: 450 }}>
+                      <CardActionArea>
+                        <CardMedia
+                          component="img"
+                          height="400"
+                          image={item.img[0]}
+                          alt="clothes"
+                          // onClick={() => {
+                          //   handleProductClick(item._id);
+                          // }}
+                        />
+                        <CardContent
+                          sx={{
+                            height: "200px",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-around",
+                          }}
+                        >
+                          <Typography gutterBottom variant="h6" component="div">
+                            {item.productName}
+                          </Typography>
+                          <Typography variant="body3" color="text.secondary">
+                            {item.subCategoryId.SubCategoryName}
+                          </Typography>
+                          <Typography>Giá: {item.price}đ</Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Box>
+                </Item>
+              </Link>
+            </Grid>
+          ))
+        ) : (
+          <Typography variant="h3">Loading data.... </Typography>
+        )}
       </Grid>
     </Container>
   );

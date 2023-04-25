@@ -35,32 +35,62 @@ function FooterCM() {
               </Typography>
               <List style={{ display: "flex", flexDirection: "column" }}>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Hỏi đáp - FAQs"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Chính sách đổi trả 60 ngày"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Liên hệ"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Chính sách khuyến mãi"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Chính sách giao hàng"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Chính sách bảo mật"}
                   </Link>
                 </ListItem>
@@ -81,17 +111,32 @@ function FooterCM() {
                 }}
               >
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Hướng dẫn chọn size"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Blog"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Group mặc đẹp sống chất"}
                   </Link>
                 </ListItem>
@@ -105,32 +150,62 @@ function FooterCM() {
               </Typography>
               <List style={{ display: "flex", flexDirection: "column" }}>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Hỏi đáp - FAQs"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Chính sách đổi trả 60 ngày"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Liên hệ"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Chính sách khuyến mãi"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Chính sách giao hàng"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Chính sách bảo mật"}
                   </Link>
                 </ListItem>
@@ -151,22 +226,42 @@ function FooterCM() {
                 }}
               >
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Câu chuyện về Coolmate"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Nhà máy"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"CoolClub"}
                   </Link>
                 </ListItem>
                 <ListItem disablePadding>
-                  <Link href="#" underline="none">
+                  <Link
+                    color="white"
+                    variant="subtitle2"
+                    href="#"
+                    underline="hover"
+                  >
                     {"Care & Share"}
                   </Link>
                 </ListItem>

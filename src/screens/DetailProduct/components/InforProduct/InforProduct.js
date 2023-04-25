@@ -7,6 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import jwt_decode from "jwt-decode";
 
 function InforProduct() {
   const Item = styled(Box)(({ theme }) => ({
@@ -28,15 +29,14 @@ function InforProduct() {
     setCount(count + 1);
   };
   let params = useParams();
-  console.log(params);
+  // console.log(params);
   const [data, setData] = useState([]);
   const [desc, setDesc] = useState([]);
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
-
+  const [selectedColor, setSelectedColor] = useState();
+  const [selectedSize, setSelectedSize] = useState();
   const color = useMemo(() => data.color || [], [data.color]);
   const size = useMemo(() => data.size || [], [data.size]);
-
+  const [cart, setCart] = useState([]);
   const handleOnChangeSize = (event, value) => {
     setSelectedSize(value);
   };
@@ -56,6 +56,46 @@ function InforProduct() {
         toast("fetch loi roi!");
       });
   }, [params.id]);
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(";").shift();
+    }
+  }
+  const token = getCookie("access_Token");
+  const decodeToken = jwt_decode(token);
+  const userId = decodeToken.id;
+  const handleAdd = async () => {
+    try {
+      await axios.post(`http://localhost:5000/api/cart`, {
+        userId: `${userId}`,
+        product: [
+          {
+            productId: `${params.id}`,
+            quantity: count,
+            size: selectedSize,
+            color: selectedColor,
+            price: 100000,
+          },
+        ],
+      });
+      const response = await axios.get(`http://localhost:5000/api/cart`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      const cartData = response.data;
+      const modifiedData = cartData.map(({ _id, ...rest }) => ({
+        ...rest,
+        key: _id,
+      }));
+      setCart(modifiedData);
+      console.log(modifiedData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Box>
@@ -124,6 +164,7 @@ function InforProduct() {
                 <Typography
                   variant="overline"
                   sx={{ padding: "10px 0px 5px 10px" }}
+                  onClick={handleAdd}
                 >
                   Thêm vào giỏ hàng
                 </Typography>

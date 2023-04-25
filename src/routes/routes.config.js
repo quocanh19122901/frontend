@@ -1,5 +1,7 @@
 import DashboardLayout from "layouts/DashboardLayout";
 import DefaultLayout from "layouts/DefaultLayout";
+import LoginLayout from "layouts/LoginLayout";
+import AboutUs from "screens/AboutUs/AboutUs";
 import Dashboard from "screens/Dashboard/Dashboard";
 import CategoryDetail from "screens/Dashboard/components/Category/CategoryDetail";
 import ProductDetail from "screens/Dashboard/components/Products/ProductDetail";
@@ -25,18 +27,25 @@ export const routeConfig = [
     private: false,
   },
   {
-    path: "/products/:id",
-    component: DetailProduct,
+    path: "/Aboutus",
+    component: AboutUs,
     layout: DefaultLayout,
     isAdmin: false,
     private: false,
   },
   {
-    path: "/",
-    component: LogInScreen,
+    path: "/products/:id",
+    component: DetailProduct,
     layout: DefaultLayout,
     isAdmin: false,
     private: true,
+  },
+  {
+    path: "/",
+    component: LogInScreen,
+    layout: LoginLayout,
+    isAdmin: false,
+    private: false,
   },
   {
     path: "/dashboard",

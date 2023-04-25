@@ -10,16 +10,36 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export default function Cart() {
   const theme = useTheme();
   const [total, setTotal] = useState(200);
   const [count, setCount] = useState(0);
+  const [cart, setCart] = useState();
   const price = 200;
+
   useEffect(() => {
-    axios.get("http://localhost:5000/api/cart/643ccbad31bfd9ed5f53e7da");
-    setTotal(count * price);
-  }, [count, price]);
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        return parts.pop().split(";").shift();
+      }
+    }
+    const token = getCookie("access_Token");
+
+    axios
+      .get(`http://localhost:5000/api/cart`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        setCart(response.data);
+        console.log(response.data);
+      });
+  }, [setCart]);
   const [state, setState] = React.useState({
     right: false,
   });

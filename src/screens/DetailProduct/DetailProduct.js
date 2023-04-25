@@ -10,10 +10,7 @@ import axios from "axios";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
 import "./ImageProducts.css";
-
-// import required modules
 import { Pagination, Navigation } from "swiper";
 import { useParams } from "react-router-dom";
 const Item = styled(Box)(({ theme }) => ({
