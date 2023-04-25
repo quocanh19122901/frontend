@@ -11,12 +11,19 @@ import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import {
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 
 export default function Cart() {
   const theme = useTheme();
   const [total, setTotal] = useState(200);
   const [count, setCount] = useState(0);
-  const [cart, setCart] = useState();
+  const [cart, setCart] = useState([]);
   const price = 200;
 
   useEffect(() => {
@@ -54,73 +61,109 @@ export default function Cart() {
 
     setState({ ...state, [anchor]: open });
   };
-
-  const list = (anchor) => (
-    <Box
-      sx={{
-        width: 450,
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-      mt={2}
-      role="presentation"
-      onClick={toggleDrawer(anchor, true)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <Card sx={{ display: "flex" }}>
-        <CardMedia
-          component="img"
-          sx={{ width: 160 }}
-          image="https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/3/30/1173675/Pinkvenom-Jisoo-6.jpg"
-          alt="Live from space album cover"
-        />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <CardContent sx={{ flex: "1 0 auto" }}>
-            <Typography component="div" variant="h6">
-              Live From Space
-            </Typography>
-            <Box display="flex" alignItems="center">
-              <Button
-                onClick={() => {
-                  setCount(count - 1);
+  const handleRemove = async (id) => {
+    await axios.delete(`http://localhost:5000/api/cart/${id}`);
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        return parts.pop().split(";").shift();
+      }
+    }
+    const token = getCookie("access_Token");
+    axios
+      .get(`http://localhost:5000/api/cart`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        setCart(response.data);
+        console.log(response.data);
+      });
+  };
+  const handleGetCart = () => {
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        return parts.pop().split(";").shift();
+      }
+    }
+    const token = getCookie("access_Token");
+    axios
+      .get(`http://localhost:5000/api/cart`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        setCart(response.data);
+        console.log(response.data);
+      });
+  };
+  const list = React.useMemo(() => (anchor) => (
+    <List>
+      {cart.map((item, index) => (
+        <ListItem key={index} disablePadding>
+          <ListItemButton>
+            <Card sx={{ display: "flex" }}>
+              <CardMedia
+                component="img"
+                sx={{ width: 160 }}
+                image="https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/3/30/1173675/Pinkvenom-Jisoo-6.jpg"
+                alt="Live from space album cover"
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
-                -
-              </Button>
-              <Typography>{count}</Typography>
-              <Button onClick={() => setCount(count + 1)}>+</Button>
-              <Button color="error" startIcon={<DeleteIcon />}>
-                Remove
-              </Button>
-            </Box>
-            <Typography
-              variant="subtitle2"
-              sx={{ float: "left" }}
-              color="#33333"
-              component="div"
-            >
-              Thành tiền: {total}
-            </Typography>
-          </CardContent>
-          <Box
-            sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}
-          ></Box>
-        </Box>
-      </Card>
-    </Box>
-  );
+                <CardContent sx={{ flex: "1 0 auto" }}>
+                  <Typography component="div" variant="h6">
+                    {item.product[0].productId.title}
+                  </Typography>
+                  <Box display="flex" alignItems="center">
+                    <Typography>
+                      Số lượng: {item.product[0].quantity}
+                    </Typography>
+
+                    <Button
+                      color="error"
+                      sx={{ float: "right" }}
+                      startIcon={<DeleteIcon />}
+                      onClick={() => handleRemove(item._id)}
+                    >
+                      Remove
+                    </Button>
+                  </Box>
+                  <Typography>Màu sắc: {item.product[0].color}</Typography>
+                  <Typography>Kích cỡ: {item.product[0].size}</Typography>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ float: "left" }}
+                    color="#33333"
+                    component="div"
+                  >
+                    Thành tiền: {item.product[0].price}
+                  </Typography>
+                </CardContent>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}
+                ></Box>
+              </Box>
+            </Card>
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+  ));
 
   return (
     <div>
       <Button onClick={toggleDrawer("right", true)}>
-        <AddShoppingCartIcon />
+        <AddShoppingCartIcon onClick={handleGetCart} />
       </Button>
       <Drawer
         anchor="right"

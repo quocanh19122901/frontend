@@ -76,7 +76,7 @@ function InforProduct() {
             quantity: count,
             size: selectedSize,
             color: selectedColor,
-            price: 100000,
+            price: data.price,
           },
         ],
       });
@@ -92,6 +92,7 @@ function InforProduct() {
       }));
       setCart(modifiedData);
       console.log(modifiedData);
+      toast("Đã thêm sản phẩm vào giỏ hàng!");
     } catch (error) {
       console.error(error);
     }
