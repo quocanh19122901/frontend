@@ -31,21 +31,6 @@ const settings = [
   { item: "My Order", path: "/order" },
   { item: "Log Out", path: "/" },
 ];
-function HideOnScroll(props) {
-  const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({
-    target: window ? window() : undefined,
-  });
-
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
 
 function ResponsiveAppBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -72,102 +57,67 @@ function ResponsiveAppBar(props) {
     navigate("/");
   };
   return (
-    <HideOnScroll {...props}>
-      <AppBar
-        position="static"
-        sx={{
-          backgroundColor: "white",
-        }}
-      >
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <AdbIcon
-              sx={{ display: { xs: "none", md: "flex" } }}
-              style={{ color: "7B68EE" }}
-            />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/home"
-              sx={{
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "#7B68EE",
-                textDecoration: "none",
-              }}
-            >
-              Coolmate
-            </Typography>
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: "white",
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <AdbIcon
+            sx={{ display: { xs: "none", md: "flex" } }}
+            style={{ color: "7B68EE" }}
+          />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/home"
+            sx={{
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "#7B68EE",
+              textDecoration: "none",
+            }}
+          >
+            Coolmate
+          </Typography>
 
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: { xs: "flex", md: "none" },
-              }}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "none" },
+            }}
+          >
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="#7B68EE"
             >
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="#7B68EE"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              >
-                {pages.map((page, index) => (
-                  <MenuItem key={index} onClick={handleCloseNavMenu}>
-                    <Button component={Link} to={page.path}>
-                      {page.item}
-                    </Button>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href="/home"
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "#7B68EE",
-                textDecoration: "none",
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
               }}
-            >
-              COOLMATE
-            </Typography>
-            <Box
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
               sx={{
-                flexGrow: 1,
-                display: { xs: "none", md: "flex" },
+                display: { xs: "block", md: "none" },
               }}
             >
               {pages.map((page, index) => (
@@ -177,48 +127,81 @@ function ResponsiveAppBar(props) {
                   </Button>
                 </MenuItem>
               ))}
-            </Box>
+            </Menu>
+          </Box>
+          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="/home"
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "#7B68EE",
+              textDecoration: "none",
+            }}
+          >
+            COOLMATE
+          </Typography>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+            }}
+          >
+            {pages.map((page, index) => (
+              <MenuItem key={index} onClick={handleCloseNavMenu}>
+                <Button component={Link} to={page.path}>
+                  {page.item}
+                </Button>
+              </MenuItem>
+            ))}
+          </Box>
 
-            <Box sx={{ flexGrow: 0, display: "flex" }}>
-              <Cart />
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting, index) => (
-                  <MenuItem key={index} onClick={handleCloseNavMenu}>
-                    {setting.item === "logout" ? (
-                      <Button onClick={handleLogout}>{setting.item}</Button>
-                    ) : (
-                      <Button component={Link} to={setting.path}>
-                        {setting.item}
-                      </Button>
-                    )}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </HideOnScroll>
+          <Box sx={{ flexGrow: 0, display: "flex" }}>
+            <Cart />
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting, index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                  {setting.item === "logout" ? (
+                    <Button onClick={handleLogout}>{setting.item}</Button>
+                  ) : (
+                    <Button component={Link} to={setting.path}>
+                      {setting.item}
+                    </Button>
+                  )}
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }
 export default ResponsiveAppBar;

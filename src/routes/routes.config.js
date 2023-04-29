@@ -9,6 +9,8 @@ import TableUser from "screens/Dashboard/components/User/TableUser";
 import DetailProduct from "screens/DetailProduct/DetailProduct";
 import Home from "screens/HomeScreen/Home";
 import LogInScreen from "screens/LogInScreen/LogInScreen";
+import Order from "screens/Order/Order";
+import Payment from "screens/Payment/Payment";
 import ProductsScreen from "screens/ProductsScreen/Products/components/ProductsScreen";
 
 export const routeConfig = [
@@ -29,6 +31,20 @@ export const routeConfig = [
   {
     path: "/Aboutus",
     component: AboutUs,
+    layout: DefaultLayout,
+    isAdmin: false,
+    private: false,
+  },
+  {
+    path: "/order",
+    component: Order,
+    layout: DefaultLayout,
+    isAdmin: false,
+    private: false,
+  },
+  {
+    path: "/payment",
+    component: Payment,
     layout: DefaultLayout,
     isAdmin: false,
     private: false,

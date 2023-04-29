@@ -18,9 +18,9 @@ function InforProduct() {
     display: "flex",
     justifyContent: "space-around",
   }));
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const handleDecrease = () => {
-    if (count > 0) {
+    if (count > 1) {
       setCount(count - 1);
     }
   };
@@ -80,21 +80,28 @@ function InforProduct() {
           },
         ],
       });
-      const response = await axios.get(`http://localhost:5000/api/cart`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
+
+      toast.success("Đã thêm vào giỏ hàng thành công !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
       });
-      const cartData = response.data;
-      const modifiedData = cartData.map(({ _id, ...rest }) => ({
-        ...rest,
-        key: _id,
-      }));
-      setCart(modifiedData);
-      console.log(modifiedData);
-      toast("Đã thêm sản phẩm vào giỏ hàng!");
     } catch (error) {
-      console.error(error);
+      toast.error("Hãy chọn size và màu", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 

@@ -2,13 +2,11 @@ import { Button, Modal, Input } from "antd";
 import { useState } from "react";
 import axios from "axios";
 import "./ModalAddUser.css";
-import { useForm } from "react-hook-form";
 const ModalAddUser = ({ setData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const showModal = () => {
     setIsModalOpen(true);

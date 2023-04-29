@@ -10,7 +10,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import PaymentIcon from "@mui/icons-material/Payment";
 import {
   List,
   ListItem,
@@ -21,10 +21,7 @@ import {
 
 export default function Cart() {
   const theme = useTheme();
-  const [total, setTotal] = useState(200);
-  const [count, setCount] = useState(0);
   const [cart, setCart] = useState([]);
-  const price = 200;
 
   useEffect(() => {
     function getCookie(name) {
@@ -44,7 +41,6 @@ export default function Cart() {
       })
       .then((response) => {
         setCart(response.data);
-        console.log(response.data);
       });
   }, [setCart]);
   const [state, setState] = React.useState({
@@ -99,7 +95,6 @@ export default function Cart() {
       })
       .then((response) => {
         setCart(response.data);
-        console.log(response.data);
       });
   };
   const list = React.useMemo(() => (anchor) => (
@@ -120,7 +115,7 @@ export default function Cart() {
                   flexDirection: "column",
                 }}
               >
-                <CardContent sx={{ flex: "1 0 auto" }}>
+                <CardContent sx={{ maxWidth: "400px", flex: "1 0 auto" }}>
                   <Typography component="div" variant="h6">
                     {item.product[0].productId.title}
                   </Typography>
@@ -146,7 +141,7 @@ export default function Cart() {
                     color="#33333"
                     component="div"
                   >
-                    Thành tiền: {item.product[0].price}
+                    Thành tiền: {item.product[0].price} đ
                   </Typography>
                 </CardContent>
                 <Box
@@ -157,6 +152,30 @@ export default function Cart() {
           </ListItemButton>
         </ListItem>
       ))}
+      <Box
+        sx={{
+          position: "sticky",
+          bottom: "0",
+        }}
+      >
+        <Button
+          variant="outlined"
+          sx={{
+            backgroundColor: "black",
+            color: "white",
+            width: "90%",
+            margin: "20px 20px",
+            "&:hover": {
+              backgroundColor: "blue",
+              color: "white",
+            },
+          }}
+          startIcon={<PaymentIcon />}
+          href="/payment"
+        >
+          Thanh toán
+        </Button>
+      </Box>
     </List>
   ));
 
