@@ -106,7 +106,7 @@ export default function Cart() {
               <CardMedia
                 component="img"
                 sx={{ width: 160 }}
-                image="https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/3/30/1173675/Pinkvenom-Jisoo-6.jpg"
+                image={item.product[0].productId.avatar}
                 alt="Live from space album cover"
               />
               <Box

@@ -10,11 +10,12 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Box, Button, Container, Modal, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
-export default function Order() {
+export default function AllOrder() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   useEffect(() => {
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -25,7 +26,7 @@ export default function Order() {
     }
     const token = getCookie("access_Token");
     axios
-      .get("http://localhost:5000/api/order/myorder", {
+      .get("http://localhost:5000/api/order", {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -53,9 +54,8 @@ export default function Order() {
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ marginTop: "20px" }}>
-        Lịch sử các đơn hàng
+        Danh sách các đơn hàng
       </Typography>
-
       <Table sx={{ minWidth: 650, minHeight: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -87,8 +87,8 @@ export default function Order() {
               <TableCell align="center">{row.total}đ</TableCell>
               <TableCell align="center">
                 <Box>
-                  <Link to={`/order/${row._id}`} key={index}>
-                    <Button>Xem chi tiết</Button>
+                  <Link to={`/dashboard/order/${row._id}`} key={index}>
+                    <Button>Xác nhận đơn hàng</Button>
                   </Link>
                 </Box>
               </TableCell>

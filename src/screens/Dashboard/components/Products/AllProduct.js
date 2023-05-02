@@ -10,11 +10,9 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Box, Button, Container, Modal, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
-export default function Order() {
+export default function AllProduct() {
   const [data, setData] = useState([]);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
   useEffect(() => {
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -25,7 +23,7 @@ export default function Order() {
     }
     const token = getCookie("access_Token");
     axios
-      .get("http://localhost:5000/api/order/myorder", {
+      .get("http://localhost:5000/api/products", {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -53,20 +51,24 @@ export default function Order() {
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ marginTop: "20px" }}>
-        Lịch sử các đơn hàng
+        Danh sách sản phẩm
       </Typography>
-
+      <Link to="/dashboard/products/add">
+        <Button
+          sx={{ float: "right", backgroundColor: "blue", color: "white" }}
+        >
+          Thêm mới
+        </Button>
+      </Link>
       <Table sx={{ minWidth: 650, minHeight: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Mã đơn hàng</TableCell>
-            <TableCell align="center">Tên người nhận</TableCell>
-            <TableCell align="center">Số điện thoại</TableCell>
-            <TableCell align="center">Địa chỉ</TableCell>
-            <TableCell align="center">Ghi chú</TableCell>
-            <TableCell align="center">Tình trạng đơn hàng</TableCell>
-            <TableCell align="center">Ngày đặt</TableCell>
-            <TableCell align="center">Tổng giá tiền</TableCell>
+            <TableCell align="center">Tên sản phẩm</TableCell>
+            <TableCell align="center">Mô tả</TableCell>
+            <TableCell align="center">Ảnh</TableCell>
+            <TableCell align="center">Loại</TableCell>
+            <TableCell align="center">Số lượng</TableCell>
+            <TableCell align="center">Đã bán</TableCell>
             <TableCell align="center"></TableCell>
           </TableRow>
         </TableHead>
@@ -74,21 +76,23 @@ export default function Order() {
           {data.map((row, index) => (
             <TableRow key={index}>
               <TableCell component="th" scope="row">
-                {row._id}
+                {row.productName}
               </TableCell>
-              <TableCell align="center">
-                {row.firstName} {row.lastName}
+              <TableCell align="left">
+                {row.desc.map((value, index) => (
+                  <li key={index}>{value}</li>
+                ))}
               </TableCell>
-              <TableCell align="center">{row.phone}</TableCell>
-              <TableCell align="center">{row.note}</TableCell>
-              <TableCell align="center">{row.address}</TableCell>
-              <TableCell align="center">{row.status}</TableCell>
-              <TableCell align="center">{row.createdAt}</TableCell>
-              <TableCell align="center">{row.total}đ</TableCell>
+              <TableCell align="left" sx={{ width: "150px" }}>
+                <img src={row.avatar}></img>
+              </TableCell>
+              <TableCell align="left">{row.CategoryId.CategoryName}</TableCell>
+              <TableCell align="center">{row.quantity}</TableCell>
+              <TableCell align="center">{row.sold}</TableCell>
               <TableCell align="center">
                 <Box>
-                  <Link to={`/order/${row._id}`} key={index}>
-                    <Button>Xem chi tiết</Button>
+                  <Link to={`/dashboard/products/${row._id}`} key={index}>
+                    <Button>Xem chi tiêt</Button>
                   </Link>
                 </Box>
               </TableCell>

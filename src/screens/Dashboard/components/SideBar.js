@@ -40,7 +40,7 @@ export default function SideBarLayout() {
       key: "4",
       icon: <BarChartOutlined />,
       label: labels[3],
-      link: "/dashboard/charts",
+      link: "/dashboard/order",
     },
   ];
   function getCookie(name) {

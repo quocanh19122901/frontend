@@ -92,7 +92,7 @@ const ProductDetail = () => {
     form.setFieldsValue({
       title: "",
       description: "",
-      // SubCategory:'',
+      SubCategory: "",
       // status: '',
       createdAt: "",
       updatedAt: "",
@@ -141,7 +141,7 @@ const ProductDetail = () => {
     {
       title: "Description",
       dataIndex: "desc",
-      width: "15%",
+      width: "35%",
       editable: true,
     },
     {
@@ -152,19 +152,13 @@ const ProductDetail = () => {
     },
     {
       title: "Sub Category",
-      dataIndex: "subCategoryId",
+      dataIndex: "subCategoryId.SubCategoryName",
       width: "15%",
       editable: true,
     },
     {
       title: "Created At",
       dataIndex: "createdAt",
-      width: "20%",
-      editable: false,
-    },
-    {
-      title: "Category",
-      dataIndex:<CustomDropdown />,
       width: "20%",
       editable: false,
     },
@@ -217,7 +211,7 @@ const ProductDetail = () => {
         inputType:
           col.dataIndex === "createdAt" || "updatedAt" ? "date" : "text",
         dataIndex: col.dataIndex,
-        filterDropdown:col.filterDropdown,
+        filterDropdown: col.filterDropdown,
         title: col.title,
         editing: isEditing(record),
       }),

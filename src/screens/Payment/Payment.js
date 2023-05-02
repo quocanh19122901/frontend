@@ -90,7 +90,7 @@ export default function Payment() {
   const decodeToken = jwt_decode(token);
   const userId = decodeToken.id;
   const products = cart.map((item) => ({
-    productId: item.product[0]._id,
+    productId: item.product[0].productId._id,
     quantity: item.product[0].quantity,
     size: item.product[0].size,
     color: item.product[0].color,
