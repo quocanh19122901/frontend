@@ -34,8 +34,9 @@ function InforProduct() {
   const [desc, setDesc] = useState([]);
   const [selectedColor, setSelectedColor] = useState();
   const [selectedSize, setSelectedSize] = useState();
-  const color = useMemo(() => data.color || [], [data.color]);
-  const size = useMemo(() => data.size || [], [data.size]);
+  const [color, setColor] = useState([]);
+  const [size, setSize] = useState([]);
+
   const [cart, setCart] = useState([]);
   const handleOnChangeSize = (event, value) => {
     setSelectedSize(value);
@@ -50,6 +51,8 @@ function InforProduct() {
       .then((response) => {
         setData(response.data);
         setDesc(response.data.desc);
+        setColor(response.data.color);
+        setSize(response.data.size);
       })
       .catch((error) => {
         console.log(error);
@@ -104,6 +107,8 @@ function InforProduct() {
       });
     }
   };
+  const flatOptions = size.flat();
+  const flatOptionsColor = color.flat();
 
   return (
     <Box>
@@ -119,7 +124,7 @@ function InforProduct() {
           <Autocomplete
             disablePortal
             id="combo-box-demo"
-            options={color}
+            options={flatOptionsColor.map((item, index) => item.text)}
             onChange={handleOnChangeColor}
             sx={{ width: 300, marginTop: "20px" }}
             renderInput={(params) => <TextField {...params} label="Màu sắc" />}
@@ -129,7 +134,7 @@ function InforProduct() {
           <Autocomplete
             disablePortal
             id="combo-box-demo"
-            options={size}
+            options={flatOptions.map((item, index) => item.text)}
             onChange={handleOnChangeSize}
             sx={{ width: 300, marginTop: "20px" }}
             renderInput={(params) => <TextField {...params} label="Kích cỡ" />}
@@ -139,11 +144,13 @@ function InforProduct() {
           <br />
           <Typography variant="subtitle1">Đặc điểm: </Typography>
           <ul>
-            {desc.map((item, index) => (
-              <li key={index}>
-                <Typography>{item}</Typography>
-              </li>
-            ))}
+            {desc.map((item, index) =>
+              item.map((value, index) => (
+                <li key={index}>
+                  <Typography>{value.text}</Typography>
+                </li>
+              ))
+            )}
           </ul>
         </Box>
       </React.Fragment>

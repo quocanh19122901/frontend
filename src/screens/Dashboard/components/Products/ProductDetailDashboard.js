@@ -60,6 +60,7 @@ export default function ProductDetailDashboard() {
       .then((response) => {
         setData(response.data);
         setDesc(response.data.desc);
+        console.log(response.data.desc);
         setColor(response.data.color);
         setSize(response.data.size);
         setImg(response.data.img);
@@ -81,16 +82,20 @@ export default function ProductDetailDashboard() {
     }));
   };
 
-  const handleSizeChange = (event, index) => {
-    setSize((prevSize) =>
-      prevSize.map((item, i) => (i === index ? event.target.value : item))
-    );
+  const handleSizeChange = (event, itemIndex, textFieldIndex) => {
+    setSize((prevSize) => {
+      const newSize = [...prevSize];
+      newSize[itemIndex][textFieldIndex].text = event.target.value;
+      return newSize;
+    });
   };
 
-  const handleColorChange = (event, index) => {
-    setColor((prevColor) =>
-      prevColor.map((item, i) => (i === index ? event.target.value : item))
-    );
+  const handleColorChange = (event, itemIndex, textFieldIndex) => {
+    setColor((prevColor) => {
+      const newColor = [...prevColor];
+      newColor[itemIndex][textFieldIndex].text = event.target.value;
+      return newColor;
+    });
   };
 
   const handleAvatarChange = (event) => {
@@ -100,16 +105,20 @@ export default function ProductDetailDashboard() {
     }));
   };
 
-  const handleDescChange = (event, index) => {
-    setDesc((prevDesc) =>
-      prevDesc.map((item, i) => (i === index ? event.target.value : item))
-    );
+  const handleDescChange = (event, itemIndex, textFieldIndex) => {
+    setDesc((prevDesc) => {
+      const newDesc = [...prevDesc];
+      newDesc[itemIndex][textFieldIndex].text = event.target.value;
+      return newDesc;
+    });
   };
 
-  const handleImgChange = (event, index) => {
-    setImg((prevImg) =>
-      prevImg.map((item, i) => (i === index ? event.target.value : item))
-    );
+  const handleImgChange = (event, itemIndex, textFieldIndex) => {
+    setImg((prevImg) => {
+      const newImg = [...prevImg];
+      newImg[itemIndex][textFieldIndex].text = event.target.value;
+      return newImg;
+    });
   };
 
   const handleQuantityChange = (event) => {
@@ -153,40 +162,52 @@ export default function ProductDetailDashboard() {
           <TableRow>
             <TableCell>Mô tả</TableCell>
             <TableCell>
-              {desc.map((item, index) => (
-                <TextField
-                  key={index}
-                  value={item}
-                  onChange={(event) => handleDescChange(event, index)}
-                  fullWidth
-                />
-              ))}
+              {desc.map((item, index) =>
+                item.map((value, textFieldIndex) => (
+                  <TextField
+                    key={textFieldIndex}
+                    value={value.text}
+                    onChange={(event) =>
+                      handleDescChange(event, index, textFieldIndex)
+                    }
+                    fullWidth
+                  />
+                ))
+              )}
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Màu sắc</TableCell>
             <TableCell>
-              {color.map((item, index) => (
-                <TextField
-                  key={index}
-                  value={item}
-                  onChange={(event) => handleColorChange(event, index)}
-                  fullWidth
-                />
-              ))}
+              {color.map((item, index) =>
+                item.map((value, textFieldIndex) => (
+                  <TextField
+                    key={textFieldIndex}
+                    value={value.text}
+                    onChange={(event) =>
+                      handleColorChange(event, index, textFieldIndex)
+                    }
+                    fullWidth
+                  />
+                ))
+              )}
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Kích cỡ</TableCell>
             <TableCell>
-              {size.map((item, index) => (
-                <TextField
-                  key={index}
-                  value={item}
-                  onChange={(event) => handleSizeChange(event, index)}
-                  fullWidth
-                />
-              ))}
+              {size.map((item, index) =>
+                item.map((value, textFieldIndex) => (
+                  <TextField
+                    key={textFieldIndex}
+                    value={value.text}
+                    onChange={(event) =>
+                      handleSizeChange(event, index, textFieldIndex)
+                    }
+                    fullWidth
+                  />
+                ))
+              )}
             </TableCell>
             <TableCell>
               <Button
@@ -210,14 +231,18 @@ export default function ProductDetailDashboard() {
           <TableRow>
             <TableCell>Danh sách ảnh</TableCell>
             <TableCell>
-              {img.map((item, index) => (
-                <TextField
-                  key={index}
-                  value={item}
-                  onChange={(event) => handleImgChange(event, index)}
-                  fullWidth
-                />
-              ))}
+              {img.map((item, index) =>
+                item.map((value, textFieldIndex) => (
+                  <TextField
+                    key={textFieldIndex}
+                    value={value.text}
+                    onChange={(event) =>
+                      handleImgChange(event, index, textFieldIndex)
+                    }
+                    fullWidth
+                  />
+                ))
+              )}
             </TableCell>
           </TableRow>
           <TableRow>

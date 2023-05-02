@@ -48,6 +48,27 @@ export default function AllProduct() {
     boxShadow: 24,
     p: 4,
   };
+  const handleDelete = async (id) => {
+    await axios.delete(`http://localhost:5000/api/products/${id}`);
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        return parts.pop().split(";").shift();
+      }
+    }
+    const token = getCookie("access_Token");
+    axios
+      .get(`http://localhost:5000/api/products`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        setData(response.data);
+        console.log(response.data);
+      });
+  };
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ marginTop: "20px" }}>
@@ -79,9 +100,9 @@ export default function AllProduct() {
                 {row.productName}
               </TableCell>
               <TableCell align="left">
-                {row.desc.map((value, index) => (
-                  <li key={index}>{value}</li>
-                ))}
+                {row.desc.map((value, index) =>
+                  value.map((desc, index) => <li key={index}>{desc.text}</li>)
+                )}
               </TableCell>
               <TableCell align="left" sx={{ width: "150px" }}>
                 <img src={row.avatar}></img>
@@ -94,6 +115,7 @@ export default function AllProduct() {
                   <Link to={`/dashboard/products/${row._id}`} key={index}>
                     <Button>Xem chi tiêt</Button>
                   </Link>
+                  <Button onClick={() => handleDelete(row._id)}>Xóa</Button>
                 </Box>
               </TableCell>
             </TableRow>

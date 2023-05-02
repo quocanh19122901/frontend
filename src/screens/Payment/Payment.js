@@ -77,6 +77,7 @@ export default function Payment() {
 
       .then((response) => {
         setCart(response.data);
+        // console.log(response.data);
       });
   }, [setCart]);
   function getCookie(name) {
@@ -92,10 +93,11 @@ export default function Payment() {
   const products = cart.map((item) => ({
     productId: item.product[0].productId._id,
     quantity: item.product[0].quantity,
-    size: item.product[0].size,
-    color: item.product[0].color,
+    size: item.product[0].size[0],
+    color: item.product[0].color[0],
     price: item.product[0].price,
   }));
+  // console.log(products);
   const navigate = useNavigate();
   const handleSubmit = async () => {
     await axios
@@ -251,7 +253,7 @@ export default function Payment() {
                       <CardMedia
                         component="img"
                         sx={{ width: 160 }}
-                        image="https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/3/30/1173675/Pinkvenom-Jisoo-6.jpg"
+                        image={item.product[0].productId.avatar}
                         alt="Live from space album cover"
                       />
                       <Box

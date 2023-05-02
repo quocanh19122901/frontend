@@ -72,7 +72,7 @@ export default function AllProducts() {
                         <CardMedia
                           component="img"
                           height="400"
-                          image={item.img[0]}
+                          image={item.avatar}
                           alt="clothes"
                           // onClick={() => {
                           //   handleProductClick(item._id);
@@ -90,7 +90,7 @@ export default function AllProducts() {
                             {item.productName}
                           </Typography>
                           <Typography variant="body3" color="text.secondary">
-                            {item.subCategoryId.SubCategoryName}
+                            {item.CategoryId.CategoryName}
                           </Typography>
                           <Typography>Giá: {item.price}đ</Typography>
                         </CardContent>

@@ -28,6 +28,7 @@ export default function DetailProduct() {
       .get(`http://localhost:5000/api/products/${params.id}`)
       .then((response) => {
         setImages(response.data.img);
+        console.log(images);
       })
       .catch((error) => {
         console.log(error);
@@ -50,7 +51,7 @@ export default function DetailProduct() {
                 >
                   {images.map((item, index) => (
                     <SwiperSlide key={index}>
-                      <img src={item} />
+                      <img src={item.map((item, index) => item.text)} />
                     </SwiperSlide>
                   ))}
                 </Swiper>

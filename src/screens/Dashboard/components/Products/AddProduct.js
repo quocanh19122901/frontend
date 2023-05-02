@@ -17,6 +17,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { WithContext as ReactTags } from "react-tag-input";
+import "./style.css";
 
 export default function AddProduct() {
   const [data, setData] = useState([]);
@@ -27,18 +29,50 @@ export default function AddProduct() {
   const [categoryId, setCategoryId] = useState("");
   const [title, setTitle] = useState([]);
   const [name, setName] = useState("");
-  const [desc, setDesc] = useState([]);
-  const [color, setColor] = useState([]);
-  const [size, setSize] = useState([]);
+  const [descs, setDescs] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [sizes, setSizes] = useState([]);
   const [avatar, setAvatar] = useState([]);
-  const [img, setImg] = useState([]);
+  const [imgs, setImgs] = useState([]);
   const [quantity, setQuantity] = useState([]);
   const [price, setPrice] = useState([]);
   const options = category.map((item) => ({
     name: item.CategoryName,
     id: item._id,
   }));
+  const handleAdditionColor = (color) => {
+    setColors([...colors, color]);
+  };
+  const handleAdditionSize = (size) => {
+    setSizes([...sizes, size]);
+  };
+  const handleAdditionDesc = (desc) => {
+    setDescs([...descs, desc]);
+  };
+  const handleAdditionImg = (img) => {
+    setImgs([...imgs, img]);
+  };
+  const handleDeleteColor = (i) => {
+    const newColors = colors.slice(0);
+    newColors.splice(i, 1);
+    setColors(newColors);
+  };
+  const handleDeleteSize = (i) => {
+    const newSizes = sizes.slice(0);
+    newSizes.splice(i, 1);
 
+    setSizes(newSizes);
+  };
+  const handleDeleteDesc = (i) => {
+    const newDescs = descs.slice(0);
+    newDescs.splice(i, 1);
+  };
+  const handleDeleteImg = (i) => {
+    const newImgs = imgs.slice(0);
+    newImgs.splice(i, 1);
+
+    setImgs(newImgs);
+  };
   let params = useParams();
 
   const handleAccept = async () => {
@@ -47,12 +81,12 @@ export default function AddProduct() {
         title: title,
         productName: name,
         CategoryId: categoryId,
-        desc: desc,
+        desc: descs,
         avatar: avatar,
-        img: img,
+        img: imgs,
         quantity: quantity,
-        size: size,
-        color: color,
+        size: sizes,
+        color: colors,
         price: price,
       })
       .then((response) => {
@@ -71,13 +105,13 @@ export default function AddProduct() {
     setName(event.target.value);
   };
 
-  const handleSizeChange = (event) => {
-    setSize(event.target.value);
-  };
+  //   const handleSizeChange = (event) => {
+  //     setSize(event.target.value);
+  //   };
 
-  const handleColorChange = (event) => {
-    setColor(event.target.value);
-  };
+  //   const handleColorChange = (event) => {
+  //     setColor(event.target.value);
+  //   };
 
   const handleAvatarChange = (event) => {
     setAvatar(event.target.value);
@@ -92,13 +126,13 @@ export default function AddProduct() {
   const handleSubCateChange = (event, value) => {
     setSelectedSubCategory(value);
   };
-  const handleDescChange = (event) => {
-    setDesc(event.target.value);
-  };
+  //   const handleDescChange = (event) => {
+  //     setDesc(event.target.value);
+  //   };
 
-  const handleImgChange = (event) => {
-    setImg(event.target.value);
-  };
+  //   const handleImgChange = (event) => {
+  //     setImg(event.target.value);
+  //   };
 
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
@@ -213,27 +247,33 @@ export default function AddProduct() {
           <TableRow>
             <TableCell>Mô tả</TableCell>
             <TableCell>
-              <TextField
-                onChange={(event) => handleDescChange(event)}
-                fullWidth
+              <ReactTags
+                tags={descs}
+                handleAddition={handleAdditionDesc}
+                handleDelete={handleDeleteDesc}
+                placeholder="Add desc..."
               />
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Màu sắc</TableCell>
             <TableCell>
-              <TextField
-                onChange={(event) => handleColorChange(event)}
-                fullWidth
+              <ReactTags
+                tags={colors}
+                handleAddition={handleAdditionColor}
+                handleDelete={handleDeleteColor}
+                placeholder="Add color..."
               />
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Kích cỡ</TableCell>
             <TableCell>
-              <TextField
-                onChange={(event) => handleSizeChange(event)}
-                fullWidth
+              <ReactTags
+                tags={sizes}
+                handleAddition={handleAdditionSize}
+                handleDelete={handleDeleteSize}
+                placeholder="Add size..."
               />
             </TableCell>
             <TableCell>
@@ -257,9 +297,11 @@ export default function AddProduct() {
           <TableRow>
             <TableCell>Danh sách ảnh</TableCell>
             <TableCell>
-              <TextField
-                onChange={(event) => handleImgChange(event)}
-                fullWidth
+              <ReactTags
+                tags={imgs}
+                handleAddition={handleAdditionImg}
+                handleDelete={handleDeleteImg}
+                placeholder="Add img..."
               />
             </TableCell>
           </TableRow>
