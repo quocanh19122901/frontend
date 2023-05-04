@@ -1,9 +1,12 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import "./SearchBar.css";
-import { Box } from "@mui/material";
-
-function SearchBar() {
+import { Box, Button } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+function SearchBar({ searchTerm, setSearchTerm, handleSearch }) {
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
   return (
     <Box className="searchDiv">
       <TextField
@@ -11,7 +14,12 @@ function SearchBar() {
         id="outlined-basic"
         label="Search"
         variant="outlined"
+        value={searchTerm}
+        onChange={handleChange}
       />
+      <Button onClick={handleSearch}>
+        <SearchIcon />
+      </Button>
     </Box>
   );
 }

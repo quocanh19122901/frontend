@@ -145,7 +145,7 @@ export default function Payment() {
             sx={{
               height: "100%",
               position: { sm: "static", md: "sticky" },
-              top: { md: 0 },
+              top: { md: 60 },
               backgroundColor: "#fff",
               padding: "1rem",
               zIndex: "999",

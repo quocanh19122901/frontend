@@ -60,7 +60,6 @@ export default function ProductDetailDashboard() {
       .then((response) => {
         setData(response.data);
         setDesc(response.data.desc);
-        console.log(response.data.desc);
         setColor(response.data.color);
         setSize(response.data.size);
         setImg(response.data.img);

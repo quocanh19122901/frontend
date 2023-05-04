@@ -22,7 +22,6 @@ import { useDispatch } from "react-redux";
 
 const pages = [
   { item: "Products", path: "/products" },
-  { item: "Blogs", path: "/blogs" },
   { item: "About Us", path: "/aboutus" },
   { item: "Contact", path: "/contact" },
 ];
@@ -33,6 +32,14 @@ const settings = [
 ];
 
 function ResponsiveAppBar(props) {
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(";").shift();
+    }
+  }
+  const token = getCookie("access_Token");
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -60,7 +67,10 @@ function ResponsiveAppBar(props) {
     <AppBar
       position="static"
       sx={{
+        position: { sm: "static", md: "sticky" },
+        top: { md: 0 },
         backgroundColor: "white",
+        zIndex: 999,
       }}
     >
       <Container maxWidth="xl">
@@ -164,12 +174,19 @@ function ResponsiveAppBar(props) {
           </Box>
 
           <Box sx={{ flexGrow: 0, display: "flex" }}>
-            <Cart />
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            {token ? <Cart /> : ""}
+            {token ? (
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Link to={"/"}>
+                <Button>Đăng nhập</Button>
+              </Link>
+            )}
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"

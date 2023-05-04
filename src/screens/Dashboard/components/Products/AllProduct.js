@@ -12,7 +12,9 @@ import { Box, Button, Container, Modal, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 export default function AllProduct() {
   const [data, setData] = useState([]);
-
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   useEffect(() => {
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -115,7 +117,33 @@ export default function AllProduct() {
                   <Link to={`/dashboard/products/${row._id}`} key={index}>
                     <Button>Xem chi tiêt</Button>
                   </Link>
-                  <Button onClick={() => handleDelete(row._id)}>Xóa</Button>
+                  {/**/}
+                  <div>
+                    <Button onClick={handleOpen}>Xóa</Button>
+                    <Modal
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                    >
+                      <Box sx={style}>
+                        <Typography
+                          id="modal-modal-title"
+                          variant="h6"
+                          component="h2"
+                        >
+                          Xác nhận xóa ?
+                        </Typography>
+                        <Button
+                          onClick={() => handleDelete(row._id)}
+                          id="modal-modal-description"
+                          sx={{ mt: 2 }}
+                        >
+                          Xác nhận
+                        </Button>
+                      </Box>
+                    </Modal>
+                  </div>
                 </Box>
               </TableCell>
             </TableRow>

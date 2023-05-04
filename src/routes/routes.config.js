@@ -20,6 +20,9 @@ import AllProducts from "screens/ProductsScreen/Products/components/Products/All
 import AllProduct from "screens/Dashboard/components/Products/AllProduct";
 import ProductDetailDashboard from "screens/Dashboard/components/Products/ProductDetailDashboard";
 import AddProduct from "screens/Dashboard/components/Products/AddProduct";
+import SignUpScreen from "screens/SignUp/SignUpScreen";
+import EditProfile from "screens/Profile/EditProfile";
+import ContactScreen from "screens/Contact/ContactScreen";
 
 export const routeConfig = [
   {
@@ -37,6 +40,13 @@ export const routeConfig = [
     isAdmin: false,
   },
   {
+    path: "/profile/edit",
+    component: EditProfile,
+    layout: DefaultLayout,
+    private: false,
+    isAdmin: false,
+  },
+  {
     path: "/products",
     component: ProductsScreen,
     layout: DefaultLayout,
@@ -46,6 +56,13 @@ export const routeConfig = [
   {
     path: "/Aboutus",
     component: AboutUs,
+    layout: DefaultLayout,
+    isAdmin: false,
+    private: false,
+  },
+  {
+    path: "/contact",
+    component: ContactScreen,
     layout: DefaultLayout,
     isAdmin: false,
     private: false,
@@ -88,6 +105,13 @@ export const routeConfig = [
   {
     path: "/",
     component: LogInScreen,
+    layout: LoginLayout,
+    isAdmin: false,
+    private: false,
+  },
+  {
+    path: "/signup",
+    component: SignUpScreen,
     layout: LoginLayout,
     isAdmin: false,
     private: false,

@@ -13,7 +13,6 @@ function Home() {
   return (
     <Box>
       <SlideImage />
-      <SearchBar />
       <NewCategory />
       <Hastag />
       <NewProduct />

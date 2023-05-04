@@ -27,6 +27,7 @@ export default function AddProduct() {
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState([]);
   const [categoryId, setCategoryId] = useState("");
+  const [subCategoryId, setSubCategoryId] = useState("");
   const [title, setTitle] = useState([]);
   const [name, setName] = useState("");
   const [descs, setDescs] = useState([]);
@@ -97,22 +98,12 @@ export default function AddProduct() {
         toast.error("Vui lòng điền đầy đủ thông tin");
       });
   };
-
   const handleChangeTitle = (e) => {
     setTitle(e.target.value);
   };
   const handleProductNameChange = (event) => {
     setName(event.target.value);
   };
-
-  //   const handleSizeChange = (event) => {
-  //     setSize(event.target.value);
-  //   };
-
-  //   const handleColorChange = (event) => {
-  //     setColor(event.target.value);
-  //   };
-
   const handleAvatarChange = (event) => {
     setAvatar(event.target.value);
   };
@@ -126,14 +117,6 @@ export default function AddProduct() {
   const handleSubCateChange = (event, value) => {
     setSelectedSubCategory(value);
   };
-  //   const handleDescChange = (event) => {
-  //     setDesc(event.target.value);
-  //   };
-
-  //   const handleImgChange = (event) => {
-  //     setImg(event.target.value);
-  //   };
-
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
   };

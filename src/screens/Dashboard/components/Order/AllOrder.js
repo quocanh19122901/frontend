@@ -10,6 +10,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Box, Button, Container, Modal, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
+import "./AllOrder.css";
 export default function AllOrder() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -82,13 +83,26 @@ export default function AllOrder() {
               <TableCell align="center">{row.phone}</TableCell>
               <TableCell align="center">{row.note}</TableCell>
               <TableCell align="center">{row.address}</TableCell>
-              <TableCell align="center">{row.status}</TableCell>
+              <TableCell
+                align="center"
+                style={{
+                  color: row.status === "Đã xác nhận" ? "green" : "yellow",
+                }}
+              >
+                {row.status}
+              </TableCell>
               <TableCell align="center">{row.createdAt}</TableCell>
               <TableCell align="center">{row.total}đ</TableCell>
               <TableCell align="center">
                 <Box>
                   <Link to={`/dashboard/order/${row._id}`} key={index}>
-                    <Button>Xác nhận đơn hàng</Button>
+                    <Button
+                      style={{
+                        color: row.status === "Đã xác nhận" ? "green" : "blue",
+                      }}
+                    >
+                      Xác nhận đơn hàng
+                    </Button>
                   </Link>
                 </Box>
               </TableCell>
