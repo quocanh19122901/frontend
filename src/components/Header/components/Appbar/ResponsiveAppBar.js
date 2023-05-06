@@ -13,22 +13,20 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Cart from "../Cart/Cart";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "redux/auth/authSlice";
-import PropTypes from "prop-types";
-import Slide from "@mui/material/Slide";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { useDispatch } from "react-redux";
 
 const pages = [
-  { item: "Products", path: "/products" },
+  { item: "Sản phẩm", path: "/products" },
   { item: "About Us", path: "/aboutus" },
-  { item: "Contact", path: "/contact" },
+  { item: "Liên hệ", path: "/contact" },
 ];
 const settings = [
   { item: "Profile", path: "/profile" },
-  { item: "My Order", path: "/order" },
-  { item: "Log Out", path: "/" },
+  { item: "Đơn hàng của tôi", path: "/order" },
+  { item: "Theo dõi phiếu hỗ trợ", path: "/support" },
+  { item: "Đăng xuất", path: "/" },
 ];
 
 function ResponsiveAppBar(props) {

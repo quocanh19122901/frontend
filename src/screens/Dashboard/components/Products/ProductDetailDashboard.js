@@ -14,23 +14,25 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 export default function ProductDetailDashboard() {
   let params = useParams();
 
   const [data, setData] = useState([]);
+  const [title, setTitle] = useState([]);
   const [desc, setDesc] = useState([]);
   const [color, setColor] = useState([]);
   const [size, setSize] = useState([]);
   const [img, setImg] = useState([]);
-
+  const navigate = useNavigate();
   const handleAccept = async () => {
     const requestOptions = {
       headers: { "Content-Type": "application/json" },
     };
     const updatedData = {
       title: data.title,
+      productName: data.productName,
       size: size,
       color: color,
       desc: desc,
@@ -49,6 +51,7 @@ export default function ProductDetailDashboard() {
         toast.success("Cập nhật thành công");
         setData(response.data);
         console.log(response.data);
+        navigate("/dashboard/products");
       })
       .catch((error) => {
         console.error("Error updating data:", error);

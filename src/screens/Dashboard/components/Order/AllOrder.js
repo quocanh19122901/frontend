@@ -2,14 +2,12 @@ import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Box, Button, Container, Modal, Typography } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import "./AllOrder.css";
 export default function AllOrder() {
   const [data, setData] = useState([]);
@@ -96,13 +94,23 @@ export default function AllOrder() {
               <TableCell align="center">
                 <Box>
                   <Link to={`/dashboard/order/${row._id}`} key={index}>
-                    <Button
-                      style={{
-                        color: row.status === "Đã xác nhận" ? "green" : "blue",
-                      }}
-                    >
-                      Xác nhận đơn hàng
-                    </Button>
+                    {row.status === "Đã xác nhận" ? (
+                      <Button
+                        style={{
+                          color: "green",
+                        }}
+                      >
+                        Xác nhận đơn hàng
+                      </Button>
+                    ) : (
+                      <Button
+                        style={{
+                          color: "blue",
+                        }}
+                      >
+                        Xem chi tiết
+                      </Button>
+                    )}
                   </Link>
                 </Box>
               </TableCell>

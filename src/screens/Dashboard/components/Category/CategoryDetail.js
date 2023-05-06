@@ -78,7 +78,10 @@ const CategoryDetail = () => {
         newData.splice(index, 1);
         setData(newData);
         // Call DELETE API request
-        const response = await axios.delete(`http://localhost:5000/api/category/${key}`, newData);
+        const response = await axios.delete(
+          `http://localhost:5000/api/category/${key}`,
+          newData
+        );
       }
     } catch (errInfo) {
       console.log("Error deleting data:", errInfo);
@@ -134,18 +137,6 @@ const CategoryDetail = () => {
       width: "25%",
       editable: true,
     },
-    // {
-    //   title: 'Description',
-    //   dataIndex: 'SubCategory',
-    //   width: '25%',
-    //   editable: true,
-    // },
-    // {
-    //   title: 'Status',
-    //   dataIndex: 'status',
-    //   width: '15%',
-    //   editable: true,
-    // },
     {
       title: "Created At",
       dataIndex: "createdAt",

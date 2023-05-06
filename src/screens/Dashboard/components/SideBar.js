@@ -11,11 +11,23 @@ import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "redux/auth/authSlice";
-
+import CategoryIcon from "@mui/icons-material/Category";
+import CheckroomIcon from "@mui/icons-material/Checkroom";
+import ClassIcon from "@mui/icons-material/Class";
+import ContactSupportIcon from "@mui/icons-material/ContactSupport";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
 export default function SideBarLayout() {
   const { Sider } = Layout;
 
-  const labels = ["Account", "Products", "Category", "Orders"];
+  const labels = [
+    "Tài khoản",
+    "Sản phẩm",
+    "Danh mục",
+    "Danh mục phụ",
+    "Liên hệ",
+    "Đơn hàng",
+    "Thống kê",
+  ];
 
   const items = [
     {
@@ -26,21 +38,39 @@ export default function SideBarLayout() {
     },
     {
       key: "2",
-      icon: <VideoCameraOutlined />,
+      icon: <CheckroomIcon />,
       label: labels[1],
       link: "/dashboard/products",
     },
     {
       key: "3",
-      icon: <UploadOutlined />,
+      icon: <CategoryIcon />,
       label: labels[2],
       link: "/dashboard/category",
     },
     {
       key: "4",
-      icon: <BarChartOutlined />,
+      icon: <ClassIcon />,
       label: labels[3],
+      link: "/dashboard/subcategory",
+    },
+    {
+      key: "5",
+      icon: <ContactSupportIcon />,
+      label: labels[4],
+      link: "/dashboard/contact",
+    },
+    {
+      key: "6",
+      icon: <FactCheckIcon />,
+      label: labels[5],
       link: "/dashboard/order",
+    },
+    {
+      key: "7",
+      icon: <BarChartOutlined />,
+      label: labels[6],
+      link: "/dashboard/statistics",
     },
   ];
   function getCookie(name) {

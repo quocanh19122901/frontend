@@ -1,4 +1,13 @@
-import { Button, Input, Space, Table } from "antd";
+import {
+  Form,
+  InputNumber,
+  Input,
+  Popconfirm,
+  Table,
+  Typography,
+  Space,
+  Button,
+} from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -6,11 +15,16 @@ import Highlighter from "react-highlight-words";
 import "../Table.css";
 import axios from "axios";
 import ModalAddUser from "./ModalAddUser";
+import { useMemo } from "react";
 
 const TableUser = () => {
   const [searchText, setSearchText] = useState("");
   const [data, setData] = useState([]);
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [editingKey, setEditingKey] = useState("");
+  const [form] = Form.useForm();
+  const isEditing = (record) => record.key === editingKey;
+
   const searchInput = useRef(null);
   useEffect(() => {
     axios
@@ -138,15 +152,38 @@ const TableUser = () => {
         text
       ),
   });
+  const handleDelete = async (key) => {
+    try {
+      const newData = [...data];
+      const index = newData.findIndex((item) => key === item.key);
+      if (index > -1) {
+        newData.splice(index, 1);
+        setData(newData);
+        // Call DELETE API request
+        const response = await axios.delete(
+          `http://localhost:5000/api/user/${key}`,
+          newData
+        );
+      }
+    } catch (errInfo) {
+      console.log("Error deleting data:", errInfo);
+    }
+  };
+
+  const cancel = () => {
+    setEditingKey("");
+  };
+
   const columns = [
     {
-      title: "Username",
+      title: "Tài khoản",
       dataIndex: "username",
       width: "30%",
+      editable: "true",
       ...getColumnSearchProps("username"),
     },
     {
-      title: "Password",
+      title: "Mật khẩu",
       dataIndex: "password",
       width: "20%",
       ...getColumnSearchProps("password"),
@@ -158,11 +195,35 @@ const TableUser = () => {
       sorter: (a, b) => a.email.length - b.email.length,
       sortDirections: ["descend", "ascend"],
     },
+    {
+      title: "operation",
+      dataIndex: "operation",
+      render: (_, record) => {
+        const editable = isEditing(record);
+        return (
+          <Popconfirm
+            title="Are you sure you want to delete this record?"
+            onConfirm={() => handleDelete(record.key)}
+          >
+            <a>Delete</a>
+          </Popconfirm>
+        );
+      },
+    },
   ];
+
   return (
     <>
       <ModalAddUser setData={setData} />
-      <Table columns={columns} dataSource={data} />
+      <Table
+        bordered
+        dataSource={data}
+        columns={columns}
+        rowClassName="editable-row"
+        pagination={{
+          onChange: cancel,
+        }}
+      />
     </>
   );
 };

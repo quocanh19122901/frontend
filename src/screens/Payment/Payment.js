@@ -38,6 +38,8 @@ export default function Payment() {
   const [phone, setPhone] = useState();
   const [address, setAddress] = useState();
   const [note, setNote] = useState();
+  const [quantityP, setQuantityP] = useState();
+  const [quantity, setQuantity] = useState();
   const totalPrice = cart.reduce((acc, item) => acc + item.product[0].price, 0);
   const handleAddressChange = (e) => {
     setAddress(e.target.value);
@@ -78,8 +80,16 @@ export default function Payment() {
       .then((response) => {
         setCart(response.data);
         // console.log(response.data);
+        {
+          cart.map((item, index) => {
+            setQuantityP(item.product[0].productId.quantity);
+            setQuantity(item.product[0].quantity);
+            // console.log(item.product[0].quantity);
+          });
+        }
       });
   }, [setCart]);
+
   function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -97,7 +107,8 @@ export default function Payment() {
     color: item.product[0].color[0],
     price: item.product[0].price,
   }));
-  // console.log(products);
+  const productIds = products.map((product) => product.productId);
+  console.log(products.length);
   const navigate = useNavigate();
   const handleSubmit = async () => {
     await axios
@@ -112,6 +123,18 @@ export default function Payment() {
         total: totalPrice,
       })
       .then((response) => {
+        const requestOptions = {
+          headers: { "Content-Type": "application/json" },
+        };
+        for (let i = 0; i < products.length; i++) {
+          const product = products[i];
+          axios.put(
+            `http://localhost:5000/api/product/${productIds}`,
+            { quantity: quantityP - quantity },
+            requestOptions
+          );
+        }
+
         toast.success("Tạo đơn hàng thành công !", {
           position: "top-right",
           autoClose: 5000,

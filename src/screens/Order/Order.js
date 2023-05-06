@@ -2,19 +2,14 @@ import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Box, Button, Container, Modal, Typography } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 export default function Order() {
   const [data, setData] = useState([]);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   useEffect(() => {
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -32,7 +27,7 @@ export default function Order() {
       })
       .then((response) => {
         setData(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
 
       .catch((error) => {

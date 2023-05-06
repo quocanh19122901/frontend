@@ -3,15 +3,14 @@ import { experimentalStyled as styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 
 import {
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
+  Chip,
   Container,
-  Skeleton,
   Typography,
 } from "@mui/material";
 import CustomSeparator from "./CustomSeparator";
@@ -27,6 +26,7 @@ const Item = styled(Box)(({ theme }) => ({
 }));
 export default function AllProducts() {
   const [data, setData] = useState([]);
+  const [category, setCategory] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [notFound, setNotFound] = useState(false);
@@ -40,6 +40,21 @@ export default function AllProducts() {
           key: item._id,
         }));
         setData(modifiedData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/category")
+      .then((response) => {
+        const modifiedData = response.data.map((item) => ({
+          ...item,
+          key: item._id,
+        }));
+        setCategory(modifiedData);
+        console.log(modifiedData);
       })
       .catch((error) => {
         console.log(error);
@@ -67,7 +82,20 @@ export default function AllProducts() {
         console.log(error);
       });
   };
-
+  const ProductCategory = (id) => {
+    axios
+      .get(`http://localhost:5000/api/products/category/${id}`)
+      .then((response) => {
+        const modifiedData = response.data.map((item) => ({
+          ...item,
+          key: item._id,
+        }));
+        setData(modifiedData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <Container maxWidth="xl">
       <SearchBar
@@ -75,6 +103,37 @@ export default function AllProducts() {
         setSearchTerm={setSearchTerm}
         handleSearch={handleSearch}
       />
+      <Grid
+        container
+        spacing={{ xs: 1, md: 2 }}
+        columns={{ xs: 12, sm: 12, md: 12, lg: 15, xl: 15 }}
+      >
+        {category && category.length > 0
+          ? category?.map((item, index) => (
+              <Grid
+                key={index}
+                xs={3}
+                sm={3}
+                md={3}
+                lg={3.75}
+                sx={{ textAlign: "center", marginBottom: 5 }}
+              >
+                <Chip
+                  onClick={() => ProductCategory(item._id)}
+                  label={item.CategoryName}
+                  sx={{
+                    width: 200,
+                    fontFamily: "fantasy",
+                    fontSize: 20,
+                    border: " 1px solid black ",
+                  }}
+                  variant="outlined"
+                  clickable
+                />
+              </Grid>
+            ))
+          : ""}
+      </Grid>
       <CustomSeparator />
       <Grid
         container
@@ -123,7 +182,17 @@ export default function AllProducts() {
             </Grid>
           ))
         ) : (
-          <Typography variant="h3">Loading data.... </Typography>
+          <Typography
+            sx={{
+              height: 420,
+              margin: "auto",
+              lineHeight: "420px",
+              fontFamily: "Helvet",
+              fontSize: "30px",
+            }}
+          >
+            Chưa có sản phẩm nào{" "}
+          </Typography>
         )}
       </Grid>
     </Container>

@@ -71,29 +71,34 @@ function InforProduct() {
   const userId = decodeToken.id;
   const handleAdd = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/cart`, {
-        userId: `${userId}`,
-        product: [
-          {
-            productId: `${params.id}`,
-            quantity: count,
-            size: selectedSize,
-            color: selectedColor,
-            price: data.price,
-          },
-        ],
-      });
-
-      toast.success("Đã thêm vào giỏ hàng thành công !", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      if (!selectedSize || !selectedColor) {
+        throw new Error("Hãy chọn size và màu");
+      }
+      await axios
+        .post(`http://localhost:5000/api/cart`, {
+          userId: `${userId}`,
+          product: [
+            {
+              productId: `${params.id}`,
+              quantity: count,
+              size: selectedSize,
+              color: selectedColor,
+              price: data.price,
+            },
+          ],
+        })
+        .then((response) => {
+          toast.success("Đã thêm vào giỏ hàng thành công !", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        });
     } catch (error) {
       toast.error("Hãy chọn size và màu", {
         position: "top-right",

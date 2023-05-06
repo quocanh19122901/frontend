@@ -140,7 +140,7 @@ export default function EditProfile() {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Typography color="primary" align="center">
-                  Url avatar:{" "}
+                  Url avatar:
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -157,7 +157,7 @@ export default function EditProfile() {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Typography color="primary" align="center">
-                  Tên đầy đủ:{" "}
+                  Tên đầy đủ:
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -174,7 +174,7 @@ export default function EditProfile() {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Typography color="primary" align="center">
-                  Ngày sinh:{" "}
+                  Ngày sinh:
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -191,7 +191,7 @@ export default function EditProfile() {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Typography color="primary" align="center">
-                  Địa chỉ:{" "}
+                  Địa chỉ:
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -208,7 +208,7 @@ export default function EditProfile() {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Typography color="primary" align="center">
-                  Số điện thoại:{" "}
+                  Số điện thoại:
                 </Typography>
               </Grid>
               <Grid item xs={6}>

@@ -4,7 +4,6 @@ import LoginLayout from "layouts/LoginLayout";
 import AboutUs from "screens/AboutUs/AboutUs";
 import Dashboard from "screens/Dashboard/Dashboard";
 import CategoryDetail from "screens/Dashboard/components/Category/CategoryDetail";
-import ProductDetail from "screens/Dashboard/components/Products/ProductDetail";
 import AllOrder from "screens/Dashboard/components/Order/AllOrder";
 import TableUser from "screens/Dashboard/components/User/TableUser";
 import DetailProduct from "screens/DetailProduct/DetailProduct";
@@ -16,13 +15,13 @@ import Payment from "screens/Payment/Payment";
 import ProductsScreen from "screens/ProductsScreen/Products/components/ProductsScreen";
 import Profile from "screens/Profile/Profile";
 import OrderDetailDashboard from "screens/Dashboard/components/Order/OrderDetailDashboard";
-import AllProducts from "screens/ProductsScreen/Products/components/Products/AllProducts";
 import AllProduct from "screens/Dashboard/components/Products/AllProduct";
 import ProductDetailDashboard from "screens/Dashboard/components/Products/ProductDetailDashboard";
 import AddProduct from "screens/Dashboard/components/Products/AddProduct";
 import SignUpScreen from "screens/SignUp/SignUpScreen";
 import EditProfile from "screens/Profile/EditProfile";
 import ContactScreen from "screens/Contact/ContactScreen";
+import AllContact from "screens/Contact/AllContact";
 
 export const routeConfig = [
   {
@@ -70,6 +69,13 @@ export const routeConfig = [
   {
     path: "/order",
     component: Order,
+    layout: DefaultLayout,
+    isAdmin: false,
+    private: false,
+  },
+  {
+    path: "/support",
+    component: AllContact,
     layout: DefaultLayout,
     isAdmin: false,
     private: false,

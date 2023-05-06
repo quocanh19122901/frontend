@@ -9,11 +9,15 @@ import Paper from "@mui/material/Paper";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Box, Button, Container, Modal, Typography } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 export default function AllProduct() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const [idDelete, setIdDelete] = useState();
+  const handleOpen = (id) => {
+    setIdDelete(id);
+    setOpen(true);
+  };
   const handleClose = () => setOpen(false);
   useEffect(() => {
     function getCookie(name) {
@@ -50,8 +54,8 @@ export default function AllProduct() {
     boxShadow: 24,
     p: 4,
   };
-  const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/products/${id}`);
+  const handleDelete = async () => {
+    await axios.delete(`http://localhost:5000/api/products/${idDelete}`);
     function getCookie(name) {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
@@ -68,7 +72,8 @@ export default function AllProduct() {
       })
       .then((response) => {
         setData(response.data);
-        console.log(response.data);
+        // console.log(response.data);
+        handleClose();
       });
   };
   return (
@@ -109,7 +114,9 @@ export default function AllProduct() {
               <TableCell align="left" sx={{ width: "150px" }}>
                 <img src={row.avatar}></img>
               </TableCell>
-              <TableCell align="left">{row.CategoryId.CategoryName}</TableCell>
+              <TableCell align="center">
+                {row.CategoryId.CategoryName}
+              </TableCell>
               <TableCell align="center">{row.quantity}</TableCell>
               <TableCell align="center">{row.sold}</TableCell>
               <TableCell align="center">
@@ -117,9 +124,13 @@ export default function AllProduct() {
                   <Link to={`/dashboard/products/${row._id}`} key={index}>
                     <Button>Xem chi tiêt</Button>
                   </Link>
-                  {/**/}
+                  <Button
+                    sx={{ color: "red" }}
+                    onClick={() => handleOpen(row._id)}
+                  >
+                    Xóa
+                  </Button>
                   <div>
-                    <Button onClick={handleOpen}>Xóa</Button>
                     <Modal
                       open={open}
                       onClose={handleClose}
@@ -135,11 +146,18 @@ export default function AllProduct() {
                           Xác nhận xóa ?
                         </Typography>
                         <Button
-                          onClick={() => handleDelete(row._id)}
+                          onClick={() => handleDelete(idDelete)}
                           id="modal-modal-description"
                           sx={{ mt: 2 }}
                         >
                           Xác nhận
+                        </Button>
+                        <Button
+                          onClick={() => handleClose()}
+                          id="modal-modal-description"
+                          sx={{ mt: 2, mr: 4 }}
+                        >
+                          Quay lại
                         </Button>
                       </Box>
                     </Modal>

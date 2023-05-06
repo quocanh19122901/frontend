@@ -2,6 +2,7 @@ import { Button, Modal, Input } from "antd";
 import { useState } from "react";
 import axios from "axios";
 import "./ModalAddUser.css";
+import { Box } from "@mui/material";
 const ModalAddUser = ({ setData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState("");
@@ -34,9 +35,12 @@ const ModalAddUser = ({ setData }) => {
   };
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        Add
-      </Button>
+      <Box sx={{ margin: "20px 30px" }}>
+        <Button type="primary" onClick={showModal}>
+          Tạo tài khoản mới
+        </Button>
+      </Box>
+
       <Modal
         title="Add user"
         open={isModalOpen}

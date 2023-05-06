@@ -3,10 +3,10 @@ import { useState } from "react";
 import axios from "axios";
 import "./ModalAddCategory.css";
 import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
 const ModalAddCategory = ({ setData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [CategoryName, setCategoryName] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   const showModal = () => {
@@ -31,9 +31,11 @@ const ModalAddCategory = ({ setData }) => {
   };
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        Add
-      </Button>
+      <Box sx={{ margin: "20px 30px" }}>
+        <Button type="primary" onClick={showModal}>
+          Tạo danh mục mới
+        </Button>
+      </Box>
       <Modal
         title="Add Category"
         open={isModalOpen}

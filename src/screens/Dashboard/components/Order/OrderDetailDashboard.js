@@ -23,14 +23,11 @@ export default function OrderDetailDashboard() {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/order/${params.id}`,
-        {
-          status: "Đặt hàng thành công",
-        }
+        `http://localhost:5000/api/order/${params.id}`
       );
 
       console.log(response.data);
-      alert("Cập nhật đơn hàng thành công");
+      alert("Đã xác nhận đơn hàng");
     } catch (error) {
       console.error(error);
       alert("Có lỗi xảy ra khi cập nhật đơn hàng");

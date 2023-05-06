@@ -2,10 +2,10 @@ import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import React from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
-import { useEffect } from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function ContactScreen() {
   const [fullName, setFullName] = useState();
@@ -14,7 +14,7 @@ export default function ContactScreen() {
   const [orderId, setOrderId] = useState();
   const [problems, setProblems] = useState();
   const [desire, setDesire] = useState();
-
+  const navigate = useNavigate();
   const handleFullNameChange = (e) => {
     setFullName(e.target.value);
   };
@@ -58,6 +58,7 @@ export default function ContactScreen() {
       })
       .then((result) => {
         toast.success("Đã tạo phiếu hỗ trợ");
+        navigate("/support");
       })
       .catch((err) => {
         toast.error("Hãy điền đủ thông tin để có thể tạo phiếu");
