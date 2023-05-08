@@ -41,14 +41,13 @@ export default function OrderDetailDashboard() {
       .then((response) => {
         setData(response.data);
         setProduct(response.data.product);
-        console.log(response.data.product);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [setData, setProduct]);
   return (
-    <Container maxWidth="xl" sx={{ minHeight: "650px" }}>
+    <Container maxWidth="xl">
       <Table>
         <Typography variant="h4" sx={{ marginTop: "20px" }}>
           Chi tiết đơn hàng

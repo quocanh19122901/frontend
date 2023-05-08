@@ -7,6 +7,7 @@ import {
   Typography,
   Space,
   Button,
+  Tag,
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useState, useRef, useEffect } from "react";
@@ -176,24 +177,41 @@ const TableUser = () => {
 
   const columns = [
     {
-      title: "Tài khoản",
-      dataIndex: "username",
-      width: "30%",
+      title: "Id tài khoản",
+      dataIndex: "_id",
+      width: "10%",
       editable: "true",
       ...getColumnSearchProps("username"),
     },
     {
-      title: "Mật khẩu",
-      dataIndex: "password",
+      title: "Tài khoản",
+      dataIndex: "username",
       width: "20%",
-      ...getColumnSearchProps("password"),
+      editable: "true",
+      ...getColumnSearchProps("username"),
     },
     {
       title: "Email",
       dataIndex: "email",
+      width: "20%",
       ...getColumnSearchProps("email"),
       sorter: (a, b) => a.email.length - b.email.length,
       sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Admin",
+      dataIndex: "isAdmin",
+      key: "isAdmin",
+      sorter: (a, b) => a.isAdmin - b.isAdmin,
+      render: (isAdmin) => (
+        <>
+          {isAdmin ? (
+            <Tag color="green">True</Tag>
+          ) : (
+            <Tag color="red">False</Tag>
+          )}
+        </>
+      ),
     },
     {
       title: "operation",
@@ -202,10 +220,10 @@ const TableUser = () => {
         const editable = isEditing(record);
         return (
           <Popconfirm
-            title="Are you sure you want to delete this record?"
+            title="Bạn có chắc chắn muốn xóa tài khoản này?"
             onConfirm={() => handleDelete(record.key)}
           >
-            <a>Delete</a>
+            <a style={{ color: "red" }}>Xóa</a>
           </Popconfirm>
         );
       },

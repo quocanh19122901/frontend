@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import jwt_decode from "jwt-decode";
+import { Tag } from "antd";
 
 function InforProduct() {
   const Item = styled(Box)(({ theme }) => ({
@@ -36,6 +37,7 @@ function InforProduct() {
   const [selectedSize, setSelectedSize] = useState();
   const [color, setColor] = useState([]);
   const [size, setSize] = useState([]);
+  const [price, setPrice] = useState(0);
 
   const [cart, setCart] = useState([]);
   const handleOnChangeSize = (event, value) => {
@@ -53,23 +55,25 @@ function InforProduct() {
         setDesc(response.data.desc);
         setColor(response.data.color);
         setSize(response.data.size);
+        setPrice(response.data.price);
       })
       .catch((error) => {
         console.log(error);
         toast("fetch loi roi!");
       });
   }, [params.id]);
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(";").shift();
-    }
-  }
-  const token = getCookie("access_Token");
-  const decodeToken = jwt_decode(token);
-  const userId = decodeToken.id;
+
   const handleAdd = async () => {
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        return parts.pop().split(";").shift();
+      }
+    }
+    const token = getCookie("access_Token");
+    const decodeToken = jwt_decode(token);
+    const userId = decodeToken.id;
     try {
       if (!selectedSize || !selectedColor) {
         throw new Error("Hãy chọn size và màu");
@@ -83,7 +87,7 @@ function InforProduct() {
               quantity: count,
               size: selectedSize,
               color: selectedColor,
-              price: data.price,
+              price: price,
             },
           ],
         })
@@ -98,7 +102,8 @@ function InforProduct() {
             progress: undefined,
             theme: "dark",
           });
-        });
+        })
+        .catch((error) => {});
     } catch (error) {
       toast.error("Hãy chọn size và màu", {
         position: "top-right",
@@ -122,7 +127,7 @@ function InforProduct() {
           {data.productName}
         </Typography>
         <Typography sx={{ marginTop: "20px" }} variant="subtitle2">
-          Giá sản phẩm: {data.price} đ
+          Giá sản phẩm: {price.toLocaleString("vi-VN")} đ
         </Typography>
         <Box>
           <br />
@@ -160,38 +165,56 @@ function InforProduct() {
         </Box>
       </React.Fragment>
       <Box>
-        <Grid sx={{ alignItems: "center" }} container columns={12}>
-          <Grid item xs={6}>
-            <Item>
-              <Box display="flex" alignItems="center">
-                <Button onClick={handleDecrease}>-</Button>
-                <Typography>{count}</Typography>
-                <Button onClick={handleIncrease}>+</Button>
-              </Box>
-            </Item>
-          </Grid>
-          <Grid item xs={6}>
-            <Item
-              sx={{
+        {data.status === "Ngừng kinh doanh" ? (
+          <Grid sx={{ alignItems: "center" }} container columns={12}>
+            <Tag
+              style={{
+                height: "50px",
+                width: "100%",
+                fontFamily: "monospace",
+                textAlign: "center",
+                fontSize: "20px",
                 backgroundColor: "#f0f0f0",
-                borderRadius: " 0px 20px",
+                lineHeight: "50px",
               }}
             >
-              <Button
-                startIcon={<LocalShippingIcon />}
-                sx={{ width: "100%", borderRadius: "inherit" }}
-              >
-                <Typography
-                  variant="overline"
-                  sx={{ padding: "10px 0px 5px 10px" }}
-                  onClick={handleAdd}
-                >
-                  Thêm vào giỏ hàng
-                </Typography>
-              </Button>
-            </Item>
+              Đã ngừng kinh doanh sản phẩm này
+            </Tag>
           </Grid>
-        </Grid>
+        ) : (
+          <Grid sx={{ alignItems: "center" }} container columns={12}>
+            <Grid item xs={6}>
+              <Item>
+                <Box display="flex" alignItems="center">
+                  <Button onClick={handleDecrease}>-</Button>
+                  <Typography>{count}</Typography>
+                  <Button onClick={handleIncrease}>+</Button>
+                </Box>
+              </Item>
+            </Grid>
+            <Grid item xs={6}>
+              <Item
+                sx={{
+                  backgroundColor: "#f0f0f0",
+                  borderRadius: " 0px 20px",
+                }}
+              >
+                <Button
+                  startIcon={<LocalShippingIcon />}
+                  sx={{ width: "100%", borderRadius: "inherit" }}
+                >
+                  <Typography
+                    variant="overline"
+                    sx={{ padding: "10px 0px 5px 10px" }}
+                    onClick={handleAdd}
+                  >
+                    Thêm vào giỏ hàng
+                  </Typography>
+                </Button>
+              </Item>
+            </Grid>
+          </Grid>
+        )}
       </Box>
     </Box>
   );

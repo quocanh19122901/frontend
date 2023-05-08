@@ -1,30 +1,16 @@
-import {
-  Form,
-  InputNumber,
-  Input,
-  Popconfirm,
-  Table,
-  Typography,
-  Space,
-  Button,
-} from "antd";
+import { Form, InputNumber, Input, Popconfirm, Table, Typography } from "antd";
 import { useState, useEffect, useMemo } from "react";
-import "../Table.css";
+// import "../Table.css";
 import axios from "axios";
-import ModalAddCategory from "./ModalAddCategory";
-import "./TableCategory.css";
-import { useRef } from "react";
-import { SearchOutlined } from "@ant-design/icons";
-import Highlighter from "react-highlight-words";
+import ModalAddSubCategory from "./ModalAddSubCategory";
+import jwt_decode from "jwt-decode";
 
-const CategoryDetail = () => {
-  const [data, setData] = useState([]);
-  const [searchText, setSearchText] = useState("");
-  const [categoryName, setCategoryName] = useState("");
-  const searchInput = useRef(null);
-  const [searchedColumn, setSearchedColumn] = useState("");
-  const [form] = Form.useForm();
-  const [editingKey, setEditingKey] = useState("");
+// import "./TableCategory.css";
+const originData = [];
+
+const Subcategory = () => {
+  const [subCategoryName, setSubCategoryName] = useState("");
+
   const EditableCell = useMemo(
     () =>
       ({
@@ -41,7 +27,7 @@ const CategoryDetail = () => {
           inputType === "number" ? (
             <InputNumber />
           ) : (
-            <Input onChange={(e) => setCategoryName(e.target.value)} />
+            <Input onChange={(e) => setSubCategoryName(e.target.value)} />
           );
         return (
           <td {...restProps}>
@@ -70,128 +56,22 @@ const CategoryDetail = () => {
   );
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/category")
+      .get("http://localhost:5000/api/subcategory")
       .then((response) => {
-        const modifiedData = response.data.map((item) => {
-          const subCateString = item.SubCategory.map(
-            (value) => value.SubCategoryName
-          ).join(", ");
-          return {
-            ...item,
-            key: item._id,
-            SubCategory: subCateString,
-          };
-        });
+        const modifiedData = response.data.map((item) => ({
+          ...item,
+          key: item._id,
+        }));
         setData(modifiedData);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-
+  const [form] = Form.useForm();
+  const [data, setData] = useState(originData);
+  const [editingKey, setEditingKey] = useState("");
   const isEditing = (record) => record.key === editingKey;
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-      close,
-    }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{
-            marginBottom: 8,
-            display: "block",
-          }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            close
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? "#1890ff" : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
-      }
-    },
-    render: (text) =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{
-            backgroundColor: "#ffc069",
-            padding: 0,
-          }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ""}
-        />
-      ) : (
-        text
-      ),
-  });
   const handleDelete = async (key) => {
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -201,6 +81,8 @@ const CategoryDetail = () => {
       }
     }
     const token = getCookie("access_Token");
+    const decodeToken = jwt_decode(token);
+
     try {
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
@@ -209,7 +91,7 @@ const CategoryDetail = () => {
         setData(newData);
         // Call DELETE API request
         const response = await axios.delete(
-          `http://localhost:5000/api/category/${key}`,
+          `http://localhost:5000/api/subcategory/${key}`,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -220,15 +102,6 @@ const CategoryDetail = () => {
     } catch (errInfo) {
       console.log("Error deleting data:", errInfo);
     }
-  };
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
-  };
-  const handleReset = (clearFilters) => {
-    clearFilters();
-    setSearchText("");
   };
   const edit = (record) => {
     form.setFieldsValue({
@@ -259,9 +132,9 @@ const CategoryDetail = () => {
         setData(newData);
         setEditingKey("");
         // Call PUT API request
-        const updatedData = { CategoryName: categoryName };
+        const updatedData = { SubCategoryName: subCategoryName };
         const response = await axios.put(
-          `http://localhost:5000/api/category/${key}`,
+          `http://localhost:5000/api/subcategory/${key}`,
           updatedData
         );
       } else {
@@ -275,17 +148,10 @@ const CategoryDetail = () => {
   };
   const columns = [
     {
-      title: "Tên danh mục",
-      dataIndex: "CategoryName",
-      width: "25%",
-      editable: "true",
-      ...getColumnSearchProps("CategoryName"),
-    },
-    {
-      title: "Tên danh mục phụ",
-      dataIndex: "SubCategory",
-      width: "25%",
-      editable: false,
+      title: "Tên",
+      dataIndex: "SubCategoryName",
+      width: "40%",
+      editable: true,
     },
     {
       title: "Tạo ngày",
@@ -293,6 +159,7 @@ const CategoryDetail = () => {
       width: "20%",
       editable: false,
     },
+
     {
       title: "",
       dataIndex: "operation",
@@ -349,7 +216,7 @@ const CategoryDetail = () => {
   });
   return (
     <Form form={form} component={false}>
-      <ModalAddCategory setData={setData} />
+      <ModalAddSubCategory setData={setData} />
       <Table
         components={{
           body: {
@@ -367,4 +234,4 @@ const CategoryDetail = () => {
     </Form>
   );
 };
-export default CategoryDetail;
+export default Subcategory;

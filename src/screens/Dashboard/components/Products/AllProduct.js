@@ -5,11 +5,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Box, Button, Container, Modal, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { Tag } from "antd";
 export default function AllProduct() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -88,7 +88,7 @@ export default function AllProduct() {
           Thêm mới
         </Button>
       </Link>
-      <Table sx={{ minWidth: 650, minHeight: 650 }} aria-label="simple table">
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center">Tên sản phẩm</TableCell>
@@ -97,6 +97,7 @@ export default function AllProduct() {
             <TableCell align="center">Loại</TableCell>
             <TableCell align="center">Số lượng</TableCell>
             <TableCell align="center">Đã bán</TableCell>
+            <TableCell align="center">Trạng thái</TableCell>
             <TableCell align="center"></TableCell>
           </TableRow>
         </TableHead>
@@ -119,6 +120,18 @@ export default function AllProduct() {
               </TableCell>
               <TableCell align="center">{row.quantity}</TableCell>
               <TableCell align="center">{row.sold}</TableCell>
+              <TableCell align="center">
+                <Tag
+                  style={{
+                    color: row.status === "Đang bày bán" ? "green" : "grey",
+                    height: "40px",
+                    fontSize: "15px",
+                    lineHeight: "40px",
+                  }}
+                >
+                  {row.status}
+                </Tag>
+              </TableCell>
               <TableCell align="center">
                 <Box>
                   <Link to={`/dashboard/products/${row._id}`} key={index}>

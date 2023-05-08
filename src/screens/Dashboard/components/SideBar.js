@@ -2,6 +2,7 @@ import React from "react";
 import { Link, Routes, Route, Outlet } from "react-router-dom";
 import {
   BarChartOutlined,
+  HomeOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
@@ -27,6 +28,7 @@ export default function SideBarLayout() {
     "Liên hệ",
     "Đơn hàng",
     "Thống kê",
+    "Về trang chủ",
   ];
 
   const items = [
@@ -72,6 +74,12 @@ export default function SideBarLayout() {
       label: labels[6],
       link: "/dashboard/statistics",
     },
+    {
+      key: "8",
+      icon: <HomeOutlined />,
+      label: labels[7],
+      link: "/home",
+    },
   ];
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -111,25 +119,35 @@ export default function SideBarLayout() {
         }}
       >
         DASHBOARD
+        <Typography
+          style={{
+            color: "white",
+            fontFamily: "monospace",
+            fontSize: "large",
+            textAlign: "center",
+          }}
+        >
+          Hello, {username}
+        </Typography>
       </Typography>
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+      <Menu theme="dark" mode="inline">
         {items.map((item) => (
-          <Menu.Item key={item.key} icon={item.icon}>
+          <Menu.Item
+            key={item.key}
+            style={{ fontFamily: "monospace" }}
+            icon={item.icon}
+          >
             <Link to={item.link}>{item.label}</Link>
           </Menu.Item>
         ))}
       </Menu>
-      <Typography
-        style={{ color: "blue", fontSize: "large", textAlign: "center" }}
-      >
-        Hello, {username}
-      </Typography>
+
       <Button
-        variant="contained"
+        variant="text"
         onClick={handleLogout}
-        style={{ position: "absolute", left: "50px" }}
+        style={{ width: "100%", color: "red" }}
       >
-        Log out
+        Đăng xuất
       </Button>
     </Sider>
   );

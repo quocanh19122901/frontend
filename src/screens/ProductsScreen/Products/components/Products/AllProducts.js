@@ -17,6 +17,7 @@ import CustomSeparator from "./CustomSeparator";
 import SearchBar from "components/SearchBar/SearchBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Tag } from "antd";
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -106,7 +107,7 @@ export default function AllProducts() {
       <Grid
         container
         spacing={{ xs: 1, md: 2 }}
-        columns={{ xs: 12, sm: 12, md: 12, lg: 15, xl: 15 }}
+        columns={{ xs: 15, sm: 15, md: 15, lg: 15, xl: 15 }}
       >
         {category && category.length > 0
           ? category?.map((item, index) => (
@@ -115,7 +116,7 @@ export default function AllProducts() {
                 xs={3}
                 sm={3}
                 md={3}
-                lg={3.75}
+                lg={3}
                 sx={{ textAlign: "center", marginBottom: 5 }}
               >
                 <Chip
@@ -123,11 +124,12 @@ export default function AllProducts() {
                   label={item.CategoryName}
                   sx={{
                     width: 200,
-                    fontFamily: "fantasy",
+                    fontFamily: "monospace",
                     fontSize: 20,
-                    border: " 1px solid black ",
+                    fontWeight: "bold",
+                    border: " 1px solid grey ",
                   }}
-                  variant="outlined"
+                  variant="filled"
                   clickable
                 />
               </Grid>
@@ -150,13 +152,13 @@ export default function AllProducts() {
               <Link to={`/products/${item._id}`} key={index}>
                 <Item>
                   <Box>
-                    <Card sx={{ maxWidth: 450 }}>
+                    <Card sx={{ maxWidth: 450, height: 500 }}>
                       <CardActionArea>
                         <CardMedia
                           component="img"
-                          height="400"
                           image={item.avatar}
                           alt="clothes"
+                          sx={{ height: 300 }}
                         />
                         <CardContent
                           sx={{
@@ -172,7 +174,21 @@ export default function AllProducts() {
                           <Typography variant="body3" color="text.secondary">
                             {item.CategoryId.CategoryName}
                           </Typography>
-                          <Typography>Giá: {item.price}đ</Typography>
+                          {item.status === "Đang bày bán" ? (
+                            <Tag
+                              color="green"
+                              style={{ textAlign: "center", fontSize: "15px" }}
+                            >
+                              Giá: {item.price.toLocaleString("vi-VN")}đ
+                            </Tag>
+                          ) : (
+                            <Tag
+                              color="grey"
+                              style={{ textAlign: "center", fontSize: "15px" }}
+                            >
+                              Đã ngừng kinh doanh
+                            </Tag>
+                          )}
                         </CardContent>
                       </CardActionArea>
                     </Card>

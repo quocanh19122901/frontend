@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./AllOrder.css";
+import { Tag } from "antd";
 export default function AllOrder() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -55,7 +56,7 @@ export default function AllOrder() {
       <Typography variant="h4" sx={{ marginTop: "20px" }}>
         Danh sách các đơn hàng
       </Typography>
-      <Table sx={{ minWidth: 650, minHeight: 650 }} aria-label="simple table">
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Mã đơn hàng</TableCell>
@@ -81,13 +82,17 @@ export default function AllOrder() {
               <TableCell align="center">{row.phone}</TableCell>
               <TableCell align="center">{row.note}</TableCell>
               <TableCell align="center">{row.address}</TableCell>
-              <TableCell
-                align="center"
-                style={{
-                  color: row.status === "Đã xác nhận" ? "green" : "yellow",
-                }}
-              >
-                {row.status}
+              <TableCell align="center">
+                <Tag
+                  style={{
+                    color: row.status === "Đã xác nhận" ? "green" : "blue",
+                    height: "40px",
+                    fontSize: "15px",
+                    lineHeight: "40px",
+                  }}
+                >
+                  {row.status}
+                </Tag>
               </TableCell>
               <TableCell align="center">{row.createdAt}</TableCell>
               <TableCell align="center">{row.total}đ</TableCell>

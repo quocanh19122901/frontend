@@ -22,7 +22,7 @@ function NewProduct() {
     },
     {
       imageUrl: "https://mcdn.coolmate.me/image/March2023/mceclip3_13.jpg",
-      title: "84Rising*",
+      title: "CM24*",
       description:
         "Thương hiệu thời trang dành riêng cho giới trẻ bởi Coolmate.",
     },
@@ -55,7 +55,9 @@ function NewProduct() {
                 >
                   {product.description}
                 </Typography>
-                <Button variant="contained">See it !</Button>
+                <Button variant="contained" href="/products">
+                  See it !
+                </Button>
               </Box>
             </Item>
           </Grid>

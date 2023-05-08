@@ -18,6 +18,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import { toast } from "react-toastify";
 
 export default function Cart() {
   const theme = useTheme();
@@ -100,82 +101,111 @@ export default function Cart() {
   };
   const list = React.useMemo(() => (anchor) => (
     <List>
-      {cart.map((item, index) => (
-        <ListItem key={index} disablePadding>
-          <ListItemButton>
-            <Card sx={{ display: "flex", minWidth: 600 }}>
-              <CardMedia
-                component="img"
-                sx={{ width: 160 }}
-                image={item.product[0].productId.avatar}
-                alt="Live from space album cover"
-              />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <CardContent sx={{ maxWidth: "400px", flex: "1 0 auto" }}>
-                  <Typography component="div" variant="h6">
-                    {item.product[0].productId.title}
-                  </Typography>
-                  <Box display="flex" alignItems="center">
-                    <Typography>
-                      Số lượng: {item.product[0].quantity}
-                    </Typography>
-
-                    <Button
-                      color="error"
-                      sx={{ float: "right" }}
-                      startIcon={<DeleteIcon />}
-                      onClick={() => handleRemove(item._id)}
-                    >
-                      Remove
-                    </Button>
-                  </Box>
-                  <Typography>Màu sắc: {item.product[0].color}</Typography>
-                  <Typography>Kích cỡ: {item.product[0].size}</Typography>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ float: "left" }}
-                    color="#33333"
-                    component="div"
-                  >
-                    Thành tiền: {item.product[0].price} đ
-                  </Typography>
-                </CardContent>
+      {cart && cart.length > 0 ? (
+        cart.map((item, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton>
+              <Card sx={{ display: "flex", minWidth: 600 }}>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 160 }}
+                  image={item.product[0].productId.avatar}
+                  alt="Live from space album cover"
+                />
                 <Box
-                  sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}
-                ></Box>
-              </Box>
-            </Card>
-          </ListItemButton>
-        </ListItem>
-      ))}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <CardContent sx={{ maxWidth: "400px", flex: "1 0 auto" }}>
+                    <Typography component="div" variant="h6">
+                      {item.product[0].productId.title}
+                    </Typography>
+                    <Box display="flex" alignItems="center">
+                      <Typography>
+                        Số lượng: {item.product[0].quantity}
+                      </Typography>
+
+                      <Button
+                        color="error"
+                        sx={{ float: "right" }}
+                        startIcon={<DeleteIcon />}
+                        onClick={() => handleRemove(item._id)}
+                      >
+                        Remove
+                      </Button>
+                    </Box>
+                    <Typography>Màu sắc: {item.product[0].color}</Typography>
+                    <Typography>Kích cỡ: {item.product[0].size}</Typography>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ float: "left" }}
+                      color="#33333"
+                      component="div"
+                    >
+                      Thành tiền: {item.product[0].price} đ
+                    </Typography>
+                  </CardContent>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      pl: 1,
+                      pb: 1,
+                    }}
+                  ></Box>
+                </Box>
+              </Card>
+            </ListItemButton>
+          </ListItem>
+        ))
+      ) : (
+        <Typography>Không có sản phẩm trong giỏ hàng</Typography>
+      )}
       <Box
         sx={{
           position: "sticky",
           bottom: "0",
         }}
       >
-        <Button
-          variant="outlined"
-          sx={{
-            backgroundColor: "black",
-            color: "white",
-            width: "90%",
-            margin: "20px 20px",
-            "&:hover": {
-              backgroundColor: "blue",
+        {cart && cart.length > 0 ? (
+          <Button
+            variant="outlined"
+            sx={{
+              backgroundColor: "black",
               color: "white",
-            },
-          }}
-          startIcon={<PaymentIcon />}
-          href="/payment"
-        >
-          Thanh toán
-        </Button>
+              width: "90%",
+              margin: "20px 20px",
+              "&:hover": {
+                backgroundColor: "blue",
+                color: "white",
+              },
+            }}
+            startIcon={<PaymentIcon />}
+            href="/payment"
+          >
+            Thanh toán
+          </Button>
+        ) : (
+          <Button
+            variant="outlined"
+            sx={{
+              backgroundColor: "grey",
+              color: "white",
+              width: "90%",
+              margin: "20px 20px",
+              "&:hover": {
+                backgroundColor: "blue",
+                color: "white",
+              },
+            }}
+            startIcon={<PaymentIcon />}
+            onClick={() => toast.error("Không có sản phẩm nào trong giỏ hàng")}
+          >
+            Thanh toán
+          </Button>
+        )}
       </Box>
     </List>
   ));

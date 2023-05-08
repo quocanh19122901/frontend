@@ -107,34 +107,28 @@ export default function Payment() {
     color: item.product[0].color[0],
     price: item.product[0].price,
   }));
-  const productIds = products.map((product) => product.productId);
-  console.log(products.length);
   const navigate = useNavigate();
   const handleSubmit = async () => {
     await axios
-      .post(`http://localhost:5000/api/order`, {
-        userId: `${userId}`,
-        product: products,
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone,
-        address: address,
-        note: note,
-        total: totalPrice,
-      })
-      .then((response) => {
-        const requestOptions = {
-          headers: { "Content-Type": "application/json" },
-        };
-        for (let i = 0; i < products.length; i++) {
-          const product = products[i];
-          axios.put(
-            `http://localhost:5000/api/product/${productIds}`,
-            { quantity: quantityP - quantity },
-            requestOptions
-          );
+      .post(
+        `http://localhost:5000/api/order`,
+        {
+          userId: `${userId}`,
+          product: products,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phone,
+          address: address,
+          note: note,
+          total: totalPrice,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
         }
-
+      )
+      .then((response) => {
         toast.success("Tạo đơn hàng thành công !", {
           position: "top-right",
           autoClose: 5000,

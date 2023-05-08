@@ -22,6 +22,10 @@ import SignUpScreen from "screens/SignUp/SignUpScreen";
 import EditProfile from "screens/Profile/EditProfile";
 import ContactScreen from "screens/Contact/ContactScreen";
 import AllContact from "screens/Contact/AllContact";
+import { ManageAccounts } from "@mui/icons-material";
+import ManageContact from "screens/Dashboard/components/Contact/ManageContact";
+import Subcategory from "screens/SubCategory/Subcategory";
+import Statistics from "screens/Dashboard/components/statistics/Statistics";
 
 export const routeConfig = [
   {
@@ -137,6 +141,13 @@ export const routeConfig = [
     private: true,
   },
   {
+    path: "/dashboard/contact",
+    component: ManageContact,
+    layout: DashboardLayout,
+    isAdmin: true,
+    private: true,
+  },
+  {
     path: "/dashboard/products",
     component: AllProduct,
     layout: DashboardLayout,
@@ -158,6 +169,13 @@ export const routeConfig = [
     private: true,
   },
   {
+    path: "/dashboard/subcategory",
+    component: Subcategory,
+    layout: DashboardLayout,
+    isAdmin: true,
+    private: true,
+  },
+  {
     path: "/dashboard/products/add",
     component: AddProduct,
     layout: DashboardLayout,
@@ -167,6 +185,13 @@ export const routeConfig = [
   {
     path: "/dashboard/order",
     component: AllOrder,
+    layout: DashboardLayout,
+    isAdmin: true,
+    private: true,
+  },
+  {
+    path: "/dashboard/statistics",
+    component: Statistics,
     layout: DashboardLayout,
     isAdmin: true,
     private: true,

@@ -69,6 +69,7 @@ function ResponsiveAppBar(props) {
         top: { md: 0 },
         backgroundColor: "white",
         zIndex: 999,
+        fontFamily: "monospace",
       }}
     >
       <Container maxWidth="xl">
@@ -130,7 +131,11 @@ function ResponsiveAppBar(props) {
             >
               {pages.map((page, index) => (
                 <MenuItem key={index} onClick={handleCloseNavMenu}>
-                  <Button component={Link} to={page.path}>
+                  <Button
+                    component={Link}
+                    to={page.path}
+                    sx={{ width: "100%" }}
+                  >
                     {page.item}
                   </Button>
                 </MenuItem>
@@ -164,7 +169,15 @@ function ResponsiveAppBar(props) {
           >
             {pages.map((page, index) => (
               <MenuItem key={index} onClick={handleCloseNavMenu}>
-                <Button component={Link} to={page.path}>
+                <Button
+                  component={Link}
+                  to={page.path}
+                  sx={{
+                    fontFamily: "monospace",
+                    fontWeight: 700,
+                    fontSize: "15px",
+                  }}
+                >
                   {page.item}
                 </Button>
               </MenuItem>

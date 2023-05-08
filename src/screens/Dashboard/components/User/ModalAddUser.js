@@ -1,4 +1,4 @@
-import { Button, Modal, Input } from "antd";
+import { Button, Modal, Input, Select } from "antd";
 import { useState } from "react";
 import axios from "axios";
 import "./ModalAddUser.css";
@@ -8,7 +8,7 @@ const ModalAddUser = ({ setData }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-
+  const [isAdmin, setIsAdmin] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -18,6 +18,7 @@ const ModalAddUser = ({ setData }) => {
         username: username,
         password: password,
         email: email,
+        isAdmin: isAdmin,
       });
       const { data } = await axios.get("http://localhost:5000/api/user");
       const modifiedData = data.map(({ _id, ...rest }) => ({
@@ -42,14 +43,14 @@ const ModalAddUser = ({ setData }) => {
       </Box>
 
       <Modal
-        title="Add user"
+        title="Tạo tài khoản"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
       >
         <Input
           className="ant-input"
-          placeholder="Username"
+          placeholder="Tài khoản"
           onChange={(e) => setUsername(e.target.value)}
         />
         <Input
@@ -59,9 +60,18 @@ const ModalAddUser = ({ setData }) => {
         />
         <Input
           className="ant-input"
-          placeholder="Password"
+          placeholder="Mật khẩu"
           onChange={(e) => setPassword(e.target.value)}
         />
+        <h4>Phân quyền admin</h4>
+        <Select
+          defaultValue={false}
+          style={{ width: "100%" }}
+          onChange={(value) => setIsAdmin(value)}
+        >
+          <Option value={false}>false</Option>
+          <Option value={true}>true</Option>
+        </Select>
       </Modal>
     </>
   );
