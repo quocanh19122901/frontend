@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import "./SearchBar.css";
-import { Box, Button } from "@mui/material";
+import { Box, Button, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 function SearchBar({ searchTerm, setSearchTerm, handleSearch }) {
   const handleChange = (event) => {
@@ -12,14 +12,18 @@ function SearchBar({ searchTerm, setSearchTerm, handleSearch }) {
       <TextField
         className="inputRounded"
         id="outlined-basic"
-        label="Search"
+        label="Tìm kiếm sản phẩm"
         variant="outlined"
         value={searchTerm}
         onChange={handleChange}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon onClick={handleSearch} sx={{ cursor: "pointer" }} />
+            </InputAdornment>
+          ),
+        }}
       />
-      <Button onClick={handleSearch}>
-        <SearchIcon />
-      </Button>
     </Box>
   );
 }

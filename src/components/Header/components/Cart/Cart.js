@@ -105,7 +105,7 @@ export default function Cart() {
         cart.map((item, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton>
-              <Card sx={{ display: "flex", minWidth: 600 }}>
+              <Card sx={{ display: "flex" }}>
                 <CardMedia
                   component="img"
                   sx={{ width: 160 }}

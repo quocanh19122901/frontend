@@ -19,7 +19,7 @@ import { useDispatch } from "react-redux";
 
 const pages = [
   { item: "Sản phẩm", path: "/products" },
-  { item: "About Us", path: "/aboutus" },
+  { item: "Giới thiệu", path: "/aboutus" },
   { item: "Liên hệ", path: "/contact" },
 ];
 const settings = [

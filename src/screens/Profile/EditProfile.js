@@ -82,7 +82,10 @@ export default function EditProfile() {
     const decodeToken = jwt_decode(token);
     const userId = decodeToken.id;
     const requestOptions = {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     };
     const updatedData = {
       userId: userId,
@@ -93,7 +96,12 @@ export default function EditProfile() {
       avatar: avatar,
     };
     axios
-      .put(`http://localhost:5000/api/profile`, updatedData, requestOptions)
+      .put(
+        `http://localhost:5000/api/profile`,
+
+        updatedData,
+        requestOptions
+      )
       .then((response) => {
         toast.success("Cập nhật thành công");
         setData(response.data);

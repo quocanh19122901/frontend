@@ -18,6 +18,7 @@ import SearchBar from "components/SearchBar/SearchBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Tag } from "antd";
+import { deburr } from "lodash";
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -28,10 +29,16 @@ const Item = styled(Box)(({ theme }) => ({
 export default function AllProducts() {
   const [data, setData] = useState([]);
   const [category, setCategory] = useState([]);
-  const [searchResults, setSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [notFound, setNotFound] = useState(false);
 
+  const filteredData = data.filter((item) =>
+    deburr(item.productName)
+      .toLowerCase()
+      .includes(deburr(searchTerm).toLowerCase())
+  );
+
+  console.log(filteredData);
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/products")
@@ -40,6 +47,7 @@ export default function AllProducts() {
           ...item,
           key: item._id,
         }));
+        console.log(modifiedData);
         setData(modifiedData);
       })
       .catch((error) => {
@@ -72,7 +80,8 @@ export default function AllProducts() {
           ...item,
           key: item._id,
         }));
-        setSearchResults(modifiedData);
+
+        setData(modifiedData);
         if (modifiedData.length === 0) {
           setNotFound(true);
         } else {
@@ -140,7 +149,7 @@ export default function AllProducts() {
       <Grid
         container
         spacing={{ xs: 1, md: 2 }}
-        columns={{ xs: 12, sm: 12, md: 12, lg: 15, xl: 15 }}
+        columns={{ xs: 12, sm: 12, md: 12, lg: 12, xl: 15 }}
       >
         {notFound ? (
           <Box sx={{ minHeight: "650px" }}>
@@ -148,7 +157,7 @@ export default function AllProducts() {
           </Box>
         ) : data && data.length > 0 ? (
           data?.map((item, index) => (
-            <Grid key={index} xs={12} sm={6} md={4} lg={4} xl={3}>
+            <Grid key={index} xs={12} sm={6} md={4} lg={3} xl={3}>
               <Link to={`/products/${item._id}`} key={index}>
                 <Item>
                   <Box>
