@@ -8,7 +8,7 @@ function DashboardLayout({ children }) {
     <Layout hasSider>
       <SideBarLayout />
       <Layout className="site-layout" style={{ marginLeft: 200 }}>
-        {children}
+        <Box sx={{ padding: "3rem", minHeight: "100vh" }}> {children}</Box>
       </Layout>
     </Layout>
   );

@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import "./ModalAddUser.css";
 import { Box } from "@mui/material";
+import Title from "antd/es/typography/Title";
 const ModalAddUser = ({ setData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState("");
@@ -36,6 +37,7 @@ const ModalAddUser = ({ setData }) => {
   };
   return (
     <>
+      <Title level={2}>Danh sách các tài khoản</Title>
       <Box sx={{ margin: "20px 30px" }}>
         <Button type="primary" onClick={showModal}>
           Tạo tài khoản mới

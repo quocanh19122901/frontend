@@ -1,11 +1,11 @@
 import { Form, InputNumber, Input, Popconfirm, Table, Typography } from "antd";
 import { useState, useEffect, useMemo } from "react";
-// import "../Table.css";
 import axios from "axios";
 import ModalAddSubCategory from "./ModalAddSubCategory";
 import jwt_decode from "jwt-decode";
-
-// import "./TableCategory.css";
+import { cloneDeep } from "lodash";
+import dayjs from "dayjs";
+import Title from "antd/es/typography/Title";
 const originData = [];
 
 const Subcategory = () => {
@@ -58,10 +58,16 @@ const Subcategory = () => {
     axios
       .get("http://localhost:5000/api/subcategory")
       .then((response) => {
-        const modifiedData = response.data.map((item) => ({
-          ...item,
-          key: item._id,
-        }));
+        const modifiedData = response.data.map((item) => {
+          const cloneItem = cloneDeep(item);
+          delete cloneItem.CategoryId;
+          return {
+            ...cloneItem,
+            CategoryName: item.CategoryId.CategoryName,
+            createdAt: item.createdAt,
+            key: item._id,
+          };
+        });
         setData(modifiedData);
       })
       .catch((error) => {
@@ -103,6 +109,7 @@ const Subcategory = () => {
       console.log("Error deleting data:", errInfo);
     }
   };
+
   const edit = (record) => {
     form.setFieldsValue({
       title: "",
@@ -118,6 +125,7 @@ const Subcategory = () => {
   const cancel = () => {
     setEditingKey("");
   };
+
   const save = async (key) => {
     try {
       const row = await form.validateFields();
@@ -148,19 +156,34 @@ const Subcategory = () => {
   };
   const columns = [
     {
-      title: "Tên",
+      title: "Tên danh mục",
       dataIndex: "SubCategoryName",
-      width: "40%",
+      sorter: (a, b) => a.SubCategoryName.length - b.SubCategoryName.length,
+      width: "25%",
+      align: "center",
+
       editable: true,
+    },
+    {
+      title: "Tên danh mục cha",
+      dataIndex: "CategoryName",
+      width: "25%",
+      align: "center",
+      editable: false,
+      sorter: (a, b) => a.CategoryName.length - b.CategoryName.length,
+      sortDirections: ["descend", "ascend"],
     },
     {
       title: "Tạo ngày",
       dataIndex: "createdAt",
       width: "20%",
+      align: "center",
       editable: false,
+      render: (text) => dayjs(text).format("HH:mm DD-MM-YYYY"),
     },
 
     {
+      align: "center",
       title: "",
       dataIndex: "operation",
       render: (_, record) => {
@@ -173,10 +196,10 @@ const Subcategory = () => {
                 marginRight: 8,
               }}
             >
-              Save
+              Lưu
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+            <Popconfirm title="Chắc chắn muốn quay lại?" onConfirm={cancel}>
+              <a>Quay lại</a>
             </Popconfirm>
           </span>
         ) : (
@@ -188,7 +211,7 @@ const Subcategory = () => {
               Sửa
             </Typography.Link>
             <Popconfirm
-              title="Are you sure you want to delete this record?"
+              title="Xác nhận xóa danh mục con này ?"
               onConfirm={() => handleDelete(record.key)}
             >
               <a style={{ color: "red" }}>Xóa</a>
@@ -216,6 +239,7 @@ const Subcategory = () => {
   });
   return (
     <Form form={form} component={false}>
+      <Title level={2}>Danh sách các danh mục phụ</Title>
       <ModalAddSubCategory setData={setData} />
       <Table
         components={{

@@ -15,18 +15,29 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { WithContext as ReactTags } from "react-tag-input";
 import "./style.css";
 
 export default function AddProduct() {
   const [data, setData] = useState([]);
-  const [category, setCategory] = useState([]);
-  const [subCategory, setSubCategory] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]);
+  const navigate = useNavigate();
+  const [category, setCategory] = useState([
+    {
+      label: "",
+      value: "",
+    },
+  ]);
+  const [cateID, setCateID] = useState("");
+  const [subCategory, setSubCategory] = useState([
+    {
+      label: "",
+      value: "",
+    },
+  ]);
+  const [subCateID, setSubCateID] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState([]);
-  const [categoryId, setCategoryId] = useState("");
   const [subCategoryId, setSubCategoryId] = useState("");
   const [title, setTitle] = useState([]);
   const [name, setName] = useState("");
@@ -37,10 +48,6 @@ export default function AddProduct() {
   const [imgs, setImgs] = useState([]);
   const [quantity, setQuantity] = useState([]);
   const [price, setPrice] = useState([]);
-  const options = category.map((item) => ({
-    name: item.CategoryName,
-    id: item._id,
-  }));
   const handleAdditionColor = (color) => {
     setColors([...colors, color]);
   };
@@ -81,7 +88,7 @@ export default function AddProduct() {
       .post(`http://localhost:5000/api/products`, {
         title: title,
         productName: name,
-        CategoryId: categoryId,
+        SubCategoryId: subCateID,
         desc: descs,
         avatar: avatar,
         img: imgs,
@@ -93,6 +100,7 @@ export default function AddProduct() {
       .then((response) => {
         toast.success("Thêm sản phẩm thành công");
         setData(response.data);
+        navigate("/dasboard/products");
       })
       .catch((error) => {
         toast.error("Vui lòng điền đầy đủ thông tin");
@@ -107,15 +115,11 @@ export default function AddProduct() {
   const handleAvatarChange = (event) => {
     setAvatar(event.target.value);
   };
-  const handleCateChange = (value) => {
-    const selectedCategory = category.find(
-      (item) => item.CategoryName === value
-    );
-    setCategoryId(selectedCategory._id);
-    setSelectedCategory(selectedCategory.CategoryName);
+  const handleCateChange = (e, value) => {
+    setCateID(value.value);
   };
-  const handleSubCateChange = (event, value) => {
-    setSelectedSubCategory(value);
+  const handleSubCateChange = (e, value) => {
+    setSubCateID(value.value);
   };
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
@@ -140,39 +144,47 @@ export default function AddProduct() {
         },
       })
       .then((response) => {
-        setCategory(response.data);
+        const modifiedData = response.data.map((item) => {
+          return {
+            label: item.CategoryName,
+            value: item._id,
+          };
+        });
+        setCategory(modifiedData);
         // console.log(response.data);
       })
-
       .catch((error) => {
         console.log(error);
       });
   }, [setCategory]);
   useEffect(() => {
-    if (categoryId) {
-      function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) {
-          return parts.pop().split(";").shift();
-        }
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        return parts.pop().split(";").shift();
       }
-      const token = getCookie("access_Token");
-      axios
-        .get(`http://localhost:5000/api/category/${categoryId}`, {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((response) => {
-          setSubCategory(response.data.SubCategory);
-          //   console.log(response.data.SubCategory);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     }
-  }, [categoryId]);
+    const token = getCookie("access_Token");
+    axios
+      .get(`http://localhost:5000/api/subcategory/search/${cateID}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        const modifiedData = response.data.map((item) => {
+          return {
+            label: item.SubCategoryName,
+            value: item._id,
+          };
+        });
+        setSubCategory(modifiedData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [cateID]);
 
   return (
     <Container>
@@ -203,9 +215,9 @@ export default function AddProduct() {
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
-                options={category.map((item) => item.CategoryName)}
+                options={category}
                 sx={{ width: 300 }}
-                onChange={(e, value) => handleCateChange(value)}
+                onChange={handleCateChange}
                 renderInput={(params) => (
                   <TextField {...params} label="Category" />
                 )}
@@ -213,12 +225,12 @@ export default function AddProduct() {
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Sub Category</TableCell>
+            <TableCell>Danh mục phụ</TableCell>
             <TableCell>
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
-                options={subCategory.map((item) => item.SubCategoryName)}
+                options={subCategory}
                 sx={{ width: 300 }}
                 onChange={handleSubCateChange}
                 renderInput={(params) => (

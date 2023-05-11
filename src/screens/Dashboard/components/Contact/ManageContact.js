@@ -1,22 +1,82 @@
 import {
-  Container,
+  Form,
+  InputNumber,
+  Input,
+  Popconfirm,
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Typography,
-  Box,
+  Tag,
   Button,
-} from "@mui/material";
+} from "antd";
 import axios from "axios";
-import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import dayjs from "dayjs";
 import { toast } from "react-toastify";
-
-export default function ManageContact() {
+import Title from "antd/es/typography/Title";
+const EditableCell = ({
+  editing,
+  dataIndex,
+  title,
+  inputType,
+  record,
+  index,
+  children,
+  ...restProps
+}) => {
+  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+  return (
+    <td {...restProps}>
+      {editing ? (
+        <Form.Item
+          name={dataIndex}
+          style={{
+            margin: 0,
+          }}
+          rules={[
+            {
+              required: true,
+              message: `Please Input ${title}!`,
+            },
+          ]}
+        >
+          {inputNode}
+        </Form.Item>
+      ) : (
+        children
+      )}
+    </td>
+  );
+};
+const ManageContact = () => {
+  const [form] = Form.useForm();
   const [data, setData] = useState([]);
+  const [editingKey, setEditingKey] = useState("");
+  const isEditing = (record) => record.key === editingKey;
+  const handleCancel = (record) => {
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        return parts.pop().split(";").shift();
+      }
+    }
+    const token = getCookie("access_Token");
+    axios
+      .delete(`http://localhost:5000/api/order/${record}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        toast.success("Huy don hang thanh cong");
+        window.location.reload();
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     function getCookie(name) {
@@ -42,64 +102,142 @@ export default function ManageContact() {
         console.log(error);
       });
   }, [setData]);
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "550px",
-    bgcolor: "background.paper",
-    border: "1px solid #000",
-    boxShadow: 24,
-    p: 4,
+  const edit = (record) => {
+    form.setFieldsValue({
+      name: "",
+      age: "",
+      address: "",
+      ...record,
+    });
+    setEditingKey(record.key);
   };
+  const cancel = () => {
+    setEditingKey("");
+  };
+  const save = async (key) => {
+    try {
+      const row = await form.validateFields();
+      const newData = [...data];
+      const index = newData.findIndex((item) => key === item.key);
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, {
+          ...item,
+          ...row,
+        });
+        setData(newData);
+        setEditingKey("");
+      } else {
+        newData.push(row);
+        setData(newData);
+        setEditingKey("");
+      }
+    } catch (errInfo) {
+      console.log("Validate Failed:", errInfo);
+    }
+  };
+  const columns = [
+    {
+      title: "Mã phiếu",
+      dataIndex: "_id",
+      width: "12%",
+      align: "center",
+    },
+    {
+      title: "Ngày tạo",
+      align: "center",
+      dataIndex: "createdAt",
+      width: "10%",
+      render: (text) => dayjs(text).format("HH:mm DD-MM-YYYY"),
+    },
 
+    {
+      title: "Tên người nhận",
+      dataIndex: "fullName",
+      align: "center",
+      width: "12%",
+    },
+    {
+      title: "Mã người dùng",
+      align: "center",
+      dataIndex: "userId",
+      width: "12%",
+    },
+
+    {
+      title: "Vấn đề gặp phải",
+      align: "center",
+      dataIndex: "problem",
+      width: "12%",
+    },
+    {
+      title: "Mã đơn hàng",
+      dataIndex: "OrderId",
+      width: "12%",
+      align: "center",
+    },
+    {
+      title: "Mong muốn",
+      align: "center",
+      dataIndex: "desire",
+      width: "12%",
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      align: "center",
+      width: "10%",
+    },
+
+    {
+      title: "Tình trạng đơn hàng",
+      align: "center",
+      dataIndex: "status",
+      width: "7%",
+      render: (status) => {
+        let color;
+        if (status === "Đang xử lý...") {
+          color = "blue";
+        } else {
+          color = "green";
+        }
+        return <Tag color={color}>{status}</Tag>;
+      },
+    },
+  ];
+  const mergedColumns = columns.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record) => ({
+        record,
+        inputType: col.dataIndex === "age" ? "number" : "text",
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
   return (
-    <Container maxWidth="xl">
-      <Typography variant="h4" sx={{ marginTop: "20px" }}>
-        Theo dõi phiếu hỗ trợ
-      </Typography>
-
-      <Table sx={{ minWidth: 650, minHeight: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">Mã phiếu hỗ trợ</TableCell>
-            <TableCell align="center">Tên đầy đủ</TableCell>
-            <TableCell align="center">Vấn đề gặp phải</TableCell>
-            <TableCell align="center">Id đơn hàng</TableCell>
-            <TableCell align="center">Mong muốn</TableCell>
-            <TableCell align="center">Tình trạng</TableCell>
-            <TableCell align="center"></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row, index) => (
-            <TableRow key={index}>
-              <TableCell component="th" scope="row">
-                {row._id}
-              </TableCell>
-
-              <TableCell component="th" scope="row">
-                {row.fullName}
-              </TableCell>
-              <TableCell align="center">{row.problem}</TableCell>
-              <TableCell align="center">{row.OrderId}</TableCell>
-              <TableCell align="center">{row.desire}</TableCell>
-              <TableCell
-                align="center"
-                sx={{
-                  color: row.status === "Đã giải quyết" ? "green" : "blue",
-                }}
-              >
-                {row.status}
-              </TableCell>
-              <TableCell align="center">
-                {row.status === "Đã giải quyết" ? "" : ""}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Container>
+    <Form form={form} component={false}>
+      <Title level={2}>Danh sách các phiếu hỗ trợ</Title>
+      <Table
+        components={{
+          body: {
+            cell: EditableCell,
+          },
+        }}
+        bordered
+        dataSource={data}
+        columns={mergedColumns}
+        rowClassName="editable-row"
+        pagination={{
+          onChange: cancel,
+        }}
+      />
+    </Form>
   );
-}
+};
+export default ManageContact;

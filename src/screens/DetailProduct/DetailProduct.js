@@ -59,9 +59,7 @@ export default function DetailProduct() {
             </Item>
           </Grid>
           <Grid item xs={12} sm={12} md={5} lg={5}>
-            <Item
-              sx={{ position: { sm: "static", md: "sticky" }, top: { md: 80 } }}
-            >
+            <Item>
               <InforProduct />
             </Item>
           </Grid>

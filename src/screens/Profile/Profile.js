@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  ButtonBase,
   Container,
-  FormControl,
   Grid,
   TextField,
   Typography,
@@ -11,7 +9,7 @@ import {
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
 
@@ -22,7 +20,6 @@ export default function Profile() {
   const [phone, setPhone] = useState();
   const [address, setAddress] = useState();
   const [avatar, setAvatar] = useState();
-  const navigate = useNavigate();
 
   useEffect(() => {
     function getCookie(name) {
@@ -113,7 +110,7 @@ export default function Profile() {
             justifyContent: "space-around",
           }}
         >
-          <Typography align="left" variant="h5" sx={{ marginTop: "20px" }}>
+          <Typography align="center" variant="h5" sx={{ marginTop: "20px" }}>
             Thông tin cá nhân:
           </Typography>
           <Box
@@ -210,7 +207,6 @@ export default function Profile() {
                     height: "250px",
                     width: "250px",
                     objectFit: "cover",
-                    borderRadius: "50%",
                   }}
                 />
               </Box>
@@ -223,50 +219,98 @@ export default function Profile() {
                   justifyContent: "space-around",
                 }}
               >
-                <Grid container spacing={2}>
+                <Grid container spacing={0}>
                   <Grid item xs={6}>
-                    <Typography variant="h5" align="right">
+                    <Typography
+                      variant="h6"
+                      sx={{ fontFamily: "monospace" }}
+                      align="center"
+                    >
+                      Tên tài khoàn :
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="h6" align="center" color="primary">
+                      {item.userId.username}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={0}>
+                  <Grid item xs={6}>
+                    <Typography
+                      variant="h6"
+                      sx={{ fontFamily: "monospace" }}
+                      align="center"
+                    >
+                      Email đăng ký:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="h6" align="center" color="primary">
+                      {item.userId.email}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={0}>
+                  <Grid item xs={6}>
+                    <Typography
+                      variant="h6"
+                      sx={{ fontFamily: "monospace" }}
+                      align="center"
+                    >
                       Tên đầy đủ:
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography variant="h5" align="left" color="primary">
+                    <Typography variant="h6" align="center" color="primary">
                       {item.fullName}
                     </Typography>
                   </Grid>
                 </Grid>
-                <Grid container spacing={2}>
+                <Grid container spacing={0}>
                   <Grid item xs={6}>
-                    <Typography variant="h5" align="right">
+                    <Typography
+                      variant="h6"
+                      sx={{ fontFamily: "monospace" }}
+                      align="center"
+                    >
                       Ngày sinh:
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography variant="h5" align="left" color="primary">
+                    <Typography variant="h6" align="center" color="primary">
                       {item.birthday}
                     </Typography>
                   </Grid>
                 </Grid>
-                <Grid container spacing={2}>
+                <Grid container spacing={0}>
                   <Grid item xs={6}>
-                    <Typography variant="h5" align="right">
+                    <Typography
+                      variant="h6"
+                      sx={{ fontFamily: "monospace" }}
+                      align="center"
+                    >
                       Địa chỉ:
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography variant="h5" align="left" color="primary">
+                    <Typography variant="h5" align="center" color="primary">
                       {item.address}
                     </Typography>
                   </Grid>
                 </Grid>
-                <Grid container spacing={2}>
+                <Grid container spacing={0}>
                   <Grid item xs={6}>
-                    <Typography variant="h5" align="right">
+                    <Typography
+                      variant="h5"
+                      sx={{ fontFamily: "monospace" }}
+                      align="center"
+                    >
                       Số điện thoại:
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography variant="h5" align="left" color="primary">
+                    <Typography variant="h5" align="center" color="primary">
                       {item.phone}
                     </Typography>
                   </Grid>

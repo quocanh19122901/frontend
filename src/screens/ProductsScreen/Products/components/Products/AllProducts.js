@@ -18,7 +18,7 @@ import SearchBar from "components/SearchBar/SearchBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Tag } from "antd";
-import { deburr } from "lodash";
+import CategoryMenu from "./CategoryMenu";
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -32,13 +32,6 @@ export default function AllProducts() {
   const [searchTerm, setSearchTerm] = useState("");
   const [notFound, setNotFound] = useState(false);
 
-  const filteredData = data.filter((item) =>
-    deburr(item.productName)
-      .toLowerCase()
-      .includes(deburr(searchTerm).toLowerCase())
-  );
-
-  console.log(filteredData);
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/products")
@@ -47,7 +40,6 @@ export default function AllProducts() {
           ...item,
           key: item._id,
         }));
-        console.log(modifiedData);
         setData(modifiedData);
       })
       .catch((error) => {
@@ -63,7 +55,6 @@ export default function AllProducts() {
           key: item._id,
         }));
         setCategory(modifiedData);
-        console.log(modifiedData);
       })
       .catch((error) => {
         console.log(error);
@@ -113,38 +104,7 @@ export default function AllProducts() {
         setSearchTerm={setSearchTerm}
         handleSearch={handleSearch}
       />
-      <Grid
-        container
-        spacing={{ xs: 1, md: 2 }}
-        columns={{ xs: 15, sm: 15, md: 15, lg: 15, xl: 15 }}
-      >
-        {category && category.length > 0
-          ? category?.map((item, index) => (
-              <Grid
-                key={index}
-                xs={3}
-                sm={3}
-                md={3}
-                lg={3}
-                sx={{ textAlign: "center", marginBottom: 5 }}
-              >
-                <Chip
-                  onClick={() => ProductCategory(item._id)}
-                  label={item.CategoryName}
-                  sx={{
-                    width: 200,
-                    fontFamily: "monospace",
-                    fontSize: 20,
-                    fontWeight: "bold",
-                    border: " 1px solid grey ",
-                  }}
-                  variant="filled"
-                  clickable
-                />
-              </Grid>
-            ))
-          : ""}
-      </Grid>
+      <CategoryMenu />
       <CustomSeparator />
       <Grid
         container
@@ -153,7 +113,17 @@ export default function AllProducts() {
       >
         {notFound ? (
           <Box sx={{ minHeight: "650px" }}>
-            <Typography variant="h3">Không có sản phẩm phù hợp </Typography>
+            <Typography
+              variant="h3"
+              sx={{
+                width: "100%",
+                fontFamily: "Monospace",
+                lineHeight: "650px",
+                padding: "0 auto",
+              }}
+            >
+              Không có sản phẩm phù hợp
+            </Typography>
           </Box>
         ) : data && data.length > 0 ? (
           data?.map((item, index) => (
@@ -181,7 +151,7 @@ export default function AllProducts() {
                             {item.title}
                           </Typography>
                           <Typography variant="body3" color="text.secondary">
-                            {item.CategoryId.CategoryName}
+                            {item.SubCategoryId.SubCategoryName}
                           </Typography>
                           {item.status === "Đang bày bán" ? (
                             <Tag
@@ -210,7 +180,7 @@ export default function AllProducts() {
           <Typography
             sx={{
               height: 420,
-              margin: "auto",
+              marginTop: "auto",
               lineHeight: "420px",
               fontFamily: "Helvet",
               fontSize: "30px",

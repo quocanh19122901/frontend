@@ -41,6 +41,7 @@ export default function Payment() {
   const [quantityP, setQuantityP] = useState();
   const [quantity, setQuantity] = useState();
   const totalPrice = cart.reduce((acc, item) => acc + item.product[0].price, 0);
+
   const handleAddressChange = (e) => {
     setAddress(e.target.value);
   };
@@ -79,14 +80,6 @@ export default function Payment() {
 
       .then((response) => {
         setCart(response.data);
-        // console.log(response.data);
-        {
-          cart.map((item, index) => {
-            setQuantityP(item.product[0].productId.quantity);
-            setQuantity(item.product[0].quantity);
-            // console.log(item.product[0].quantity);
-          });
-        }
       });
   }, [setCart]);
 
@@ -142,7 +135,7 @@ export default function Payment() {
         navigate("/order");
       })
       .catch((error) => {
-        toast.error("Vui lòng điền đầy đủ thông tin cần thiết !", {
+        toast.warning("Số lượng tồn kho không đủ", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,

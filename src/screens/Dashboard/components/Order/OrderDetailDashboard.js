@@ -73,9 +73,13 @@ export default function OrderDetailDashboard() {
           </TableRow>
         ))}
       </Table>
-      <Button onClick={handleAccept} href="/dashboard/order">
-        Xác nhận đơn hàng
-      </Button>
+      {data.status === "Đã hủy" || data.status === "Đã xác nhận" ? (
+        <Button href="/dashboard/order">Quay lại</Button>
+      ) : (
+        <Button onClick={handleAccept} href="/dashboard/order">
+          Xác nhận đơn hàng
+        </Button>
+      )}
     </Container>
   );
 }

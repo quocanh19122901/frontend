@@ -133,7 +133,7 @@ export default function Cart() {
                         startIcon={<DeleteIcon />}
                         onClick={() => handleRemove(item._id)}
                       >
-                        Remove
+                        Bỏ khỏi giỏ hàng
                       </Button>
                     </Box>
                     <Typography>Màu sắc: {item.product[0].color}</Typography>
@@ -161,7 +161,11 @@ export default function Cart() {
           </ListItem>
         ))
       ) : (
-        <Typography>Không có sản phẩm trong giỏ hàng</Typography>
+        <Box>
+          <Typography sx={{ fontFamily: "monospace", padding: "10px" }}>
+            Không có sản phẩm trong giỏ hàng
+          </Typography>
+        </Box>
       )}
       <Box
         sx={{
@@ -177,6 +181,8 @@ export default function Cart() {
               color: "white",
               width: "90%",
               margin: "20px 20px",
+              fontFamily: "fantasy",
+              letterSpacing: "3px",
               "&:hover": {
                 backgroundColor: "blue",
                 color: "white",
@@ -190,11 +196,14 @@ export default function Cart() {
         ) : (
           <Button
             variant="outlined"
+            disabled
             sx={{
               backgroundColor: "grey",
               color: "white",
               width: "90%",
               margin: "20px 20px",
+              fontFamily: "fantasy",
+              letterSpacing: "3px",
               "&:hover": {
                 backgroundColor: "blue",
                 color: "white",

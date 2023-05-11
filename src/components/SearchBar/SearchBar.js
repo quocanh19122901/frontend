@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import "./SearchBar.css";
-import { Box, Button, InputAdornment } from "@mui/material";
+import { Box, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 function SearchBar({ searchTerm, setSearchTerm, handleSearch }) {
   const handleChange = (event) => {

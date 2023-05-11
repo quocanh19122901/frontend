@@ -127,7 +127,7 @@ export default function ContactScreen() {
       </Box>
       <Box sx={{ height: 100 }}>
         <Button variant="contained" endIcon={<SendIcon />} onClick={handleSend}>
-          Send
+          Tạo phiếu hỗ trợ
         </Button>
       </Box>
     </Container>

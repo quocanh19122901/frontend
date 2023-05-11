@@ -24,7 +24,7 @@ export default function Statistics() {
   const [user, setUser] = useState([]);
   const [products, setProducts] = useState([]);
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f0f0f0",
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "white",
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: "center",
@@ -134,7 +134,7 @@ export default function Statistics() {
   return (
     <Box sx={{ height: "1vh" }}>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={0} columns={24}>
+        <Grid container spacing={2} columns={24}>
           <Grid item xs={8}>
             <Item sx={{ color: "blue" }}>
               <ShoppingBagIcon />

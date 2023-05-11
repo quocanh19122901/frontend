@@ -16,19 +16,20 @@ import Cart from "../Cart/Cart";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "redux/auth/authSlice";
 import { useDispatch } from "react-redux";
-
+import { useEffect } from "react";
+import axios from "axios";
+import { useState } from "react";
 const pages = [
   { item: "Sản phẩm", path: "/products" },
   { item: "Giới thiệu", path: "/aboutus" },
   { item: "Liên hệ", path: "/contact" },
 ];
 const settings = [
-  { item: "Profile", path: "/profile" },
+  { item: "Thông tin cá nhân", path: "/profile" },
   { item: "Đơn hàng của tôi", path: "/order" },
   { item: "Theo dõi phiếu hỗ trợ", path: "/support" },
   { item: "Đăng xuất", path: "/" },
 ];
-
 function ResponsiveAppBar(props) {
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -61,6 +62,31 @@ function ResponsiveAppBar(props) {
     dispatch(logout());
     navigate("/");
   };
+  const [data, setData] = useState("");
+
+  useEffect(() => {
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        return parts.pop().split(";").shift();
+      }
+    }
+    const token = getCookie("access_Token");
+    axios
+      .get("http://localhost:5000/api/profile", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        setData(response.data);
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [setData]);
   return (
     <AppBar
       position="static"
@@ -189,7 +215,10 @@ function ResponsiveAppBar(props) {
             {token ? (
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={data && data.length > 0 ? data[0].avatar : ""}
+                  />
                 </IconButton>
               </Tooltip>
             ) : (

@@ -1,24 +1,84 @@
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import {
+  Form,
+  InputNumber,
+  Input,
+  Popconfirm,
+  Table,
+  Typography,
+  Tag,
+  Button,
+} from "antd";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { Box, Button, Container, Modal, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { useState } from "react";
+import dayjs from "dayjs";
+import { toast } from "react-toastify";
+import Title from "antd/es/typography/Title";
 import { Link } from "react-router-dom";
-import { Tag } from "antd";
-export default function AllProduct() {
+const EditableCell = ({
+  editing,
+  dataIndex,
+  title,
+  inputType,
+  record,
+  index,
+  children,
+  ...restProps
+}) => {
+  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+  return (
+    <td {...restProps}>
+      {editing ? (
+        <Form.Item
+          name={dataIndex}
+          style={{
+            margin: 0,
+          }}
+          rules={[
+            {
+              required: true,
+              message: `Please Input ${title}!`,
+            },
+          ]}
+        >
+          {inputNode}
+        </Form.Item>
+      ) : (
+        children
+      )}
+    </td>
+  );
+};
+const AllProduct = () => {
+  const [form] = Form.useForm();
   const [data, setData] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [idDelete, setIdDelete] = useState();
-  const handleOpen = (id) => {
-    setIdDelete(id);
-    setOpen(true);
+  const [editingKey, setEditingKey] = useState("");
+  const isEditing = (record) => record.key === editingKey;
+  const handleDel = (record) => {
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) {
+        return parts.pop().split(";").shift();
+      }
+    }
+    const token = getCookie("access_Token");
+    axios
+      .delete(`http://localhost:5000/api/products/${record}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((response) => {
+        toast.success("Huy don hang thanh cong");
+        window.location.reload();
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
   };
-  const handleClose = () => setOpen(false);
+
   useEffect(() => {
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -43,144 +103,176 @@ export default function AllProduct() {
         console.log(error);
       });
   }, [setData]);
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "550px",
-    bgcolor: "background.paper",
-    border: "1px solid #000",
-    boxShadow: 24,
-    p: 4,
+  const edit = (record) => {
+    form.setFieldsValue({
+      name: "",
+      age: "",
+      address: "",
+      ...record,
+    });
+    setEditingKey(record.key);
   };
-  const handleDelete = async () => {
-    await axios.delete(`http://localhost:5000/api/products/${idDelete}`);
-    function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) {
-        return parts.pop().split(";").shift();
+  const cancel = () => {
+    setEditingKey("");
+  };
+  const save = async (key) => {
+    try {
+      const row = await form.validateFields();
+      const newData = [...data];
+      const index = newData.findIndex((item) => key === item.key);
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, {
+          ...item,
+          ...row,
+        });
+        setData(newData);
+        setEditingKey("");
+      } else {
+        newData.push(row);
+        setData(newData);
+        setEditingKey("");
       }
+    } catch (errInfo) {
+      console.log("Validate Failed:", errInfo);
     }
-    const token = getCookie("access_Token");
-    axios
-      .get(`http://localhost:5000/api/products`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((response) => {
-        setData(response.data);
-        // console.log(response.data);
-        handleClose();
-      });
   };
+  const columns = [
+    {
+      title: "Tên sản phẩm",
+      dataIndex: "productName",
+      width: "15%",
+      editable: true,
+      align: "center",
+    },
+    {
+      title: "Ảnh",
+      dataIndex: "avatar",
+      align: "center",
+      width: "15%",
+      render: (avatar) => (
+        <img src={avatar} alt="Ảnh" style={{ width: "100%" }} />
+      ),
+    },
+    {
+      title: "Danh mục",
+      dataIndex: "SubCategoryId.SubCategoryName",
+      align: "center",
+      width: "10%",
+      render: (text, record) => {
+        // Sử dụng split để tách chuỗi
+        const subCategoryName =
+          record.SubCategoryId.SubCategoryName.split(".").pop();
+        return subCategoryName;
+      },
+    },
+    {
+      title: "Số lượng",
+      align: "center",
+      dataIndex: "quantity",
+      width: "8%",
+    },
+    {
+      title: "Đã bán",
+      align: "center",
+      dataIndex: "sold",
+      width: "8%",
+    },
+    {
+      title: "Đơn giá",
+      dataIndex: "price",
+      align: "center",
+      width: "10%",
+      render: (price) => <span>{price.toLocaleString("vi-VN")} VNĐ</span>,
+    },
+    {
+      title: "Ngày tạo",
+      align: "center",
+      dataIndex: "createdAt",
+      width: "10%",
+      render: (text) => dayjs(text).format("HH:mm DD-MM-YYYY"),
+    },
+    {
+      title: "Trạng thái sản phẩm",
+      align: "center",
+      dataIndex: "status",
+      width: "10%",
+      render: (status) => {
+        let color;
+        if (status === "Đang bày bán") {
+          color = "green";
+        } else {
+          color = "red";
+        }
+        return <Tag color={color}>{status}</Tag>;
+      },
+    },
+
+    {
+      title: "",
+      align: "center",
+      dataIndex: "operation",
+      width: "15%",
+
+      render: (_, record) => (
+        <div>
+          <Button type="primary" href={`products/${record._id}`}>
+            Xem chi tiết
+          </Button>
+          {record.status !== "Đã hủy" && (
+            <Popconfirm
+              title="Bạn có chắc chắn muốn xóa sản phẩm này?"
+              onConfirm={() => handleDel(record._id)}
+            >
+              <Button
+                type="primary"
+                danger
+                disabled={record.status === "Đã hủy"}
+              >
+                Xóa
+              </Button>
+            </Popconfirm>
+          )}
+        </div>
+      ),
+    },
+  ];
+  const mergedColumns = columns.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record) => ({
+        record,
+        inputType: col.dataIndex === "age" ? "number" : "text",
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
   return (
-    <Container maxWidth="xl">
-      <Typography variant="h4" sx={{ marginTop: "20px" }}>
-        Danh sách sản phẩm
-      </Typography>
+    <Form form={form} component={false}>
+      <Title level={2}>Danh sách các đơn hàng</Title>
       <Link to="/dashboard/products/add">
-        <Button
-          sx={{ float: "right", backgroundColor: "blue", color: "white" }}
-        >
-          Thêm mới
-        </Button>
+        <Button type="primary">Thêm mới</Button>
       </Link>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">Tên sản phẩm</TableCell>
-            <TableCell align="center">Mô tả</TableCell>
-            <TableCell align="center">Ảnh</TableCell>
-            <TableCell align="center">Loại</TableCell>
-            <TableCell align="center">Số lượng</TableCell>
-            <TableCell align="center">Đã bán</TableCell>
-            <TableCell align="center">Trạng thái</TableCell>
-            <TableCell align="center"></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row, index) => (
-            <TableRow key={index}>
-              <TableCell component="th" scope="row">
-                {row.productName}
-              </TableCell>
-              <TableCell align="left">
-                {row.desc.map((value, index) =>
-                  value.map((desc, index) => <li key={index}>{desc.text}</li>)
-                )}
-              </TableCell>
-              <TableCell align="left" sx={{ width: "150px" }}>
-                <img src={row.avatar}></img>
-              </TableCell>
-              <TableCell align="center">
-                {row.CategoryId.CategoryName}
-              </TableCell>
-              <TableCell align="center">{row.quantity}</TableCell>
-              <TableCell align="center">{row.sold}</TableCell>
-              <TableCell align="center">
-                <Tag
-                  style={{
-                    color: row.status === "Đang bày bán" ? "green" : "grey",
-                    height: "40px",
-                    fontSize: "15px",
-                    lineHeight: "40px",
-                  }}
-                >
-                  {row.status}
-                </Tag>
-              </TableCell>
-              <TableCell align="center">
-                <Box>
-                  <Link to={`/dashboard/products/${row._id}`} key={index}>
-                    <Button>Xem chi tiêt</Button>
-                  </Link>
-                  <Button
-                    sx={{ color: "red" }}
-                    onClick={() => handleOpen(row._id)}
-                  >
-                    Xóa
-                  </Button>
-                  <div>
-                    <Modal
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                    >
-                      <Box sx={style}>
-                        <Typography
-                          id="modal-modal-title"
-                          variant="h6"
-                          component="h2"
-                        >
-                          Xác nhận xóa ?
-                        </Typography>
-                        <Button
-                          onClick={() => handleDelete(idDelete)}
-                          id="modal-modal-description"
-                          sx={{ mt: 2 }}
-                        >
-                          Xác nhận
-                        </Button>
-                        <Button
-                          onClick={() => handleClose()}
-                          id="modal-modal-description"
-                          sx={{ mt: 2, mr: 4 }}
-                        >
-                          Quay lại
-                        </Button>
-                      </Box>
-                    </Modal>
-                  </div>
-                </Box>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Container>
+      <Table
+        components={{
+          body: {
+            cell: EditableCell,
+          },
+        }}
+        bordered
+        dataSource={data}
+        columns={mergedColumns}
+        rowClassName="editable-row"
+        pagination={{
+          onChange: cancel,
+        }}
+      />
+    </Form>
   );
-}
+};
+export default AllProduct;

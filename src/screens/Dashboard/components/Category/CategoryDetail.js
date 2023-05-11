@@ -16,6 +16,8 @@ import "./TableCategory.css";
 import { useRef } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import dayjs from "dayjs";
+import Title from "antd/es/typography/Title";
 
 const CategoryDetail = () => {
   const [data, setData] = useState([]);
@@ -73,13 +75,9 @@ const CategoryDetail = () => {
       .get("http://localhost:5000/api/category")
       .then((response) => {
         const modifiedData = response.data.map((item) => {
-          const subCateString = item.SubCategory.map(
-            (value) => value.SubCategoryName
-          ).join(", ");
           return {
             ...item,
             key: item._id,
-            SubCategory: subCateString,
           };
         });
         setData(modifiedData);
@@ -277,25 +275,24 @@ const CategoryDetail = () => {
     {
       title: "Tên danh mục",
       dataIndex: "CategoryName",
-      width: "25%",
+      width: "30%",
+      align: "center",
       editable: "true",
       ...getColumnSearchProps("CategoryName"),
     },
     {
-      title: "Tên danh mục phụ",
-      dataIndex: "SubCategory",
-      width: "25%",
-      editable: false,
-    },
-    {
       title: "Tạo ngày",
       dataIndex: "createdAt",
-      width: "20%",
+      align: "center",
+      width: "30%",
       editable: false,
+      render: (text) => dayjs(text).format("HH:mm DD-MM-YYYY"),
     },
     {
       title: "",
       dataIndex: "operation",
+      align: "center",
+
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -306,10 +303,10 @@ const CategoryDetail = () => {
                 marginRight: 8,
               }}
             >
-              Save
+              Lưu
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+            <Popconfirm title="Chắc chắn muốn quay lại?" onConfirm={cancel}>
+              <a>Quay lại</a>
             </Popconfirm>
           </span>
         ) : (
@@ -321,7 +318,7 @@ const CategoryDetail = () => {
               Sửa
             </Typography.Link>
             <Popconfirm
-              title="Are you sure you want to delete this record?"
+              title=" Xác nhận xóa danh mục này?"
               onConfirm={() => handleDelete(record.key)}
             >
               <a style={{ color: "red" }}>Xóa</a>
@@ -349,6 +346,7 @@ const CategoryDetail = () => {
   });
   return (
     <Form form={form} component={false}>
+      <Title level={2}>Danh sách các danh mục</Title>
       <ModalAddCategory setData={setData} />
       <Table
         components={{

@@ -179,29 +179,33 @@ const TableUser = () => {
     {
       title: "Id tài khoản",
       dataIndex: "_id",
-      width: "10%",
+      width: "15%",
       editable: "true",
       ...getColumnSearchProps("username"),
     },
     {
       title: "Tài khoản",
       dataIndex: "username",
-      width: "20%",
+      align: "center",
+      width: "25%",
       editable: "true",
       ...getColumnSearchProps("username"),
     },
     {
       title: "Email",
       dataIndex: "email",
-      width: "20%",
+      width: "25%",
+      align: "center",
       ...getColumnSearchProps("email"),
       sorter: (a, b) => a.email.length - b.email.length,
       sortDirections: ["descend", "ascend"],
     },
     {
-      title: "Admin",
+      title: "Quản trị viên",
       dataIndex: "isAdmin",
       key: "isAdmin",
+      width: "20%",
+      align: "center",
       sorter: (a, b) => a.isAdmin - b.isAdmin,
       render: (isAdmin) => (
         <>
@@ -214,8 +218,10 @@ const TableUser = () => {
       ),
     },
     {
-      title: "operation",
+      title: "",
       dataIndex: "operation",
+      align: "center",
+
       render: (_, record) => {
         const editable = isEditing(record);
         return (

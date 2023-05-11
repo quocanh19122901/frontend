@@ -582,7 +582,7 @@ function AboutUs() {
           <Grid item xs={12} sm={6} md={4} lg={4}>
             <Typography variant="h6">Tìm hiểu thêm về Coolmate</Typography>
             <Typography
-              sx={{ fontWeight: "bold", color: "bkack" }}
+              sx={{ fontWeight: "bold" }}
               component="a"
               href="/contact"
             >
@@ -592,7 +592,7 @@ function AboutUs() {
           <Grid item xs={12} sm={6} md={4} lg={4}>
             <Typography variant="h6">Trải nghiệm mua sắm</Typography>
             <Typography
-              sx={{ fontWeight: "bold", color: "bkack" }}
+              sx={{ fontWeight: "bold" }}
               component="a"
               href="/products"
             >
@@ -602,9 +602,9 @@ function AboutUs() {
           <Grid item xs={12} sm={12} md={4} lg={4}>
             <Typography variant="h6">Nếu bạn thích </Typography>{" "}
             <Typography
-              sx={{ fontWeight: "bold", color: "bkack" }}
+              sx={{ fontWeight: "bold" }}
               component="a"
-              href="/register"
+              href="/signup"
             >
               gia nhập Coolmate
             </Typography>

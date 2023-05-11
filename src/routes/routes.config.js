@@ -26,6 +26,7 @@ import { ManageAccounts } from "@mui/icons-material";
 import ManageContact from "screens/Dashboard/components/Contact/ManageContact";
 import Subcategory from "screens/SubCategory/Subcategory";
 import Statistics from "screens/Dashboard/components/statistics/Statistics";
+import ProfileLayout from "layouts/ProfileLayout";
 
 export const routeConfig = [
   {
@@ -38,7 +39,7 @@ export const routeConfig = [
   {
     path: "/profile",
     component: Profile,
-    layout: DefaultLayout,
+    layout: ProfileLayout,
     private: false,
     isAdmin: false,
   },
@@ -73,14 +74,14 @@ export const routeConfig = [
   {
     path: "/order",
     component: Order,
-    layout: DefaultLayout,
+    layout: ProfileLayout,
     isAdmin: false,
     private: false,
   },
   {
     path: "/support",
     component: AllContact,
-    layout: DefaultLayout,
+    layout: ProfileLayout,
     isAdmin: false,
     private: false,
   },

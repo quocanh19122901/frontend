@@ -36,20 +36,24 @@ const ModalAddCategory = ({ setData }) => {
     ...subCategory.map((item) => item.SubCategoryName)
   );
 
-  const handleChange = (event, value) => {
-    setSelectedId(value.map((option) => option._id));
-  };
+  // const handleChange = (event, value) => {
+  //   setSelectedId(value.map((option) => option._id));
+  // };
   const handleOk = async () => {
     try {
       await axios.post("http://localhost:5000/api/category", {
         CategoryName: CategoryName,
-        SubCategory: selectedId,
+        // SubCategory: selectedId,
       });
       const { data } = await axios.get("http://localhost:5000/api/category");
-      const modifiedData = data.map(({ _id, ...rest }) => ({
-        ...rest,
-        key: _id,
-      }));
+
+      const modifiedData = data.map((item) => {
+        return {
+          ...item,
+          key: item._id,
+          // SubCategory: subCateString,
+        };
+      });
       setData(modifiedData);
       setIsModalOpen(false);
     } catch (error) {
@@ -95,7 +99,7 @@ const ModalAddCategory = ({ setData }) => {
           placeholder="Tên danh mục"
           onChange={(e) => setCategoryName(e.target.value)}
         />
-        <Autocomplete
+        {/* <Autocomplete
           multiple
           id="tags-outlined"
           options={subCategory}
@@ -109,7 +113,7 @@ const ModalAddCategory = ({ setData }) => {
               placeholder="Favorites"
             />
           )}
-        />
+        /> */}
       </Modal>
     </>
   );

@@ -66,12 +66,12 @@ export default function AllContact() {
     }
   };
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ minHeight: 650 }}>
       <Typography variant="h4" sx={{ marginTop: "20px" }}>
         Theo dõi phiếu hỗ trợ
       </Typography>
 
-      <Table sx={{ minWidth: 650, minHeight: 650 }} aria-label="simple table">
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center">Mã phiếu hỗ trợ</TableCell>

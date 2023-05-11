@@ -123,11 +123,17 @@ function InforProduct() {
   return (
     <Box>
       <React.Fragment>
-        <Typography variant="h5" align="left">
+        <Typography variant="h4" align="left" sx={{ fontWeight: "bold" }}>
           {data.productName}
         </Typography>
-        <Typography sx={{ marginTop: "20px" }} variant="subtitle2">
-          Giá sản phẩm: {price.toLocaleString("vi-VN")} đ
+        <Typography
+          sx={{ marginTop: "20px", fontStyle: "italic" }}
+          variant="h5"
+        >
+          {price.toLocaleString("vi-VN")} đ
+        </Typography>
+        <Typography sx={{ marginTop: "20px", color: "red" }}>
+          Số lượng còn: {data.quantity}
         </Typography>
         <Box>
           <br />
@@ -152,7 +158,7 @@ function InforProduct() {
         </Box>
         <Box>
           <br />
-          <Typography variant="subtitle1">Đặc điểm: </Typography>
+          <Typography variant="h6">Đặc điểm: </Typography>
           <ul>
             {desc.map((item, index) =>
               item.map((value, index) => (
