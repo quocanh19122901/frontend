@@ -221,7 +221,6 @@ const TableUser = () => {
       title: "",
       dataIndex: "operation",
       align: "center",
-
       render: (_, record) => {
         const editable = isEditing(record);
         return (

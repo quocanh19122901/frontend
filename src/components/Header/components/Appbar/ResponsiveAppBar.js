@@ -191,10 +191,15 @@ function ResponsiveAppBar(props) {
             sx={{
               flexGrow: 1,
               display: { xs: "none", md: "flex" },
+              height: "100%",
             }}
           >
             {pages.map((page, index) => (
-              <MenuItem key={index} onClick={handleCloseNavMenu}>
+              <MenuItem
+                key={index}
+                onClick={handleCloseNavMenu}
+                sx={{ padding: 0 }}
+              >
                 <Button
                   component={Link}
                   to={page.path}
@@ -202,6 +207,7 @@ function ResponsiveAppBar(props) {
                     fontFamily: "monospace",
                     fontWeight: 700,
                     fontSize: "15px",
+                    padding: "20px 20px",
                   }}
                 >
                   {page.item}
@@ -228,7 +234,7 @@ function ResponsiveAppBar(props) {
             )}
 
             <Menu
-              sx={{ mt: "45px" }}
+              sx={{ mt: "45px", height: "100%" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -244,11 +250,24 @@ function ResponsiveAppBar(props) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting, index) => (
-                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={index}
+                  onClick={handleCloseNavMenu}
+                  sx={{ height: "100%", padding: 0 }}
+                >
                   {setting.item === "logout" ? (
                     <Button onClick={handleLogout}>{setting.item}</Button>
                   ) : (
-                    <Button component={Link} to={setting.path}>
+                    <Button
+                      sx={{
+                        fontFamily: "monospace",
+                        fontWeight: "700",
+                        padding: "20px",
+                      }}
+                      fullWidth
+                      component={Link}
+                      to={setting.path}
+                    >
                       {setting.item}
                     </Button>
                   )}

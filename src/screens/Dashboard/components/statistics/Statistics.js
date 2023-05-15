@@ -19,6 +19,8 @@ import Paper from "@mui/material/Paper";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import Title from "antd/es/typography/Title";
+
 export default function Statistics() {
   const [data, setData] = useState([]);
   const [user, setUser] = useState([]);
@@ -177,71 +179,82 @@ export default function Statistics() {
             </Box>
           </Grid>
           <Grid item xs={4}>
+            <Title level={3} style={{ textAlign: "center" }}>
+              Sản phẩm bán chạy trong tháng
+            </Title>
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={2} columns={16}>
-                {products && products.length > 0
-                  ? products.map((item, index) => (
-                      <Grid item xs={16} key={index}>
-                        <ListItem key={index} disablePadding>
-                          <ListItemButton>
-                            <Card
-                              sx={{
-                                display: "flex",
-                                width: "100%",
-                                height: "200px",
-                              }}
-                            >
-                              <CardMedia
-                                component="img"
-                                sx={{ maxWidth: 200 }}
-                                image={item.avatar}
-                                alt="Live from space album cover"
-                              />
-                              <Box>
-                                <CardContent
-                                  sx={{
-                                    width: "100%",
-                                    height: "100%",
-                                    display: "grid",
-                                    flexDirection: "column",
-                                    placeItems: "center",
-                                  }}
-                                >
-                                  <Box>
-                                    <Typography component="div" variant="h6">
-                                      {item.title}
-                                    </Typography>
-                                    <Box display="flex" alignItems="center">
-                                      <Typography>
-                                        Đã bán: {item.sold}
-                                      </Typography>
-                                    </Box>
-
-                                    <Typography
-                                      variant="subtitle2"
-                                      sx={{ float: "left" }}
-                                      color="#33333"
-                                      component="div"
-                                    >
-                                      Giá: {item.price} đ
+                {products && products.length > 0 ? (
+                  products.map((item, index) => (
+                    <Grid item xs={16} key={index}>
+                      <ListItem key={index} disablePadding>
+                        <ListItemButton>
+                          <Card
+                            sx={{
+                              display: "flex",
+                              width: "100%",
+                              height: "200px",
+                            }}
+                          >
+                            <CardMedia
+                              component="img"
+                              sx={{ maxWidth: 200 }}
+                              image={item.productDetails.avatar}
+                              alt="Live from space album cover"
+                            />
+                            <Box>
+                              <CardContent
+                                sx={{
+                                  width: "100%",
+                                  height: "100%",
+                                  display: "grid",
+                                  flexDirection: "column",
+                                  placeItems: "center",
+                                }}
+                              >
+                                <Box>
+                                  <Typography component="div" variant="h6">
+                                    {item.productDetails.title}
+                                  </Typography>
+                                  <Box display="flex" alignItems="center">
+                                    <Typography>
+                                      Đã bán: {item.totalSold}
                                     </Typography>
                                   </Box>
-                                </CardContent>
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    pl: 1,
-                                    pb: 1,
-                                  }}
-                                ></Box>
-                              </Box>
-                            </Card>
-                          </ListItemButton>
-                        </ListItem>
-                      </Grid>
-                    ))
-                  : "Chưa bán được sản phẩm nào"}
+
+                                  <Typography
+                                    variant="subtitle2"
+                                    sx={{ float: "left" }}
+                                    color="#33333"
+                                    component="div"
+                                  >
+                                    Giá:{" "}
+                                    {item.productDetails.price.toLocaleString(
+                                      "vi-VN"
+                                    )}{" "}
+                                    đ
+                                  </Typography>
+                                </Box>
+                              </CardContent>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  pl: 1,
+                                  pb: 1,
+                                }}
+                              ></Box>
+                            </Box>
+                          </Card>
+                        </ListItemButton>
+                      </ListItem>
+                    </Grid>
+                  ))
+                ) : (
+                  <Typography align="center">
+                    Chưa bán được sản phẩm nào
+                  </Typography>
+                )}
               </Grid>
             </Box>
           </Grid>

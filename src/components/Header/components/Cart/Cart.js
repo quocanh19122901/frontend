@@ -11,17 +11,10 @@ import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import PaymentIcon from "@mui/icons-material/Payment";
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { List, ListItem, ListItemButton } from "@mui/material";
 import { toast } from "react-toastify";
 
 export default function Cart() {
-  const theme = useTheme();
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
@@ -144,7 +137,8 @@ export default function Cart() {
                       color="#33333"
                       component="div"
                     >
-                      Thành tiền: {item.product[0].price} đ
+                      Thành tiền:{" "}
+                      {item.product[0].price.toLocaleString("vi-VN")} đ
                     </Typography>
                   </CardContent>
                   <Box

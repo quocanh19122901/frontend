@@ -100,7 +100,7 @@ export default function AddProduct() {
       .then((response) => {
         toast.success("Thêm sản phẩm thành công");
         setData(response.data);
-        navigate("/dasboard/products");
+        navigate("/dashboard/products");
       })
       .catch((error) => {
         toast.error("Vui lòng điền đầy đủ thông tin");

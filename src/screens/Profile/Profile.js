@@ -12,7 +12,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
-
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 export default function Profile() {
   const [data, setData] = useState([]);
   const [fullName, setFullName] = useState();
@@ -20,7 +24,13 @@ export default function Profile() {
   const [phone, setPhone] = useState();
   const [address, setAddress] = useState();
   const [avatar, setAvatar] = useState();
-
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
   useEffect(() => {
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -110,77 +120,79 @@ export default function Profile() {
             justifyContent: "space-around",
           }}
         >
-          <Typography align="center" variant="h5" sx={{ marginTop: "20px" }}>
-            Thông tin cá nhân:
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <img
-              src="https://scontent.fhan14-2.fna.fbcdn.net/v/t39.30808-6/343985130_603187924864846_2158226703914102593_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=KCZuMFDAvMkAX8aNCLa&_nc_ht=scontent.fhan14-2.fna&oh=00_AfBFSDerMZlB3A0jtLXZOPVcWqmHDHVLduefV1MsDWyiUg&oe=64579BE5"
-              alt=""
-              style={{
-                height: "250px",
-                width: "250px",
-                objectFit: "cover",
-                borderRadius: "50%",
+          <Item>
+            <Typography align="center" variant="h5" sx={{ marginTop: "20px" }}>
+              Thông tin cá nhân:
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
               }}
-            />
-          </Box>
-          <Box>
-            <TextField
-              fullWidth
-              label="Url image for avatar"
-              variant="standard"
-              onChange={handleAvatarChange}
-            />
-          </Box>
-          <Box>
-            <TextField
-              fullWidth
-              label="Tên đầy đủ"
-              variant="standard"
-              onChange={handleFullNameChange}
-            />
-          </Box>
-          <Box>
-            <TextField
-              fullWidth
-              label="Địa chỉ"
-              variant="standard"
-              onChange={handleAddressChange}
-            />
-          </Box>
-          <Box>
-            <TextField
-              fullWidth
-              label="Số điện thoại"
-              variant="standard"
-              onChange={handlePhoneChange}
-            />
-          </Box>
-          <Box>
-            <TextField
-              fullWidth
-              label="Ngày sinh"
-              variant="standard"
-              onChange={handleBirthdayChange}
-            />
-          </Box>
-          <Button
-            variant="outlined"
-            sx={{ margin: "20px 20px" }}
-            onClick={handleAdd}
-          >
-            Hoàn tất
-          </Button>
+            >
+              <img
+                src="https://scontent.fhan14-2.fna.fbcdn.net/v/t39.30808-6/343985130_603187924864846_2158226703914102593_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=KCZuMFDAvMkAX8aNCLa&_nc_ht=scontent.fhan14-2.fna&oh=00_AfBFSDerMZlB3A0jtLXZOPVcWqmHDHVLduefV1MsDWyiUg&oe=64579BE5"
+                alt=""
+                style={{
+                  height: "250px",
+                  width: "250px",
+                  objectFit: "cover",
+                  borderRadius: "50%",
+                }}
+              />
+            </Box>
+            <Box>
+              <TextField
+                fullWidth
+                label="Url image for avatar"
+                variant="standard"
+                onChange={handleAvatarChange}
+              />
+            </Box>
+            <Box>
+              <TextField
+                fullWidth
+                label="Tên đầy đủ"
+                variant="standard"
+                onChange={handleFullNameChange}
+              />
+            </Box>
+            <Box>
+              <TextField
+                fullWidth
+                label="Địa chỉ"
+                variant="standard"
+                onChange={handleAddressChange}
+              />
+            </Box>
+            <Box>
+              <TextField
+                fullWidth
+                label="Số điện thoại"
+                variant="standard"
+                onChange={handlePhoneChange}
+              />
+            </Box>
+            <Box>
+              <TextField
+                fullWidth
+                label="Ngày sinh"
+                variant="standard"
+                onChange={handleBirthdayChange}
+              />
+            </Box>
+            <Button
+              variant="outlined"
+              sx={{ margin: "20px 20px" }}
+              onClick={handleAdd}
+            >
+              Hoàn tất
+            </Button>
+          </Item>
         </Container>
       ) : (
         <Box>
-          {data.map((item, index) => (
+          {data?.map((item, index) => (
             <Container
               key={index}
               maxWidth="md"
@@ -191,139 +203,167 @@ export default function Profile() {
                 justifyContent: "space-around",
               }}
             >
-              <Typography align="left" variant="h5" sx={{ marginTop: "20px" }}>
-                Thông tin cá nhân:
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  src={item.avatar}
-                  alt=""
-                  style={{
-                    height: "250px",
-                    width: "250px",
-                    objectFit: "cover",
+              <Item>
+                <Typography
+                  align="left"
+                  variant="h5"
+                  sx={{ marginTop: "20px" }}
+                >
+                  Thông tin cá nhân:
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
                   }}
-                />
-              </Box>
-              <Box
-                sx={{
-                  height: "400px",
-                  display: "flex",
-                  flexDirection: "column",
-                  textAlign: "center",
-                  justifyContent: "space-around",
-                }}
-              >
-                <Grid container spacing={0}>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontFamily: "monospace" }}
-                      align="center"
-                    >
-                      Tên tài khoàn :
-                    </Typography>
+                >
+                  <img
+                    src={item.avatar}
+                    alt=""
+                    style={{
+                      height: "250px",
+                      width: "250px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    height: "400px",
+                    display: "flex",
+                    flexDirection: "column",
+                    textAlign: "center",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <Grid container spacing={0}>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontFamily: "monospace" }}
+                        align="center"
+                      >
+                        Tên tài khoàn :
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="h6" align="center" color="primary">
+                        {item.userId.username}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="h6" align="center" color="primary">
-                      {item.userId.username}
-                    </Typography>
+                  <Grid container spacing={0}>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontFamily: "monospace" }}
+                        align="center"
+                      >
+                        Email đăng ký:
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="h6" align="center" color="primary">
+                        {item.userId.email}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
-                <Grid container spacing={0}>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontFamily: "monospace" }}
-                      align="center"
-                    >
-                      Email đăng ký:
-                    </Typography>
+                  <Grid container spacing={0}>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontFamily: "monospace" }}
+                        align="center"
+                      >
+                        Tên đầy đủ:
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="h6" align="center" color="primary">
+                        {item.fullName}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="h6" align="center" color="primary">
-                      {item.userId.email}
-                    </Typography>
+                  <Grid container spacing={0}>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontFamily: "monospace" }}
+                        align="center"
+                      >
+                        Ngày sinh:
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="h6" align="center" color="primary">
+                        {item.birthday}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
-                <Grid container spacing={0}>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontFamily: "monospace" }}
-                      align="center"
-                    >
-                      Tên đầy đủ:
-                    </Typography>
+                  <Grid container spacing={0}>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontFamily: "monospace" }}
+                        align="center"
+                      >
+                        Địa chỉ:
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="h5" align="center" color="primary">
+                        {item.address}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="h6" align="center" color="primary">
-                      {item.fullName}
-                    </Typography>
+                  <Grid container spacing={0}>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="h5"
+                        sx={{ fontFamily: "monospace" }}
+                        align="center"
+                      >
+                        Số điện thoại:
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography variant="h5" align="center" color="primary">
+                        {item.phone}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
-                <Grid container spacing={0}>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontFamily: "monospace" }}
-                      align="center"
-                    >
-                      Ngày sinh:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="h6" align="center" color="primary">
-                      {item.birthday}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container spacing={0}>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontFamily: "monospace" }}
-                      align="center"
-                    >
-                      Địa chỉ:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="h5" align="center" color="primary">
-                      {item.address}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container spacing={0}>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="h5"
-                      sx={{ fontFamily: "monospace" }}
-                      align="center"
-                    >
-                      Số điện thoại:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="h5" align="center" color="primary">
-                      {item.phone}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Box>
-              <Button
-                component={Link}
-                to={"/profile/edit"}
-                variant="outlined"
-                sx={{ margin: "20px 20px" }}
-              >
-                Chỉnh sửa
-              </Button>
+                </Box>
+
+                <Button
+                  component={Link}
+                  to={"/order"}
+                  variant="outlined"
+                  sx={{ margin: "20px 20px" }}
+                  startIcon={<ShoppingBagIcon />}
+                  color="secondary"
+                >
+                  Đến lịch sử mua hàng
+                </Button>
+                <Button
+                  component={Link}
+                  to={"/profile/edit"}
+                  variant="outlined"
+                  sx={{ margin: "20px 20px" }}
+                  startIcon={<SettingsIcon />}
+                >
+                  Chỉnh sửa
+                </Button>
+                <Button
+                  component={Link}
+                  to={"/support"}
+                  variant="outlined"
+                  startIcon={<SupportAgentIcon />}
+                  sx={{ margin: "20px 20px" }}
+                  color="secondary"
+                >
+                  Theo dõi phiếu hỗ trợ
+                </Button>
+              </Item>
             </Container>
           ))}
         </Box>

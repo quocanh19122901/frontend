@@ -65,7 +65,7 @@ export default function ContactScreen() {
       });
   };
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <Box sx={{ margin: "30px 0px" }}>
         <Typography variant="h4">Phiếu hỗ trợ khách hàng</Typography>
       </Box>
@@ -125,6 +125,7 @@ export default function ContactScreen() {
           onChange={handleDesireChange}
         />
       </Box>
+
       <Box sx={{ height: 100 }}>
         <Button variant="contained" endIcon={<SendIcon />} onClick={handleSend}>
           Tạo phiếu hỗ trợ

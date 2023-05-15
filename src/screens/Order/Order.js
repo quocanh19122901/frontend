@@ -209,7 +209,7 @@ const Order = () => {
           <Button type="primary" href={`order/${record._id}`}>
             Xem chi tiết
           </Button>
-          {record.status !== "Đã hủy" && (
+          {record.status !== "Đã hủy" && record.status !== "Đã xác nhận" && (
             <Popconfirm
               title="Bạn có chắc chắn muốn hủy đơn hàng này?"
               onConfirm={() => handleCancel(record._id)}

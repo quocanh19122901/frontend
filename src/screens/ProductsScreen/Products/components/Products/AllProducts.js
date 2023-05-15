@@ -9,8 +9,8 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Chip,
   Container,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import CustomSeparator from "./CustomSeparator";
@@ -83,29 +83,28 @@ export default function AllProducts() {
         console.log(error);
       });
   };
-  const ProductCategory = (id) => {
-    axios
-      .get(`http://localhost:5000/api/products/category/${id}`)
-      .then((response) => {
-        const modifiedData = response.data.map((item) => ({
-          ...item,
-          key: item._id,
-        }));
-        setData(modifiedData);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const ProductCategory = (id) => {
+  //   axios
+  //     .get(`http://localhost:5000/api/products/category/${id}`)
+  //     .then((response) => {
+  //       const modifiedData = response.data.map((item) => ({
+  //         ...item,
+  //         key: item._id,
+  //       }));
+  //       setData(modifiedData);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="lg">
       <SearchBar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         handleSearch={handleSearch}
       />
-      <CategoryMenu />
-      <CustomSeparator />
+      <CategoryMenu setData={setData} />
       <Grid
         container
         spacing={{ xs: 1, md: 2 }}
@@ -131,17 +130,17 @@ export default function AllProducts() {
               <Link to={`/products/${item._id}`} key={index}>
                 <Item>
                   <Box>
-                    <Card sx={{ maxWidth: 450, height: 500 }}>
+                    <Card sx={{ maxWidth: 450, minHeight: 500 }}>
                       <CardActionArea>
                         <CardMedia
                           component="img"
                           image={item.avatar}
                           alt="clothes"
-                          sx={{ height: 300 }}
+                          sx={{ height: 400 }}
                         />
                         <CardContent
                           sx={{
-                            height: "200px",
+                            height: "150px",
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "space-around",
@@ -177,17 +176,32 @@ export default function AllProducts() {
             </Grid>
           ))
         ) : (
-          <Typography
-            sx={{
-              height: 420,
-              marginTop: "auto",
-              lineHeight: "420px",
-              fontFamily: "Helvet",
-              fontSize: "30px",
-            }}
-          >
-            Chưa có sản phẩm nào{" "}
-          </Typography>
+          <Grid xs={12} sm={6} md={4} lg={3} xl={3}>
+            <Item>
+              <Box>
+                {/* Skeleton cho hình ảnh */}
+                <Skeleton variant="rectangular" sx={{ height: 300 }} />
+
+                <CardContent
+                  sx={{
+                    height: "200px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  {/* Skeleton cho tiêu đề */}
+                  <Skeleton variant="text" width="80%" />
+
+                  {/* Skeleton cho tên danh mục */}
+                  <Skeleton variant="text" width="60%" />
+
+                  {/* Skeleton cho giá */}
+                  <Skeleton variant="text" width="40%" />
+                </CardContent>
+              </Box>
+            </Item>
+          </Grid>
         )}
       </Grid>
     </Container>

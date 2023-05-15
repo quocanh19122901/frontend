@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { styled } from "@mui/material/styles";
@@ -9,23 +9,22 @@ import { useParams } from "react-router-dom";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import jwt_decode from "jwt-decode";
 import { Tag } from "antd";
+const Item = styled(Box)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  marginTop: theme.spacing(2),
+  display: "flex",
+  justifyContent: "space-around",
+}));
 
 function InforProduct() {
-  const Item = styled(Box)(({ theme }) => ({
-    ...theme.typography.body2,
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-    marginTop: theme.spacing(2),
-    display: "flex",
-    justifyContent: "space-around",
-  }));
   const [count, setCount] = useState(1);
   const handleDecrease = () => {
     if (count > 1) {
       setCount(count - 1);
     }
   };
-
   const handleIncrease = () => {
     setCount(count + 1);
   };
@@ -39,7 +38,6 @@ function InforProduct() {
   const [size, setSize] = useState([]);
   const [price, setPrice] = useState(0);
 
-  const [cart, setCart] = useState([]);
   const handleOnChangeSize = (event, value) => {
     setSelectedSize(value);
   };
@@ -76,7 +74,7 @@ function InforProduct() {
     const userId = decodeToken.id;
     try {
       if (!selectedSize || !selectedColor) {
-        throw new Error("Hãy chọn size và màu");
+        throw new Error("Hãy lựa chọn đầy đủ size và màu của sản phẩm");
       }
       await axios
         .post(`http://localhost:5000/api/cart`, {
@@ -105,7 +103,7 @@ function InforProduct() {
         })
         .catch((error) => {});
     } catch (error) {
-      toast.error("Hãy chọn size và màu", {
+      toast.error("Hãy lựa chọn đầy đủ size và màu của sản phẩm", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -119,6 +117,13 @@ function InforProduct() {
   };
   const flatOptions = size.flat();
   const flatOptionsColor = color.flat();
+  const handleChangeQuantity = (e) => {
+    e.target.value < 0
+      ? setCount(1)
+      : e.target.value > data.quantity
+      ? setCount(data.quantity)
+      : setCount(e.target.value);
+  };
 
   return (
     <Box>
@@ -132,7 +137,10 @@ function InforProduct() {
         >
           {price.toLocaleString("vi-VN")} đ
         </Typography>
-        <Typography sx={{ marginTop: "20px", color: "red" }}>
+        <Typography
+          variant="subtitle2"
+          sx={{ marginTop: "20px", color: "red" }}
+        >
           Số lượng còn: {data.quantity}
         </Typography>
         <Box>
@@ -193,7 +201,11 @@ function InforProduct() {
               <Item>
                 <Box display="flex" alignItems="center">
                   <Button onClick={handleDecrease}>-</Button>
-                  <Typography>{count}</Typography>
+                  <TextField
+                    value={count}
+                    type="number"
+                    onChange={handleChangeQuantity}
+                  />
                   <Button onClick={handleIncrease}>+</Button>
                 </Box>
               </Item>

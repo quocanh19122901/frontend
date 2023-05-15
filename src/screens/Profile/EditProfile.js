@@ -14,7 +14,16 @@ import jwt_decode from "jwt-decode";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import DoneIcon from "@mui/icons-material/Done";
 import { toast } from "react-toastify";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
 export default function EditProfile() {
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
   const [data, setData] = useState([]);
   const [fullName, setFullName] = useState();
   const [birthDay, setBirthDay] = useState();
@@ -111,153 +120,155 @@ export default function EditProfile() {
   };
   return (
     <Box>
-      {data.map((item, index) => (
-        <Container
-          key={index}
-          maxWidth="md"
-          sx={{
-            minHeight: "650px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-around",
-          }}
-        >
-          <Typography align="left" variant="h5" sx={{ marginTop: "20px" }}>
-            Thông tin cá nhân:
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <img
-              src={item.avatar}
-              alt=""
-              style={{
-                height: "250px",
-                width: "250px",
-                objectFit: "cover",
-                borderRadius: "50%",
+      {data && data.length > 0
+        ? data.map((item, index) => (
+            <Container
+              key={index}
+              maxWidth="md"
+              sx={{
+                minHeight: "650px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
               }}
-            />
-          </Box>
-          <Box>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography color="primary" align="center">
-                  Url avatar:
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  defaultValue={item.avatar}
-                  variant="standard"
-                  onChange={handleAvatarChange}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-          <Box>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography color="primary" align="center">
-                  Tên đầy đủ:
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  defaultValue={item.fullName}
-                  variant="standard"
-                  onChange={handleFullNameChange}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-          <Box>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography color="primary" align="center">
-                  Ngày sinh:
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  defaultValue={item.birthday}
-                  variant="standard"
-                  onChange={handleBirthdayChange}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-          <Box>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography color="primary" align="center">
-                  Địa chỉ:
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  defaultValue={item.address}
-                  variant="standard"
-                  onChange={handleAddressChange}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-          <Box>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography color="primary" align="center">
-                  Số điện thoại:
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  defaultValue={item.phone}
-                  variant="standard"
-                  onChange={handlePhoneChange}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Button
-                fullWidth
-                variant="outlined"
-                sx={{ margin: "20px 20px" }}
-                onClick={handleReturn}
-              >
-                Quay lại
-                <KeyboardReturnIcon sx={{ margin: "0px 20px" }} />
-              </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                fullWidth
-                variant="outlined"
+            >
+              <Typography align="left" variant="h5" sx={{ marginTop: "20px" }}>
+                Thông tin cá nhân:
+              </Typography>
+              <Box
                 sx={{
-                  margin: "20px 20px",
-                  color: "green",
-                  borderColor: "green",
-                  border: "1px solid green",
+                  display: "flex",
+                  justifyContent: "center",
                 }}
-                onClick={handleUpdate}
               >
-                Cập nhật
-                <DoneIcon sx={{ margin: "0px 20px" }} />
-              </Button>
-            </Grid>
-          </Grid>
-        </Container>
-      ))}
+                <img
+                  src={item.avatar}
+                  alt=""
+                  style={{
+                    height: "250px",
+                    width: "250px",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+                />
+              </Box>
+              <Box>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Typography color="primary" align="center">
+                      Url avatar:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      defaultValue={item.avatar}
+                      variant="standard"
+                      onChange={handleAvatarChange}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Typography color="primary" align="center">
+                      Tên đầy đủ:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      defaultValue={item.fullName}
+                      variant="standard"
+                      onChange={handleFullNameChange}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Typography color="primary" align="center">
+                      Ngày sinh:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      defaultValue={item.birthday}
+                      variant="standard"
+                      onChange={handleBirthdayChange}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Typography color="primary" align="center">
+                      Địa chỉ:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      defaultValue={item.address}
+                      variant="standard"
+                      onChange={handleAddressChange}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Typography color="primary" align="center">
+                      Số điện thoại:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      defaultValue={item.phone}
+                      variant="standard"
+                      onChange={handlePhoneChange}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    sx={{ margin: "20px 20px" }}
+                    onClick={handleReturn}
+                  >
+                    Quay lại
+                    <KeyboardReturnIcon sx={{ margin: "0px 20px" }} />
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    sx={{
+                      margin: "20px 20px",
+                      color: "green",
+                      borderColor: "green",
+                      border: "1px solid green",
+                    }}
+                    onClick={handleUpdate}
+                  >
+                    Cập nhật
+                    <DoneIcon sx={{ margin: "0px 20px" }} />
+                  </Button>
+                </Grid>
+              </Grid>
+            </Container>
+          ))
+        : ""}
     </Box>
   );
 }

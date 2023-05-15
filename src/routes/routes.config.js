@@ -26,20 +26,20 @@ import { ManageAccounts } from "@mui/icons-material";
 import ManageContact from "screens/Dashboard/components/Contact/ManageContact";
 import Subcategory from "screens/SubCategory/Subcategory";
 import Statistics from "screens/Dashboard/components/statistics/Statistics";
-import ProfileLayout from "layouts/ProfileLayout";
+import AboutUsLayout from "layouts/AboutUsLayout";
 
 export const routeConfig = [
   {
     path: "/home",
     component: Home,
-    layout: DefaultLayout,
+    layout: AboutUsLayout,
     private: false,
     isAdmin: false,
   },
   {
     path: "/profile",
     component: Profile,
-    layout: ProfileLayout,
+    layout: DefaultLayout,
     private: false,
     isAdmin: false,
   },
@@ -53,14 +53,14 @@ export const routeConfig = [
   {
     path: "/products",
     component: ProductsScreen,
-    layout: DefaultLayout,
+    layout: AboutUsLayout,
     isAdmin: false,
     private: false,
   },
   {
     path: "/Aboutus",
     component: AboutUs,
-    layout: DefaultLayout,
+    layout: AboutUsLayout,
     isAdmin: false,
     private: false,
   },
@@ -74,14 +74,14 @@ export const routeConfig = [
   {
     path: "/order",
     component: Order,
-    layout: ProfileLayout,
+    layout: DefaultLayout,
     isAdmin: false,
     private: false,
   },
   {
     path: "/support",
     component: AllContact,
-    layout: ProfileLayout,
+    layout: DefaultLayout,
     isAdmin: false,
     private: false,
   },

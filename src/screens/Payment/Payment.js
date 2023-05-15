@@ -80,6 +80,7 @@ export default function Payment() {
 
       .then((response) => {
         setCart(response.data);
+        console.log(response.data.quantity);
       });
   }, [setCart]);
 
@@ -101,6 +102,7 @@ export default function Payment() {
     price: item.product[0].price,
   }));
   const navigate = useNavigate();
+
   const handleSubmit = async () => {
     await axios
       .post(
@@ -135,7 +137,7 @@ export default function Payment() {
         navigate("/order");
       })
       .catch((error) => {
-        toast.warning("Số lượng tồn kho không đủ", {
+        toast.warning("Số lượng sản phẩm không đủ", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -270,9 +272,17 @@ export default function Payment() {
                         sx={{
                           display: "flex",
                           flexDirection: "column",
+                          justifyContent: "space-between",
                         }}
                       >
-                        <CardContent sx={{ flex: "1 0 auto" }}>
+                        <CardContent
+                          sx={{
+                            flex: "1 0 auto",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                          }}
+                        >
                           <Typography component="div" variant="h6">
                             {item.product[0].productId.title}
                           </Typography>
@@ -293,7 +303,8 @@ export default function Payment() {
                             color="#33333"
                             component="div"
                           >
-                            Thành tiền: {item.product[0].price} đ
+                            Thành tiền:{" "}
+                            {item.product[0].price.toLocaleString("vi-VN")} đ
                           </Typography>
                         </CardContent>
                         <Box
@@ -321,7 +332,7 @@ export default function Payment() {
                 variant="h5"
                 sx={{ marginTop: "20px", color: "rgb(0,100,210)" }}
               >
-                Tổng đơn giá: {totalPrice} đ{" "}
+                Tổng đơn giá: {totalPrice.toLocaleString("vi-VN")} đ{" "}
               </Typography>
             </Item>
           </Grid>

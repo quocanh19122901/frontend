@@ -202,27 +202,13 @@ const Order = () => {
       title: "",
       align: "center",
       dataIndex: "operation",
-      width: "15%",
+      width: "10%",
 
       render: (_, record) => (
         <div>
           <Button type="primary" href={`order/${record._id}`}>
             Xem chi tiết
           </Button>
-          {record.status !== "Đã hủy" && record.status !== "Đã xác nhận" && (
-            <Popconfirm
-              title="Bạn có chắc chắn muốn hủy đơn hàng này?"
-              onConfirm={() => handleCancel(record._id)}
-            >
-              <Button
-                type="primary"
-                danger
-                disabled={record.status === "Đã hủy"}
-              >
-                Hủy
-              </Button>
-            </Popconfirm>
-          )}
         </div>
       ),
     },
