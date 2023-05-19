@@ -7,6 +7,7 @@ import {
   Typography,
   Tag,
   Button,
+  Space,
 } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
@@ -15,6 +16,10 @@ import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import Title from "antd/es/typography/Title";
 import { Link } from "react-router-dom";
+import Highlighter from "react-highlight-words";
+import { useRef } from "react";
+import { SearchOutlined } from "@ant-design/icons";
+
 const EditableCell = ({
   editing,
   dataIndex,
@@ -53,7 +58,100 @@ const AllProduct = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const searchInput = useRef(null);
+  const [searchedColumn, setSearchedColumn] = useState("");
   const isEditing = (record) => record.key === editingKey;
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: "block",
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Tìm
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Đặt lại
+          </Button>
+
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            Đóng
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? "#1890ff" : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: "#ffc069",
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
   const handleDel = (record) => {
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -96,7 +194,7 @@ const AllProduct = () => {
       })
       .then((response) => {
         setData(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
 
       .catch((error) => {
@@ -114,6 +212,15 @@ const AllProduct = () => {
   };
   const cancel = () => {
     setEditingKey("");
+  };
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
   };
   const save = async (key) => {
     try {
@@ -144,6 +251,7 @@ const AllProduct = () => {
       width: "15%",
       editable: true,
       align: "center",
+      ...getColumnSearchProps("productName"),
     },
     {
       title: "Ảnh",
@@ -159,6 +267,9 @@ const AllProduct = () => {
       dataIndex: "SubCategoryId.SubCategoryName",
       align: "center",
       width: "10%",
+      sorter: (a, b) =>
+        a.SubCategoryId.SubCategoryName.length -
+        b.SubCategoryId.SubCategoryName.length,
       render: (text, record) => {
         // Sử dụng split để tách chuỗi
         const subCategoryName =
@@ -171,12 +282,14 @@ const AllProduct = () => {
       align: "center",
       dataIndex: "quantity",
       width: "8%",
+      sorter: (a, b) => a.quantity - b.quantity,
     },
     {
       title: "Đã bán",
       align: "center",
       dataIndex: "sold",
       width: "8%",
+      sorter: (a, b) => a.sold - b.sold,
     },
     {
       title: "Đơn giá",
@@ -265,6 +378,7 @@ const AllProduct = () => {
           },
         }}
         bordered
+        rowKey={(record) => record._id}
         dataSource={data}
         columns={mergedColumns}
         rowClassName="editable-row"

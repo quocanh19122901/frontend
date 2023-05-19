@@ -21,8 +21,8 @@ import Title from "antd/es/typography/Title";
 
 const CategoryDetail = () => {
   const [data, setData] = useState([]);
-  const [searchText, setSearchText] = useState("");
   const [categoryName, setCategoryName] = useState("");
+  const [searchText, setSearchText] = useState("");
   const searchInput = useRef(null);
   const [searchedColumn, setSearchedColumn] = useState("");
   const [form] = Form.useForm();

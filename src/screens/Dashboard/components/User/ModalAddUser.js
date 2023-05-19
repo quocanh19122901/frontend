@@ -49,6 +49,8 @@ const ModalAddUser = ({ setData }) => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        okText="Xác nhận"
+        cancelText="Hủy bỏ"
       >
         <Input
           className="ant-input"

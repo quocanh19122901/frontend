@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 const pages = [
   { item: "Sản phẩm", path: "/products" },
   { item: "Giới thiệu", path: "/aboutus" },
@@ -39,6 +40,8 @@ function ResponsiveAppBar(props) {
     }
   }
   const token = getCookie("access_Token");
+  const isAdmin = getCookie("isAdmin");
+  console.log(isAdmin);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -218,6 +221,13 @@ function ResponsiveAppBar(props) {
 
           <Box sx={{ flexGrow: 0, display: "flex" }}>
             {token ? <Cart /> : ""}
+            {/* {isAdmin ? (
+              <Box>
+                <AdminPanelSettingsIcon />
+              </Box>
+            ) : (
+              ""
+            )} */}
             {token ? (
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

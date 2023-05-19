@@ -42,7 +42,20 @@ export default function NewCategory() {
       </Title>
       <Box sx={{ width: "100%" }}>
         <Swiper
-          slidesPerView={5}
+          breakpoints={{
+            320: {
+              slidesPerView: 1,
+            },
+            480: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 4,
+            },
+          }}
           spaceBetween={30}
           navigation={true}
           modules={[Navigation]}
@@ -50,7 +63,7 @@ export default function NewCategory() {
           {products && products.length > 0
             ? products.map((item, index) => (
                 <SwiperSlide key={index}>
-                  <Card sx={{ maxWidth: 450, height: 500 }}>
+                  <Card sx={{ maxWidth: 450, height: 500, mb: "10px" }}>
                     <Link to={`/products/${item._id}`} key={index}>
                       <CardActionArea>
                         <img
@@ -60,13 +73,21 @@ export default function NewCategory() {
                         />
                         <CardContent
                           sx={{
-                            height: "200px",
+                            height: "150px",
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "space-around",
                           }}
                         >
-                          <Typography gutterBottom variant="h6" component="div">
+                          <Typography
+                            gutterBottom
+                            variant="h6"
+                            component="div"
+                            sx={{
+                              textOverflow: "ellipsis",
+                              overflow: "hidden",
+                            }}
+                          >
                             {item.title}
                           </Typography>
 

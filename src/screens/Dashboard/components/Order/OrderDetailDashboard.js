@@ -13,8 +13,17 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import { Avatar } from "antd";
-
+import {
+  PDFDownloadLink,
+  PDFViewer,
+  Document,
+  Page,
+  Text,
+} from "@react-pdf/renderer";
+import ReactPDF from "@react-pdf/renderer";
+import Title from "antd/es/typography/Title";
+import { Tag } from "antd";
+import InvoiceContent from "./InvoiceContent";
 export default function OrderDetailDashboard() {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -27,13 +36,8 @@ export default function OrderDetailDashboard() {
 
   const [data, setData] = useState([]);
   const [product, setProduct] = useState([]);
-  const [userId, setUserId] = useState("");
-  const [user, setUser] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleAccept = async () => {
-    setIsLoading(true);
-
     try {
       const response = await axios.put(
         `http://localhost:5000/api/order/${params.id}`
@@ -53,33 +57,34 @@ export default function OrderDetailDashboard() {
       .get(`http://localhost:5000/api/order/myorder/${params.id}`)
       .then((response) => {
         setData(response.data);
+        const totalPrice = response.data.product.reduce(
+          (acc, item) => acc + item.price,
+          0
+        );
+        response.data.product.totalPrice = totalPrice;
         setProduct(response.data.product);
-        setUserId(response.data.userId);
 
-        console.log(response.data);
+        // console.log(response.data.product);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [setData, setProduct]);
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/user/find/${userId}`)
-      .then((response) => {
-        setUser(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [userId]);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Container maxWidth="xl">
-        <Table>
-          <Typography variant="h4" sx={{ marginTop: "20px" }}>
-            Chi tiết đơn hàng
-          </Typography>
+        <Table id="orderTable">
+          <Title sx={{ marginTop: "20px" }}>Chi tiết đơn hàng</Title>
+          <Box>
+            {product.length > 0 && (
+              <PDFDownloadLink
+                document={<InvoiceContent product={product} data={data} />}
+                fileName="example.pdf"
+              >
+                Xuất hóa đơn
+              </PDFDownloadLink>
+            )}
+          </Box>
           <TableRow>
             <TableCell>Tên sản phẩm</TableCell>
             <TableCell>Ảnh sản phẩm</TableCell>
@@ -100,9 +105,30 @@ export default function OrderDetailDashboard() {
               <TableCell align="center">{item.size}</TableCell>
               <TableCell align="center">{item.color}</TableCell>
               <TableCell align="center">{item.quantity}</TableCell>
-              <TableCell align="center">{item.price} đ</TableCell>
+              <TableCell align="center">
+                {item.price.toLocaleString("vi-VN")} đ
+              </TableCell>
             </TableRow>
           ))}
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell align="center"></TableCell>
+            <TableCell align="center"></TableCell>
+            <TableCell align="center" sx={{ fontWeight: "bold" }}>
+              <Typography variant="h6">Tổng giá trị hóa đơn</Typography>
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{ color: "green", fontWeight: "bold" }}
+            >
+              <Typography variant="h6">
+                {product?.totalPrice &&
+                  product?.totalPrice.toLocaleString("vi-VN")}
+                đ
+              </Typography>
+            </TableCell>
+          </TableRow>
         </Table>
         {data.status === "Đã hủy" || data.status === "Đã xác nhận" ? (
           <Button href="/dashboard/order">Quay lại</Button>

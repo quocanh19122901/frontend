@@ -3,7 +3,9 @@ import { experimentalStyled as styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Link } from "react-router-dom";
-
+import ReactPaginate from "react-paginate";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import {
   Card,
   CardActionArea,
@@ -13,7 +15,7 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
-import CustomSeparator from "./CustomSeparator";
+import "./Paginate.css";
 import SearchBar from "components/SearchBar/SearchBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -31,7 +33,8 @@ export default function AllProducts() {
   const [category, setCategory] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [notFound, setNotFound] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 8;
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/products")
@@ -60,7 +63,13 @@ export default function AllProducts() {
         console.log(error);
       });
   }, []);
-
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage.selected);
+  };
+  const paginatedData = data?.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
   const handleSearch = () => {
     axios
       .get(
@@ -125,7 +134,7 @@ export default function AllProducts() {
             </Typography>
           </Box>
         ) : data && data.length > 0 ? (
-          data?.map((item, index) => (
+          paginatedData?.map((item, index) => (
             <Grid key={index} xs={12} sm={6} md={4} lg={3} xl={3}>
               <Link to={`/products/${item._id}`} key={index}>
                 <Item>
@@ -155,14 +164,20 @@ export default function AllProducts() {
                           {item.status === "Đang bày bán" ? (
                             <Tag
                               color="green"
-                              style={{ textAlign: "center", fontSize: "15px" }}
+                              style={{
+                                textAlign: "center",
+                                fontSize: "15px",
+                              }}
                             >
                               Giá: {item.price.toLocaleString("vi-VN")}đ
                             </Tag>
                           ) : (
                             <Tag
                               color="grey"
-                              style={{ textAlign: "center", fontSize: "15px" }}
+                              style={{
+                                textAlign: "center",
+                                fontSize: "15px",
+                              }}
                             >
                               Đã ngừng kinh doanh
                             </Tag>
@@ -204,6 +219,17 @@ export default function AllProducts() {
           </Grid>
         )}
       </Grid>
+      <ReactPaginate
+        previousLabel={<ArrowBackIosNewIcon />}
+        nextLabel={<ArrowForwardIosIcon />}
+        breakLabel={"..."}
+        pageCount={Math.ceil(data.length / itemsPerPage)}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageChange}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
+      />
     </Container>
   );
 }

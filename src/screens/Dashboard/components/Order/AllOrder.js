@@ -238,6 +238,7 @@ const Order = () => {
           },
         }}
         bordered
+        rowKey={(record) => record._id}
         dataSource={data}
         columns={mergedColumns}
         rowClassName="editable-row"

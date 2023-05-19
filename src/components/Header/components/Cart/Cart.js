@@ -89,7 +89,7 @@ export default function Cart() {
       })
       .then((response) => {
         setCart(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       });
   };
   const list = React.useMemo(() => (anchor) => (
@@ -98,7 +98,7 @@ export default function Cart() {
         cart.map((item, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton>
-              <Card sx={{ display: "flex" }}>
+              <Card sx={{ display: "flex", width: "100%", height: "220px" }}>
                 <CardMedia
                   component="img"
                   sx={{ width: 160 }}
@@ -111,7 +111,7 @@ export default function Cart() {
                     flexDirection: "column",
                   }}
                 >
-                  <CardContent sx={{ maxWidth: "400px", flex: "1 0 auto" }}>
+                  <CardContent sx={{ minWidth: "300px", flex: "1 0 auto" }}>
                     <Typography component="div" variant="h6">
                       {item.product[0].productId.title}
                     </Typography>
@@ -122,7 +122,7 @@ export default function Cart() {
 
                       <Button
                         color="error"
-                        sx={{ float: "right" }}
+                        sx={{ marginLeft: "30px" }}
                         startIcon={<DeleteIcon />}
                         onClick={() => handleRemove(item._id)}
                       >

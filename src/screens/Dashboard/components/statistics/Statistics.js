@@ -3,15 +3,21 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import Highcharts from "highcharts";
+import DownloadIcon from "@mui/icons-material/Download";
 import HighchartsReact from "highcharts-react-official";
+import json2csv from "json2csv";
+import fileDownload from "js-file-download";
+import { Buffer } from "buffer";
 import {
   Box,
+  Button,
   Card,
   CardContent,
   CardMedia,
   Grid,
   ListItem,
   ListItemButton,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -64,14 +70,10 @@ export default function Statistics() {
         console.log(response.data.monthlyData);
       });
   }, [setData]);
-  const chartData = data.map((item) => [
-    new Date(item._id).getTime(),
-    item.total,
-  ]);
-  const chartDataOrder = data.map((item) => [
-    new Date(item._id).getTime(),
-    item.count,
-  ]);
+
+  const chartData = data.map((item) => [item._id, item.total]);
+  console.log(chartData);
+  const chartDataOrder = data.map((item) => [item._id, item.count]);
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/products/top/bestselling", {
@@ -87,13 +89,19 @@ export default function Statistics() {
 
   const totalRevenue = data.reduce((acc, curr) => acc + curr.total, 0);
   const totalOrder = data.reduce((acc, curr) => acc + curr.count, 0);
-
+  const exportCSV = () => {
+    // const fields = ["year", "month", "revenue"];
+    // const opts = { fields };
+    const csvData = json2csv.parse(chartData, null);
+    const csvBuffer = Buffer.from(csvData, "utf-8");
+    fileDownload(csvBuffer, "revenue.csv");
+  };
   const options = {
     title: {
       text: "Doanh thu theo tháng",
     },
     xAxis: {
-      type: "datetime",
+      type: "category",
       title: {
         text: "Tháng",
       },
@@ -115,7 +123,8 @@ export default function Statistics() {
       text: "Số lượng đơn hàng theo tháng",
     },
     xAxis: {
-      type: "datetime",
+      type: "category",
+
       title: {
         text: "Tháng",
       },
@@ -134,7 +143,7 @@ export default function Statistics() {
     ],
   };
   return (
-    <Box sx={{ height: "1vh" }}>
+    <Box>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} columns={24}>
           <Grid item xs={8}>
@@ -154,7 +163,7 @@ export default function Statistics() {
             </Item>
           </Grid>
           <Grid item xs={8}>
-            <Item sx={{ color: "lightgreen" }}>
+            <Item sx={{ color: "purple" }}>
               <SupervisorAccountIcon />
               <Typography>Số lượng người dùng</Typography>
               <Typography variant="h3">{user}</Typography>
@@ -163,99 +172,130 @@ export default function Statistics() {
         </Grid>
       </Box>
       <Box sx={{ marginTop: "20px" }}>
-        <Grid container spacing={2} columns={12} alignItems="center">
-          <Grid item xs={8} sx={{ height: "100%" }}>
-            <Box>
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-                style={{ height: "100%" }}
-              />
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={option1}
-                style={{ height: "100%" }}
-              />
+        <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <Box sx={{ padding: "2rem", backgroundColor: "white" }}>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography variant="h5"> Thống kê doanh thu</Typography>
+                <Tooltip title="Xuất doanh thu" arrow placement="top">
+                  <Button
+                    onClick={exportCSV}
+                    sx={{
+                      "&.MuiButtonBase-root": {
+                        minWidth: "40px",
+                        "& .MuiButton-startIcon": {
+                          margin: 0,
+                        },
+                      },
+                    }}
+                    startIcon={<DownloadIcon />}
+                  ></Button>
+                </Tooltip>
+              </Box>
+              <Box>
+                <HighchartsReact
+                  highcharts={Highcharts}
+                  options={options}
+                  // style={{ height: "100%" }}
+                />
+              </Box>
+              <Box>
+                <Typography variant="h5"> Thống kê đơn hàng</Typography>
+              </Box>
+              <Box>
+                <HighchartsReact
+                  highcharts={Highcharts}
+                  options={option1}
+                  // style={{ height: "100%" }}
+                />
+              </Box>
             </Box>
           </Grid>
           <Grid item xs={4}>
-            <Title level={3} style={{ textAlign: "center" }}>
-              Sản phẩm bán chạy trong tháng
-            </Title>
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid container spacing={2} columns={16}>
-                {products && products.length > 0 ? (
-                  products.map((item, index) => (
-                    <Grid item xs={16} key={index}>
-                      <ListItem key={index} disablePadding>
-                        <ListItemButton>
-                          <Card
-                            sx={{
-                              display: "flex",
-                              width: "100%",
-                              height: "200px",
-                            }}
-                          >
-                            <CardMedia
-                              component="img"
-                              sx={{ maxWidth: 200 }}
-                              image={item.productDetails.avatar}
-                              alt="Live from space album cover"
-                            />
-                            <Box>
-                              <CardContent
-                                sx={{
-                                  width: "100%",
-                                  height: "100%",
-                                  display: "grid",
-                                  flexDirection: "column",
-                                  placeItems: "center",
-                                }}
-                              >
-                                <Box>
-                                  <Typography component="div" variant="h6">
-                                    {item.productDetails.title}
-                                  </Typography>
-                                  <Box display="flex" alignItems="center">
-                                    <Typography>
-                                      Đã bán: {item.totalSold}
+            <Box sx={{ padding: "2rem", backgroundColor: "white" }}>
+              <Typography
+                variant="h5"
+                sx={{ textAlign: "center", m: "1rem 0" }}
+              >
+                Sản phẩm bán chạy trong tháng
+              </Typography>
+              <Box>
+                <Box sx={{ height: "770px", overflowY: "hidden" }}>
+                  {products && products.length > 0 ? (
+                    products.map((item, index) => (
+                      <Grid item xs={16} key={index}>
+                        <ListItem key={index} disablePadding>
+                          <ListItemButton>
+                            <Card
+                              sx={{
+                                display: "flex",
+
+                                height: "150px",
+                              }}
+                            >
+                              <Box>
+                                <CardMedia
+                                  component="img"
+                                  sx={{ width: 150 }}
+                                  image={item.productDetails.avatar}
+                                  alt="Live from space album cover"
+                                />
+                              </Box>
+                              <Box>
+                                <CardContent
+                                  sx={{
+                                    width: "100%",
+                                    height: "100%",
+                                    display: "grid",
+                                    flexDirection: "column",
+                                    placeItems: "center",
+                                  }}
+                                >
+                                  <Box>
+                                    <Typography component="div">
+                                      {item.productDetails.title}
+                                    </Typography>
+                                    <Box display="flex" alignItems="center">
+                                      <Typography>
+                                        Đã bán: {item.totalSold}
+                                      </Typography>
+                                    </Box>
+
+                                    <Typography
+                                      variant="subtitle2"
+                                      sx={{ float: "left" }}
+                                      color="#33333"
+                                      component="div"
+                                    >
+                                      Giá:{" "}
+                                      {item.productDetails.price.toLocaleString(
+                                        "vi-VN"
+                                      )}{" "}
+                                      đ
                                     </Typography>
                                   </Box>
-
-                                  <Typography
-                                    variant="subtitle2"
-                                    sx={{ float: "left" }}
-                                    color="#33333"
-                                    component="div"
-                                  >
-                                    Giá:{" "}
-                                    {item.productDetails.price.toLocaleString(
-                                      "vi-VN"
-                                    )}{" "}
-                                    đ
-                                  </Typography>
-                                </Box>
-                              </CardContent>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  pl: 1,
-                                  pb: 1,
-                                }}
-                              ></Box>
-                            </Box>
-                          </Card>
-                        </ListItemButton>
-                      </ListItem>
-                    </Grid>
-                  ))
-                ) : (
-                  <Typography align="center">
-                    Chưa bán được sản phẩm nào
-                  </Typography>
-                )}
-              </Grid>
+                                </CardContent>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    pl: 1,
+                                    pb: 1,
+                                  }}
+                                ></Box>
+                              </Box>
+                            </Card>
+                          </ListItemButton>
+                        </ListItem>
+                      </Grid>
+                    ))
+                  ) : (
+                    <Typography align="center">
+                      Chưa bán được sản phẩm nào
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
             </Box>
           </Grid>
         </Grid>

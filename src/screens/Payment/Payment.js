@@ -11,7 +11,6 @@ import {
   CardMedia,
   Container,
   Divider,
-  FormControl,
   ListItem,
   ListItemButton,
   TextField,
@@ -22,7 +21,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { validationSchema } from "./validationSchema";
 const Item = styled(Box)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
@@ -30,37 +30,10 @@ const Item = styled(Box)(({ theme }) => ({
   color: theme.palette.text.secondary,
   height: "100%",
 }));
-
 export default function Payment() {
   const [cart, setCart] = useState([]);
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [phone, setPhone] = useState();
-  const [address, setAddress] = useState();
-  const [note, setNote] = useState();
-  const [quantityP, setQuantityP] = useState();
-  const [quantity, setQuantity] = useState();
   const totalPrice = cart.reduce((acc, item) => acc + item.product[0].price, 0);
 
-  const handleAddressChange = (e) => {
-    setAddress(e.target.value);
-  };
-
-  const handlePhoneChange = (e) => {
-    setPhone(e.target.value);
-  };
-
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-  };
-
-  const handleLastNameChange = (e) => {
-    setLastName(e.target.value);
-  };
-
-  const handleNoteChange = (e) => {
-    setNote(e.target.value);
-  };
   useEffect(() => {
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -103,7 +76,9 @@ export default function Payment() {
   }));
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values, { setSubmitting }) => {
+    const { firstName, lastName, address, phone, note } = values;
+
     await axios
       .post(
         `http://localhost:5000/api/order`,
@@ -148,6 +123,8 @@ export default function Payment() {
           theme: "light",
         });
       });
+
+    setSubmitting(false);
   };
   return (
     <Container maxWidth="lg" sx={{ margin: "60px auto" }}>
@@ -160,7 +137,7 @@ export default function Payment() {
               top: { md: 60 },
               backgroundColor: "#fff",
               padding: "1rem",
-              zIndex: "999",
+              zIndex: "0",
             }}
             item
             xs={16}
@@ -171,83 +148,102 @@ export default function Payment() {
               <Typography align="left" variant="h5">
                 Thông tin người nhận:
               </Typography>
-              <FormControl
-                sx={{
-                  minHeight: "500px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-around",
+              <Formik
+                initialValues={{
+                  firstName: "",
+                  lastName: "",
+                  address: "",
+                  phone: "",
+                  note: "",
                 }}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
               >
-                <Box>
-                  <TextField
-                    fullWidth
-                    label="Họ"
-                    variant="standard"
-                    required
-                    minLength={2}
-                    maxLength={20}
-                    pattern="[A-Za-z]+"
-                    onChange={handleFirstNameChange}
-                  />
-                </Box>
-                <Box>
-                  <TextField
-                    fullWidth
-                    label="Tên"
-                    variant="standard"
-                    required
-                    minLength={2}
-                    maxLength={20}
-                    pattern="[A-Za-z]+"
-                    onChange={handleLastNameChange}
-                  />
-                </Box>
-                <Box>
-                  <TextField
-                    fullWidth
-                    label="Địa chỉ người nhận"
-                    variant="standard"
-                    required
-                    minLength={5}
-                    maxLength={100}
-                    onChange={handleAddressChange}
-                  />
-                </Box>
-                <Box>
-                  <TextField
-                    fullWidth
-                    label="Số điện thoại"
-                    variant="standard"
-                    required
-                    pattern="[0-9]+"
-                    minLength={10}
-                    maxLength={11}
-                    onChange={handlePhoneChange}
-                  />
-                </Box>
+                {({ handleSubmit }) => (
+                  <Form onSubmit={handleSubmit}>
+                    <Field
+                      name="firstName"
+                      type="text"
+                      label="Họ"
+                      as={TextField}
+                      fullWidth
+                      size="small"
+                      sx={{ mb: "10px" }}
+                    />
+                    <ErrorMessage
+                      name="firstName"
+                      component={Typography}
+                      color="error"
+                    />
 
-                <Box>
-                  <TextField
-                    fullWidth
-                    id="filled-multiline-static"
-                    label="Ghi chú"
-                    multiline
-                    rows={4}
-                    variant="filled"
-                    onChange={handleNoteChange}
-                  />
-                </Box>
-                <Button
-                  variant="outlined"
-                  sx={{ margin: "20px 20px" }}
-                  startIcon={<PaymentIcon />}
-                  onClick={handleSubmit}
-                  type="submit"
-                >
-                  Hoàn tất
-                </Button>
-              </FormControl>
+                    <Field
+                      name="lastName"
+                      type="text"
+                      label="Tên"
+                      as={TextField}
+                      fullWidth
+                      size="small"
+                      sx={{ mb: "10px" }}
+                    />
+                    <ErrorMessage
+                      name="lastName"
+                      component={Typography}
+                      color="error"
+                    />
+
+                    <Field
+                      name="address"
+                      type="text"
+                      label="Địa chỉ người nhận"
+                      as={TextField}
+                      fullWidth
+                      size="small"
+                      sx={{ mb: "10px" }}
+                    />
+                    <ErrorMessage
+                      name="address"
+                      component={Typography}
+                      color="error"
+                    />
+
+                    <Field
+                      name="phone"
+                      type="text"
+                      label="Số điện thoại"
+                      as={TextField}
+                      fullWidth
+                      size="small"
+                      sx={{ mb: "10px" }}
+                    />
+                    <ErrorMessage
+                      name="phone"
+                      component={Typography}
+                      color="error"
+                    />
+
+                    <Field
+                      name="note"
+                      type="text"
+                      label="Ghi chú"
+                      as={TextField}
+                      fullWidth
+                      size="small"
+                      sx={{ mb: "10px" }}
+                      multiline
+                      rows={4}
+                    />
+
+                    <Button
+                      variant="outlined"
+                      sx={{ margin: "20px 20px" }}
+                      startIcon={<PaymentIcon />}
+                      type="submit"
+                    >
+                      Hoàn tất
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
             </Item>
           </Grid>
           <Grid item xs={16} sm={16} md={8}>

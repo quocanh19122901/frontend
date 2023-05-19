@@ -6,7 +6,7 @@ import React from "react";
 export default function DefaultLayout({ children }) {
   return (
     <Box>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar style={{ zIndex: 999 }} />
       <Box sx={{ padding: "3rem", minHeight: "100vh" }}> {children}</Box>
       <FooterCM />
     </Box>

@@ -118,7 +118,7 @@ function InforProduct() {
   const flatOptions = size.flat();
   const flatOptionsColor = color.flat();
   const handleChangeQuantity = (e) => {
-    e.target.value < 0
+    e.target.value <= 0
       ? setCount(1)
       : e.target.value > data.quantity
       ? setCount(data.quantity)
@@ -205,6 +205,7 @@ function InforProduct() {
                     value={count}
                     type="number"
                     onChange={handleChangeQuantity}
+                    sx={{ textAlign: "center", minWidth: "50px" }}
                   />
                   <Button onClick={handleIncrease}>+</Button>
                 </Box>
@@ -225,6 +226,7 @@ function InforProduct() {
                     variant="overline"
                     sx={{ padding: "10px 0px 5px 10px" }}
                     onClick={handleAdd}
+                    disabled={data.quantity === 0}
                   >
                     Thêm vào giỏ hàng
                   </Typography>

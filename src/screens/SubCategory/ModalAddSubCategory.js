@@ -73,6 +73,8 @@ const ModalAddCategory = ({ setData }) => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        okText="Xác nhận"
+        cancelText="Hủy bỏ"
       >
         <Autocomplete
           disablePortal

@@ -67,7 +67,7 @@ const TableUser = () => {
       >
         <Input
           ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Tìm ${dataIndex}`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -88,7 +88,7 @@ const TableUser = () => {
               width: 90,
             }}
           >
-            Search
+            Tìm
           </Button>
           <Button
             onClick={() => clearFilters && handleReset(clearFilters)}
@@ -97,21 +97,9 @@ const TableUser = () => {
               width: 90,
             }}
           >
-            Reset
+            Đặt lại
           </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button>
+
           <Button
             type="link"
             size="small"
@@ -119,7 +107,7 @@ const TableUser = () => {
               close();
             }}
           >
-            close
+            Đóng
           </Button>
         </Space>
       </div>
@@ -181,7 +169,7 @@ const TableUser = () => {
       dataIndex: "_id",
       width: "15%",
       editable: "true",
-      ...getColumnSearchProps("username"),
+      ...getColumnSearchProps("_id"),
     },
     {
       title: "Tài khoản",

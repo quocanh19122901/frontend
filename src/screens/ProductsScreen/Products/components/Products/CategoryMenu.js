@@ -97,7 +97,7 @@ export default function CategoryMenu({ setData }) {
       }
     }
   }, [category, subCategory]);
-  console.log(categoryMenu);
+  // console.log(categoryMenu);
   return (
     <Menu mode="horizontal">
       {categoryMenu?.map((category, categoryIndex) => (
